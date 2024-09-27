@@ -32,7 +32,7 @@ service DatabaseService {
   rpc Companies(Empty) returns (CompaniesResponse);
   rpc CreateCompany(CreateCompanyRequest) returns (Company);
   rpc FindCompanyById(FindCompanyByIdRequest) returns (Company);
-  rpc FindCompanyByPhone(FindCompanyByIdPhone) returns (Company);
+  rpc FindCompanyByPhone(FindCompanyByIdPhoneRequest) returns (Company);
   rpc FindCompanyCard(FindCompanyCardRequest) returns (CardCompany);
   rpc DeleteCompanyByModel(DeleteCompanyByModelRequest) returns (HTTPCodes);
   rpc DeleteCompanyById(DeleteCompanyByIdRequest) returns (HTTPCodes);
@@ -214,8 +214,8 @@ message FindCompanyByIdRequest {
   uint64 id = 1;
 }
 
-message FindCompanyByIdPhone {
-  uint64 id = 1;
+message FindCompanyByIdPhoneRequest {
+  string phone = 1;
 }
 
 message CreateCompanyRequest {

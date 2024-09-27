@@ -1,10 +1,31 @@
 package DatabaseServicev1
 
-import "context"
+import (
+	"DababaseService/iternal/lib/logger/sl"
+	"DababaseService/pkg/database/models"
+	"DababaseService/pkg/logger"
+	"DababaseService/pkg/utilities"
+	"context"
+	"fmt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+)
 
 func (s *serverAPI) CardsCompanies(ctx context.Context, req *Empty) (*CardsCompaniesResponse, error) {
+	companies, err := models.AllCompanies()
+	if err != nil {
+		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
+	}
 
-	return nil, nil
+	response := new(CardsCompaniesResponse)
+
+	err = utilities.Transformation(companies, response)
+	if err != nil {
+		logger.Log.Error("utilities.Transformation(obj, response)", sl.Err(err))
+		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
+	}
+
+	return response, nil
 }
 
 func (s *serverAPI) CreateCardCompany(ctx context.Context, req *CreateCardCompanyRequest) (*CardCompany, error) {

@@ -98,7 +98,7 @@ type DatabaseServiceClient interface {
 	Companies(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CompaniesResponse, error)
 	CreateCompany(ctx context.Context, in *CreateCompanyRequest, opts ...grpc.CallOption) (*Company, error)
 	FindCompanyById(ctx context.Context, in *FindCompanyByIdRequest, opts ...grpc.CallOption) (*Company, error)
-	FindCompanyByPhone(ctx context.Context, in *FindCompanyByIdPhone, opts ...grpc.CallOption) (*Company, error)
+	FindCompanyByPhone(ctx context.Context, in *FindCompanyByIdPhoneRequest, opts ...grpc.CallOption) (*Company, error)
 	FindCompanyCard(ctx context.Context, in *FindCompanyCardRequest, opts ...grpc.CallOption) (*CardCompany, error)
 	DeleteCompanyByModel(ctx context.Context, in *DeleteCompanyByModelRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
 	DeleteCompanyById(ctx context.Context, in *DeleteCompanyByIdRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
@@ -332,7 +332,7 @@ func (c *databaseServiceClient) FindCompanyById(ctx context.Context, in *FindCom
 	return out, nil
 }
 
-func (c *databaseServiceClient) FindCompanyByPhone(ctx context.Context, in *FindCompanyByIdPhone, opts ...grpc.CallOption) (*Company, error) {
+func (c *databaseServiceClient) FindCompanyByPhone(ctx context.Context, in *FindCompanyByIdPhoneRequest, opts ...grpc.CallOption) (*Company, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Company)
 	err := c.cc.Invoke(ctx, DatabaseService_FindCompanyByPhone_FullMethodName, in, out, cOpts...)
@@ -660,7 +660,7 @@ type DatabaseServiceServer interface {
 	Companies(context.Context, *Empty) (*CompaniesResponse, error)
 	CreateCompany(context.Context, *CreateCompanyRequest) (*Company, error)
 	FindCompanyById(context.Context, *FindCompanyByIdRequest) (*Company, error)
-	FindCompanyByPhone(context.Context, *FindCompanyByIdPhone) (*Company, error)
+	FindCompanyByPhone(context.Context, *FindCompanyByIdPhoneRequest) (*Company, error)
 	FindCompanyCard(context.Context, *FindCompanyCardRequest) (*CardCompany, error)
 	DeleteCompanyByModel(context.Context, *DeleteCompanyByModelRequest) (*HTTPCodes, error)
 	DeleteCompanyById(context.Context, *DeleteCompanyByIdRequest) (*HTTPCodes, error)
@@ -761,7 +761,7 @@ func (UnimplementedDatabaseServiceServer) CreateCompany(context.Context, *Create
 func (UnimplementedDatabaseServiceServer) FindCompanyById(context.Context, *FindCompanyByIdRequest) (*Company, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindCompanyById not implemented")
 }
-func (UnimplementedDatabaseServiceServer) FindCompanyByPhone(context.Context, *FindCompanyByIdPhone) (*Company, error) {
+func (UnimplementedDatabaseServiceServer) FindCompanyByPhone(context.Context, *FindCompanyByIdPhoneRequest) (*Company, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindCompanyByPhone not implemented")
 }
 func (UnimplementedDatabaseServiceServer) FindCompanyCard(context.Context, *FindCompanyCardRequest) (*CardCompany, error) {
@@ -1215,7 +1215,7 @@ func _DatabaseService_FindCompanyById_Handler(srv interface{}, ctx context.Conte
 }
 
 func _DatabaseService_FindCompanyByPhone_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(FindCompanyByIdPhone)
+	in := new(FindCompanyByIdPhoneRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1227,7 +1227,7 @@ func _DatabaseService_FindCompanyByPhone_Handler(srv interface{}, ctx context.Co
 		FullMethod: DatabaseService_FindCompanyByPhone_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DatabaseServiceServer).FindCompanyByPhone(ctx, req.(*FindCompanyByIdPhone))
+		return srv.(DatabaseServiceServer).FindCompanyByPhone(ctx, req.(*FindCompanyByIdPhoneRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

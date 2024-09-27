@@ -282,17 +282,11 @@ func (s *serverAPI) FindUserCard(ctx context.Context, req *FindUserCardRequest) 
 }
 
 func (s *serverAPI) DeleteUserByModel(ctx context.Context, req *DeleteUserByModelRequest) (*HTTPCodes, error) {
-	obj := struct {
-		User *models.User `json:"user"`
-	}{}
-
 	user := new(models.User)
-	if err := utilities.Transformation(req, obj); err != nil {
+	if err := utilities.Transformation(req.User, user); err != nil {
 		logger.Log.Error("utilities.Transformation(req, obj)", sl.Err(err))
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
 	}
-
-	user = obj.User
 
 	if err := user.Delete(); err != nil {
 		logger.Log.Error("user.Delete()", sl.Err(err))
