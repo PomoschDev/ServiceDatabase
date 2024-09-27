@@ -103,6 +103,8 @@ func (s *serverAPI) IsRole(ctx context.Context, req *IsRoleRequest) (*IsRoleResp
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
 	}
 
+	logger.Log.Info("Модель: ", slog.Any("user", user))
+
 	response := &IsRoleResponse{Accessory: accessory}
 
 	return response, nil

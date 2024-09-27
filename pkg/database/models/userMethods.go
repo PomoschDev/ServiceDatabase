@@ -30,7 +30,7 @@ func (u *User) IsRole(role string) (bool, error) {
 		return false, err
 	}
 
-	if u.ID == 0 {
+	if u.ID == 0 || (u.Phone == "" || len(u.Phone) == 0) {
 		return false, errors.New(fmt.Sprintf("Пользователь не найден"))
 	}
 
