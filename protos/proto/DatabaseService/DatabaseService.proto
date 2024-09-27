@@ -1,0 +1,395 @@
+syntax = "proto3";
+
+package service;
+
+option go_package = "collapse.DatabaseService.v1;DatabaseServicev1"; //Технический параметр, строго для Golang
+import "google/protobuf/any.proto";
+
+service DatabaseService {
+  //Работа с сущностью пользователя
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse); //Создание сущности User
+  rpc Users(Empty) returns (UsersResponse); //Все сущности User
+  rpc IsRole(IsRoleRequest) returns (IsRoleResponse); //Проверяет принадлежность User к роли
+  rpc ComparePassword(ComparePasswordRequest) returns (ComparePasswordResponse); //Сравнивает пароль с паролем в БД
+  rpc UserIsExists(UserIsExistsRequest) returns (UserIsExistsResponse); //Проверяет существует ли такой юзер
+  rpc FindUserById(FindUserByIdRequest) returns (CreateUserResponse); //Поиск сущности User по id
+  rpc FindUserByEmail(FindUserByEmailRequest) returns (CreateUserResponse); // Поиск сущности User по email
+  rpc FindUserByPhone(FindUserByPhoneRequest) returns (CreateUserResponse); //Поиск сущности по phone
+  rpc ChangeUserType(ChangeUserTypeRequest) returns (ChangeUserTypeResponse); //Меняет тип сущности User (0 -
+  // физическое лицо, 1 - юридическое лицо)
+  rpc FindUserCompany(FindUserByIdRequest) returns (Company); //Возвращает данные компании сущности User
+  rpc FindUserDonations(FindUserDonationsRequest) returns (FindUserDonationsResponse); //Возвращает донаты сущности User
+  rpc FindUserCard(FindUserCardRequest) returns (FindUserCardResponse); //Возвращает карты сущности User
+  rpc DeleteUserByModel(DeleteUserByModelRequest) returns (HTTPCodes); //Удаляет сущность User, возвращает HTTP STATUS
+  // CODE
+  rpc DeleteUserById(DeleteUserByIdRequest) returns (HTTPCodes); //Удаляет сущность User по ID, возвращает HTTP
+  // STATUS CODE
+  rpc UpdateUser(UpdateUserRequest) returns (CreateUserResponse); //Обновляет сущность
+  //
+
+  //Работа с сущностью компании
+  rpc Companies(Empty) returns (CompaniesResponse);
+  rpc CreateCompany(CreateCompanyRequest) returns (Company);
+  rpc FindCompanyById(FindCompanyByIdRequest) returns (Company);
+  rpc FindCompanyByPhone(FindCompanyByIdPhone) returns (Company);
+  rpc FindCompanyCard(FindCompanyCardRequest) returns (CardCompany);
+  rpc DeleteCompanyByModel(DeleteCompanyByModelRequest) returns (HTTPCodes);
+  rpc DeleteCompanyById(DeleteCompanyByIdRequest) returns (HTTPCodes);
+  rpc UpdateCompany(UpdateCompanyRequest) returns (HTTPCodes);
+
+  //Сущность Card для User
+  rpc Cards(Empty) returns (CardsResponse);
+  rpc CreateCard(CreateCardRequest) returns (Card);
+  rpc FindCardById(FindCardByIdRequest) returns (Card);
+  rpc DeleteCardByModel(Card) returns (HTTPCodes);
+  rpc DeleteCardById(DeleteCardByIdRequest) returns (HTTPCodes);
+  rpc UpdateCard(Card) returns (HTTPCodes);
+
+  //Сущность CardCompany для Company
+  rpc CardsCompanies(Empty) returns (CardsCompaniesResponse);
+  rpc CreateCardCompany(CreateCardCompanyRequest) returns (CardCompany);
+  rpc FindCardCompanyByID(FindCardCompanyByIDRequest) returns (CardCompany);
+  rpc DeleteCardCompanyByModel(CardCompany) returns (HTTPCodes);
+  rpc DeleteCardCompanyById(DeleteCardCompanyByIdRequest) returns (HTTPCodes);
+  rpc UpdateCardCompany(CardCompany) returns (HTTPCodes);
+
+  //Донаты
+  rpc Donations(Empty) returns (DonationsResponse);
+  rpc CreateDonations(CreateDonationsRequest) returns (CreateDonationsResponse);
+  rpc FindDonationWards(FindDonationWardsRequest) returns (FindDonationWardsResponse);
+  rpc FindDonationById(FindDonationByIdRequest) returns (CreateDonationsResponse);
+  rpc DeleteDonationByModel(CreateDonationsResponse) returns (HTTPCodes);
+  rpc DeleteDonationById(DeleteDonationByIdRequest) returns (HTTPCodes);
+  rpc UpdateDonation(CreateDonationsResponse) returns (HTTPCodes);
+
+  //Подопечные
+  rpc Wards(Empty) returns (WardsResponse);
+  rpc CreateWard(CreateWardRequest) returns (Ward);
+  rpc FindWardById(FindWardByIdRequest) returns (Ward);
+  rpc DeleteWardByModel(Ward) returns (HTTPCodes);
+  rpc DeleteWardById(DeleteWardByIdRequest) returns (HTTPCodes);
+  rpc UpdateWard(Ward) returns (HTTPCodes);
+}
+
+message Empty {}
+
+message HTTPCodes {
+  int64 code = 1;
+}
+
+message CreateDonationsResponse {
+  uint64 id = 1;
+  string title = 2;
+  float amount = 3;
+  repeated Ward wards = 4;
+  uint64 userId = 5;
+  string createdAt = 6;
+  google.protobuf.Any updatedAt = 7;
+}
+
+message DeleteWardByIdRequest {
+  uint64 id = 1;
+}
+
+message FindWardByIdRequest {
+  uint64 id = 1;
+}
+
+message CreateWardRequest {
+  string title = 2;
+  string fullName = 3;
+  string want = 4;
+  string necessary = 5;
+  uint64 donationId = 6;
+}
+
+message WardsResponse {
+  repeated Ward wards = 1;
+}
+
+message DeleteDonationByIdRequest {
+    uint64 id = 1;
+}
+
+message FindDonationByIdRequest {
+  uint64 id = 1;
+}
+
+message FindDonationWardsResponse {
+  repeated Ward wards = 1;
+}
+
+message FindDonationWardsRequest {
+  uint64 id = 1;
+}
+
+message CreateDonationsRequest {
+  string title = 1;
+  float amount = 2;
+  repeated Ward wards = 3;
+  uint64 userId = 4;
+}
+
+message DonationsResponse {
+  repeated Donations donations = 1;
+}
+
+message DeleteCardCompanyByIdRequest {
+  uint64 id = 1;
+}
+
+message FindCardCompanyByIDRequest {
+  uint64 id = 1;
+}
+
+message CreateCardCompanyRequest {
+  string fullName = 2;
+  string number = 3;
+  string date = 4;
+  string cvv = 5;
+  uint64 companyId = 6;
+}
+
+message CardsCompaniesResponse {
+  repeated CardCompany cards = 1;
+}
+
+message DeleteCardByIdRequest {
+  uint64 id = 1;
+}
+
+message FindCardByIdRequest {
+  uint64 id = 1;
+}
+
+message CreateCardRequest {
+  string fullName = 1;
+  string number = 2;
+  string date = 3;
+  string cvv = 4;
+  string userId = 5;
+}
+
+message CardsResponse {
+  repeated Card cards = 1;
+}
+
+message UpdateCompanyRequest {
+  Company company = 1;
+}
+
+message DeleteCompanyByModelRequest {
+  Company company = 1;
+}
+
+message DeleteCompanyByIdRequest {
+  uint64 id = 1;
+}
+
+message FindCompanyCardRequest {
+  uint64 id = 1;
+}
+
+message FindCompanyByIdRequest {
+  uint64 id = 1;
+}
+
+message FindCompanyByIdPhone {
+  uint64 id = 1;
+}
+
+message CreateCompanyRequest {
+  string title = 2;
+  string phone = 3;
+  string address = 4;
+  string site = 5;
+  string inn = 6;
+  string kpp = 7;
+  string okpo = 8;
+  uint64 userId = 9;
+  CardCompany card = 10;
+}
+
+message CompaniesResponse {
+  repeated Company companies = 1;
+}
+
+message UpdateUserRequest {
+  uint64 id = 1; //ID записи в таблице
+  string email = 2;
+  string username = 3;
+  string password = 4;
+  string phone = 5;
+  repeated Card card = 6;
+  string role = 7;
+  Company company = 8;
+  uint64 type = 9;
+  Donations donations = 10;
+  string createdAt = 11;
+  string updatedAt = 12;
+}
+
+message DeleteUserByModelRequest {
+  CreateUserResponse user = 1;
+}
+
+message DeleteUserByIdRequest {
+  uint64 id = 1;
+}
+
+message FindUserCardRequest {
+  uint64 id = 1;
+}
+
+message FindUserCardResponse {
+  repeated Card cards = 1;
+}
+
+message ChangeUserTypeRequest{
+  uint64 id = 1;
+  uint64 type = 2;
+}
+
+message ChangeUserTypeResponse{
+  bool accessory = 1;
+}
+
+message FindUserByPhoneRequest{
+  string phone = 1;
+}
+
+message FindUserByIdRequest {
+  uint64 id = 1;
+}
+
+message FindUserDonationsRequest {
+  uint64 id = 1;
+}
+
+message FindUserDonationsResponse {
+  repeated Donations donations = 1;
+}
+
+message FindUserByEmailRequest {
+  string email = 1;
+}
+
+message UsersResponse {
+  repeated CreateUserResponse users = 1;
+}
+
+//UserIsExists
+message UserIsExistsRequest {
+  string phone = 1;
+}
+
+message UserIsExistsResponse {
+  bool isExists = 1;
+}
+
+//ComparePassword
+message ComparePasswordRequest {
+  string phone = 1;
+  string password = 2;
+}
+
+message ComparePasswordResponse {
+  bool accessory = 1;
+}
+
+message Company {
+  uint64 id = 1;
+  string title = 2;
+  string phone = 3;
+  string address = 4;
+  string site = 5;
+  string inn = 6;
+  string kpp = 7;
+  string okpo = 8;
+  CardCompany card = 9;
+  uint64 userId = 10;
+  string createdAt = 11;
+  string updatedAt = 12;
+}
+
+message CardCompany {
+  uint64 id = 1;
+  string fullName = 2;
+  string number = 3;
+  string date = 4;
+  uint64 cvv = 5;
+  uint64 companyId = 6;
+  string createdAt = 7;
+  string updatedAt = 8;
+}
+
+message Card {
+  uint64 id = 1;
+  string fullName = 2;
+  string number = 3;
+  string date = 4;
+  uint64 cvv = 5;
+  uint64 userId = 6;
+  string createdAt = 7;
+  string updatedAt = 8;
+}
+
+message Ward {
+  uint64 id = 1;
+  string title = 2;
+  string fullName = 3;
+  string want = 4;
+  string necessary = 5;
+  uint64 donationId = 6;
+  string createdAt = 7;
+  string updatedAt = 8;
+}
+
+message Donations {
+      uint64 id = 1;
+      string title = 2;
+      float amount = 3;
+      repeated Ward wards = 4;
+      uint64 userId = 5;
+  string createdAt = 6;
+  string updatedAt = 7;
+}
+
+message CreateUserRequest {
+      string email = 1;
+      string username = 2;
+      string password = 3;
+      string phone = 4;
+      repeated Card card = 5;
+      string role = 6;
+      Company company = 7;
+      uint64 type = 8;
+      Donations donations = 9;
+  string createdAt = 10;
+  string updatedAt = 11;
+}
+
+message CreateUserResponse {
+  uint64 id = 1; //ID записи в таблице
+  string email = 2;
+  string username = 3;
+  string password = 4;
+  string phone = 5;
+  repeated Card card = 6;
+  string role = 7;
+  Company company = 8;
+  uint64 type = 9;
+  Donations donations = 10;
+  string createdAt = 11;
+  string updatedAt = 12;
+}
+
+//IsRole
+message IsRoleRequest {
+  uint64 id = 1; //ID юзера
+  string role = 2; //Роль к которой проверяем принадлежность
+}
+
+message IsRoleResponse {
+  bool accessory = 1; //ID записи в таблице
+}
