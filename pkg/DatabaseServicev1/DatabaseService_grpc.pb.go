@@ -109,29 +109,29 @@ type DatabaseServiceClient interface {
 	FindCardById(ctx context.Context, in *FindCardByIdRequest, opts ...grpc.CallOption) (*Card, error)
 	DeleteCardByModel(ctx context.Context, in *Card, opts ...grpc.CallOption) (*HTTPCodes, error)
 	DeleteCardById(ctx context.Context, in *DeleteCardByIdRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
-	UpdateCard(ctx context.Context, in *Card, opts ...grpc.CallOption) (*HTTPCodes, error)
+	UpdateCard(ctx context.Context, in *Card, opts ...grpc.CallOption) (*Card, error)
 	// Сущность CardCompany для Company
 	CardsCompanies(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CardsCompaniesResponse, error)
 	CreateCardCompany(ctx context.Context, in *CreateCardCompanyRequest, opts ...grpc.CallOption) (*CardCompany, error)
 	FindCardCompanyByID(ctx context.Context, in *FindCardCompanyByIDRequest, opts ...grpc.CallOption) (*CardCompany, error)
 	DeleteCardCompanyByModel(ctx context.Context, in *CardCompany, opts ...grpc.CallOption) (*HTTPCodes, error)
 	DeleteCardCompanyById(ctx context.Context, in *DeleteCardCompanyByIdRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
-	UpdateCardCompany(ctx context.Context, in *CardCompany, opts ...grpc.CallOption) (*HTTPCodes, error)
+	UpdateCardCompany(ctx context.Context, in *CardCompany, opts ...grpc.CallOption) (*CardCompany, error)
 	// Донаты
 	Donations(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*DonationsResponse, error)
 	CreateDonations(ctx context.Context, in *CreateDonationsRequest, opts ...grpc.CallOption) (*CreateDonationsResponse, error)
 	FindDonationWards(ctx context.Context, in *FindDonationWardsRequest, opts ...grpc.CallOption) (*FindDonationWardsResponse, error)
 	FindDonationById(ctx context.Context, in *FindDonationByIdRequest, opts ...grpc.CallOption) (*CreateDonationsResponse, error)
-	DeleteDonationByModel(ctx context.Context, in *CreateDonationsResponse, opts ...grpc.CallOption) (*HTTPCodes, error)
+	DeleteDonationByModel(ctx context.Context, in *CreateDonationsRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
 	DeleteDonationById(ctx context.Context, in *DeleteDonationByIdRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
-	UpdateDonation(ctx context.Context, in *CreateDonationsResponse, opts ...grpc.CallOption) (*HTTPCodes, error)
+	UpdateDonation(ctx context.Context, in *CreateDonationsRequest, opts ...grpc.CallOption) (*CreateDonationsResponse, error)
 	// Подопечные
 	Wards(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*WardsResponse, error)
 	CreateWard(ctx context.Context, in *CreateWardRequest, opts ...grpc.CallOption) (*Ward, error)
 	FindWardById(ctx context.Context, in *FindWardByIdRequest, opts ...grpc.CallOption) (*Ward, error)
 	DeleteWardByModel(ctx context.Context, in *Ward, opts ...grpc.CallOption) (*HTTPCodes, error)
 	DeleteWardById(ctx context.Context, in *DeleteWardByIdRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
-	UpdateWard(ctx context.Context, in *Ward, opts ...grpc.CallOption) (*HTTPCodes, error)
+	UpdateWard(ctx context.Context, in *Ward, opts ...grpc.CallOption) (*Ward, error)
 }
 
 type databaseServiceClient struct {
@@ -432,9 +432,9 @@ func (c *databaseServiceClient) DeleteCardById(ctx context.Context, in *DeleteCa
 	return out, nil
 }
 
-func (c *databaseServiceClient) UpdateCard(ctx context.Context, in *Card, opts ...grpc.CallOption) (*HTTPCodes, error) {
+func (c *databaseServiceClient) UpdateCard(ctx context.Context, in *Card, opts ...grpc.CallOption) (*Card, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(HTTPCodes)
+	out := new(Card)
 	err := c.cc.Invoke(ctx, DatabaseService_UpdateCard_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -492,9 +492,9 @@ func (c *databaseServiceClient) DeleteCardCompanyById(ctx context.Context, in *D
 	return out, nil
 }
 
-func (c *databaseServiceClient) UpdateCardCompany(ctx context.Context, in *CardCompany, opts ...grpc.CallOption) (*HTTPCodes, error) {
+func (c *databaseServiceClient) UpdateCardCompany(ctx context.Context, in *CardCompany, opts ...grpc.CallOption) (*CardCompany, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(HTTPCodes)
+	out := new(CardCompany)
 	err := c.cc.Invoke(ctx, DatabaseService_UpdateCardCompany_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -542,7 +542,7 @@ func (c *databaseServiceClient) FindDonationById(ctx context.Context, in *FindDo
 	return out, nil
 }
 
-func (c *databaseServiceClient) DeleteDonationByModel(ctx context.Context, in *CreateDonationsResponse, opts ...grpc.CallOption) (*HTTPCodes, error) {
+func (c *databaseServiceClient) DeleteDonationByModel(ctx context.Context, in *CreateDonationsRequest, opts ...grpc.CallOption) (*HTTPCodes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(HTTPCodes)
 	err := c.cc.Invoke(ctx, DatabaseService_DeleteDonationByModel_FullMethodName, in, out, cOpts...)
@@ -562,9 +562,9 @@ func (c *databaseServiceClient) DeleteDonationById(ctx context.Context, in *Dele
 	return out, nil
 }
 
-func (c *databaseServiceClient) UpdateDonation(ctx context.Context, in *CreateDonationsResponse, opts ...grpc.CallOption) (*HTTPCodes, error) {
+func (c *databaseServiceClient) UpdateDonation(ctx context.Context, in *CreateDonationsRequest, opts ...grpc.CallOption) (*CreateDonationsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(HTTPCodes)
+	out := new(CreateDonationsResponse)
 	err := c.cc.Invoke(ctx, DatabaseService_UpdateDonation_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -622,9 +622,9 @@ func (c *databaseServiceClient) DeleteWardById(ctx context.Context, in *DeleteWa
 	return out, nil
 }
 
-func (c *databaseServiceClient) UpdateWard(ctx context.Context, in *Ward, opts ...grpc.CallOption) (*HTTPCodes, error) {
+func (c *databaseServiceClient) UpdateWard(ctx context.Context, in *Ward, opts ...grpc.CallOption) (*Ward, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(HTTPCodes)
+	out := new(Ward)
 	err := c.cc.Invoke(ctx, DatabaseService_UpdateWard_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -671,29 +671,29 @@ type DatabaseServiceServer interface {
 	FindCardById(context.Context, *FindCardByIdRequest) (*Card, error)
 	DeleteCardByModel(context.Context, *Card) (*HTTPCodes, error)
 	DeleteCardById(context.Context, *DeleteCardByIdRequest) (*HTTPCodes, error)
-	UpdateCard(context.Context, *Card) (*HTTPCodes, error)
+	UpdateCard(context.Context, *Card) (*Card, error)
 	// Сущность CardCompany для Company
 	CardsCompanies(context.Context, *Empty) (*CardsCompaniesResponse, error)
 	CreateCardCompany(context.Context, *CreateCardCompanyRequest) (*CardCompany, error)
 	FindCardCompanyByID(context.Context, *FindCardCompanyByIDRequest) (*CardCompany, error)
 	DeleteCardCompanyByModel(context.Context, *CardCompany) (*HTTPCodes, error)
 	DeleteCardCompanyById(context.Context, *DeleteCardCompanyByIdRequest) (*HTTPCodes, error)
-	UpdateCardCompany(context.Context, *CardCompany) (*HTTPCodes, error)
+	UpdateCardCompany(context.Context, *CardCompany) (*CardCompany, error)
 	// Донаты
 	Donations(context.Context, *Empty) (*DonationsResponse, error)
 	CreateDonations(context.Context, *CreateDonationsRequest) (*CreateDonationsResponse, error)
 	FindDonationWards(context.Context, *FindDonationWardsRequest) (*FindDonationWardsResponse, error)
 	FindDonationById(context.Context, *FindDonationByIdRequest) (*CreateDonationsResponse, error)
-	DeleteDonationByModel(context.Context, *CreateDonationsResponse) (*HTTPCodes, error)
+	DeleteDonationByModel(context.Context, *CreateDonationsRequest) (*HTTPCodes, error)
 	DeleteDonationById(context.Context, *DeleteDonationByIdRequest) (*HTTPCodes, error)
-	UpdateDonation(context.Context, *CreateDonationsResponse) (*HTTPCodes, error)
+	UpdateDonation(context.Context, *CreateDonationsRequest) (*CreateDonationsResponse, error)
 	// Подопечные
 	Wards(context.Context, *Empty) (*WardsResponse, error)
 	CreateWard(context.Context, *CreateWardRequest) (*Ward, error)
 	FindWardById(context.Context, *FindWardByIdRequest) (*Ward, error)
 	DeleteWardByModel(context.Context, *Ward) (*HTTPCodes, error)
 	DeleteWardById(context.Context, *DeleteWardByIdRequest) (*HTTPCodes, error)
-	UpdateWard(context.Context, *Ward) (*HTTPCodes, error)
+	UpdateWard(context.Context, *Ward) (*Ward, error)
 	mustEmbedUnimplementedDatabaseServiceServer()
 }
 
@@ -791,7 +791,7 @@ func (UnimplementedDatabaseServiceServer) DeleteCardByModel(context.Context, *Ca
 func (UnimplementedDatabaseServiceServer) DeleteCardById(context.Context, *DeleteCardByIdRequest) (*HTTPCodes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCardById not implemented")
 }
-func (UnimplementedDatabaseServiceServer) UpdateCard(context.Context, *Card) (*HTTPCodes, error) {
+func (UnimplementedDatabaseServiceServer) UpdateCard(context.Context, *Card) (*Card, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateCard not implemented")
 }
 func (UnimplementedDatabaseServiceServer) CardsCompanies(context.Context, *Empty) (*CardsCompaniesResponse, error) {
@@ -809,7 +809,7 @@ func (UnimplementedDatabaseServiceServer) DeleteCardCompanyByModel(context.Conte
 func (UnimplementedDatabaseServiceServer) DeleteCardCompanyById(context.Context, *DeleteCardCompanyByIdRequest) (*HTTPCodes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCardCompanyById not implemented")
 }
-func (UnimplementedDatabaseServiceServer) UpdateCardCompany(context.Context, *CardCompany) (*HTTPCodes, error) {
+func (UnimplementedDatabaseServiceServer) UpdateCardCompany(context.Context, *CardCompany) (*CardCompany, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateCardCompany not implemented")
 }
 func (UnimplementedDatabaseServiceServer) Donations(context.Context, *Empty) (*DonationsResponse, error) {
@@ -824,13 +824,13 @@ func (UnimplementedDatabaseServiceServer) FindDonationWards(context.Context, *Fi
 func (UnimplementedDatabaseServiceServer) FindDonationById(context.Context, *FindDonationByIdRequest) (*CreateDonationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindDonationById not implemented")
 }
-func (UnimplementedDatabaseServiceServer) DeleteDonationByModel(context.Context, *CreateDonationsResponse) (*HTTPCodes, error) {
+func (UnimplementedDatabaseServiceServer) DeleteDonationByModel(context.Context, *CreateDonationsRequest) (*HTTPCodes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteDonationByModel not implemented")
 }
 func (UnimplementedDatabaseServiceServer) DeleteDonationById(context.Context, *DeleteDonationByIdRequest) (*HTTPCodes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteDonationById not implemented")
 }
-func (UnimplementedDatabaseServiceServer) UpdateDonation(context.Context, *CreateDonationsResponse) (*HTTPCodes, error) {
+func (UnimplementedDatabaseServiceServer) UpdateDonation(context.Context, *CreateDonationsRequest) (*CreateDonationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateDonation not implemented")
 }
 func (UnimplementedDatabaseServiceServer) Wards(context.Context, *Empty) (*WardsResponse, error) {
@@ -848,7 +848,7 @@ func (UnimplementedDatabaseServiceServer) DeleteWardByModel(context.Context, *Wa
 func (UnimplementedDatabaseServiceServer) DeleteWardById(context.Context, *DeleteWardByIdRequest) (*HTTPCodes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteWardById not implemented")
 }
-func (UnimplementedDatabaseServiceServer) UpdateWard(context.Context, *Ward) (*HTTPCodes, error) {
+func (UnimplementedDatabaseServiceServer) UpdateWard(context.Context, *Ward) (*Ward, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateWard not implemented")
 }
 func (UnimplementedDatabaseServiceServer) mustEmbedUnimplementedDatabaseServiceServer() {}
@@ -1593,7 +1593,7 @@ func _DatabaseService_FindDonationById_Handler(srv interface{}, ctx context.Cont
 }
 
 func _DatabaseService_DeleteDonationByModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateDonationsResponse)
+	in := new(CreateDonationsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1605,7 +1605,7 @@ func _DatabaseService_DeleteDonationByModel_Handler(srv interface{}, ctx context
 		FullMethod: DatabaseService_DeleteDonationByModel_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DatabaseServiceServer).DeleteDonationByModel(ctx, req.(*CreateDonationsResponse))
+		return srv.(DatabaseServiceServer).DeleteDonationByModel(ctx, req.(*CreateDonationsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1629,7 +1629,7 @@ func _DatabaseService_DeleteDonationById_Handler(srv interface{}, ctx context.Co
 }
 
 func _DatabaseService_UpdateDonation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateDonationsResponse)
+	in := new(CreateDonationsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1641,7 +1641,7 @@ func _DatabaseService_UpdateDonation_Handler(srv interface{}, ctx context.Contex
 		FullMethod: DatabaseService_UpdateDonation_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DatabaseServiceServer).UpdateDonation(ctx, req.(*CreateDonationsResponse))
+		return srv.(DatabaseServiceServer).UpdateDonation(ctx, req.(*CreateDonationsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
