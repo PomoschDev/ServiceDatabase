@@ -20,6 +20,7 @@ service DatabaseService {
   rpc FindUserCompany(FindUserByIdRequest) returns (Company); //Возвращает данные компании сущности User
   rpc FindUserDonations(FindUserDonationsRequest) returns (FindUserDonationsResponse); //Возвращает донаты сущности User
   rpc FindUserCard(FindUserCardRequest) returns (FindUserCardResponse); //Возвращает карты сущности User
+  rpc AddCardToUser(AddCardToUserRequest) returns (AddCardToUserResponse); //Добавляет карту к пользователю
   rpc DeleteUserByModel(DeleteUserByModelRequest) returns (HTTPCodes); //Удаляет сущность User, возвращает HTTP STATUS
   // CODE
   rpc DeleteUserById(DeleteUserByIdRequest) returns (HTTPCodes); //Удаляет сущность User по ID, возвращает HTTP
@@ -75,6 +76,25 @@ message Empty {}
 
 message HTTPCodes {
   int64 code = 1;
+}
+
+message AddCardToUserRequest {
+  CreateCardRequest card = 1;
+}
+
+message AddCardToUserResponse {
+  uint64 id = 1; //ID записи в таблице
+  string email = 2;
+  string username = 3;
+  string password = 4;
+  string phone = 5;
+  repeated Card card = 6;
+  string role = 7;
+  Company company = 8;
+  uint64 type = 9;
+  Donations donations = 10;
+  string createdAt = 11;
+  string updatedAt = 12;
 }
 
 message CreateDonationsResponse {

@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"golang.org/x/crypto/bcrypt"
-	"gorm.io/gorm"
 )
 
 const (
@@ -206,14 +205,13 @@ func (u *User) Delete() error {
 
 func (u *User) DeleteByID() error {
 	dbase := database.GetDB()
-	result := dbase.Select("Card", "Company", "Donations.Wards").Delete(&User{}, u.ID)
+	result := dbase.Select("Card", "Company", "Donations.Wards").Delete(&User{ID: u.ID})
 
 	return result.Error
 }
 
 func (u *User) Update() error {
 	dbase := database.GetDB()
-	result := dbase.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&u)
-	dbase.Save(&u)
+	result := dbase.Updates(&u)
 	return result.Error
 }

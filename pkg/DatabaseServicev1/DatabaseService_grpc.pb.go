@@ -31,6 +31,7 @@ const (
 	DatabaseService_FindUserCompany_FullMethodName          = "/service.DatabaseService/FindUserCompany"
 	DatabaseService_FindUserDonations_FullMethodName        = "/service.DatabaseService/FindUserDonations"
 	DatabaseService_FindUserCard_FullMethodName             = "/service.DatabaseService/FindUserCard"
+	DatabaseService_AddCardToUser_FullMethodName            = "/service.DatabaseService/AddCardToUser"
 	DatabaseService_DeleteUserByModel_FullMethodName        = "/service.DatabaseService/DeleteUserByModel"
 	DatabaseService_DeleteUserById_FullMethodName           = "/service.DatabaseService/DeleteUserById"
 	DatabaseService_UpdateUser_FullMethodName               = "/service.DatabaseService/UpdateUser"
@@ -87,6 +88,7 @@ type DatabaseServiceClient interface {
 	FindUserCompany(ctx context.Context, in *FindUserByIdRequest, opts ...grpc.CallOption) (*Company, error)
 	FindUserDonations(ctx context.Context, in *FindUserDonationsRequest, opts ...grpc.CallOption) (*FindUserDonationsResponse, error)
 	FindUserCard(ctx context.Context, in *FindUserCardRequest, opts ...grpc.CallOption) (*FindUserCardResponse, error)
+	AddCardToUser(ctx context.Context, in *AddCardToUserRequest, opts ...grpc.CallOption) (*AddCardToUserResponse, error)
 	DeleteUserByModel(ctx context.Context, in *DeleteUserByModelRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
 	// CODE
 	DeleteUserById(ctx context.Context, in *DeleteUserByIdRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
@@ -254,6 +256,16 @@ func (c *databaseServiceClient) FindUserCard(ctx context.Context, in *FindUserCa
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(FindUserCardResponse)
 	err := c.cc.Invoke(ctx, DatabaseService_FindUserCard_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *databaseServiceClient) AddCardToUser(ctx context.Context, in *AddCardToUserRequest, opts ...grpc.CallOption) (*AddCardToUserResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddCardToUserResponse)
+	err := c.cc.Invoke(ctx, DatabaseService_AddCardToUser_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -638,6 +650,7 @@ type DatabaseServiceServer interface {
 	FindUserCompany(context.Context, *FindUserByIdRequest) (*Company, error)
 	FindUserDonations(context.Context, *FindUserDonationsRequest) (*FindUserDonationsResponse, error)
 	FindUserCard(context.Context, *FindUserCardRequest) (*FindUserCardResponse, error)
+	AddCardToUser(context.Context, *AddCardToUserRequest) (*AddCardToUserResponse, error)
 	DeleteUserByModel(context.Context, *DeleteUserByModelRequest) (*HTTPCodes, error)
 	// CODE
 	DeleteUserById(context.Context, *DeleteUserByIdRequest) (*HTTPCodes, error)
@@ -726,6 +739,9 @@ func (UnimplementedDatabaseServiceServer) FindUserDonations(context.Context, *Fi
 }
 func (UnimplementedDatabaseServiceServer) FindUserCard(context.Context, *FindUserCardRequest) (*FindUserCardResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindUserCard not implemented")
+}
+func (UnimplementedDatabaseServiceServer) AddCardToUser(context.Context, *AddCardToUserRequest) (*AddCardToUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddCardToUser not implemented")
 }
 func (UnimplementedDatabaseServiceServer) DeleteUserByModel(context.Context, *DeleteUserByModelRequest) (*HTTPCodes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUserByModel not implemented")
@@ -1068,6 +1084,24 @@ func _DatabaseService_FindUserCard_Handler(srv interface{}, ctx context.Context,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DatabaseServiceServer).FindUserCard(ctx, req.(*FindUserCardRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DatabaseService_AddCardToUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddCardToUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DatabaseServiceServer).AddCardToUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DatabaseService_AddCardToUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DatabaseServiceServer).AddCardToUser(ctx, req.(*AddCardToUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1774,6 +1808,10 @@ var DatabaseService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FindUserCard",
 			Handler:    _DatabaseService_FindUserCard_Handler,
+		},
+		{
+			MethodName: "AddCardToUser",
+			Handler:    _DatabaseService_AddCardToUser_Handler,
 		},
 		{
 			MethodName: "DeleteUserByModel",
