@@ -3,7 +3,6 @@ syntax = "proto3";
 package service;
 
 option go_package = "collapse.DatabaseService.v1;DatabaseServicev1"; //Технический параметр, строго для Golang
-import "google/protobuf/any.proto";
 
 service DatabaseService {
   //Работа с сущностью пользователя
@@ -59,9 +58,9 @@ service DatabaseService {
   rpc CreateDonations(CreateDonationsRequest) returns (CreateDonationsResponse);
   rpc FindDonationWards(FindDonationWardsRequest) returns (FindDonationWardsResponse);
   rpc FindDonationById(FindDonationByIdRequest) returns (CreateDonationsResponse);
-  rpc DeleteDonationByModel(CreateDonationsRequest) returns (HTTPCodes);
+  rpc DeleteDonationByModel(DeleteDonationByModelRequest) returns (HTTPCodes);
   rpc DeleteDonationById(DeleteDonationByIdRequest) returns (HTTPCodes);
-  rpc UpdateDonation(CreateDonationsRequest) returns (CreateDonationsResponse);
+  rpc UpdateDonation(UpdateDonationsRequest) returns (CreateDonationsResponse);
 
   //Подопечные
   rpc Wards(Empty) returns (WardsResponse);
@@ -80,6 +79,26 @@ message HTTPCodes {
 
 message AddCardToUserRequest {
   CreateCardRequest card = 1;
+}
+
+message UpdateDonationsRequest {
+  uint64 id = 1;
+  string title = 2;
+  float amount = 3;
+  repeated Ward wards = 4;
+  uint64 userId = 5;
+  string createdAt = 6;
+  string updatedAt = 7;
+}
+
+message DeleteDonationByModelRequest {
+  uint64 id = 1;
+  string title = 2;
+  float amount = 3;
+  repeated Ward wards = 4;
+  uint64 userId = 5;
+  string createdAt = 6;
+  string updatedAt = 7;
 }
 
 message AddCardToUserResponse {
@@ -104,7 +123,7 @@ message CreateDonationsResponse {
   repeated Ward wards = 4;
   uint64 userId = 5;
   string createdAt = 6;
-  google.protobuf.Any updatedAt = 7;
+  string updatedAt = 7;
 }
 
 message DeleteWardByIdRequest {

@@ -20,8 +20,9 @@ func AllDonations() ([]*Donations, error) {
 
 func (d *Donations) Create() error {
 	db := database.GetDB()
+	result := db.Create(&d)
 
-	return db.Create(&d).Error
+	return result.Error
 }
 
 func FindDonationWards(id uint64) ([]*Ward, error) {

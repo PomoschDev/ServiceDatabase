@@ -122,9 +122,9 @@ type DatabaseServiceClient interface {
 	CreateDonations(ctx context.Context, in *CreateDonationsRequest, opts ...grpc.CallOption) (*CreateDonationsResponse, error)
 	FindDonationWards(ctx context.Context, in *FindDonationWardsRequest, opts ...grpc.CallOption) (*FindDonationWardsResponse, error)
 	FindDonationById(ctx context.Context, in *FindDonationByIdRequest, opts ...grpc.CallOption) (*CreateDonationsResponse, error)
-	DeleteDonationByModel(ctx context.Context, in *CreateDonationsRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
+	DeleteDonationByModel(ctx context.Context, in *DeleteDonationByModelRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
 	DeleteDonationById(ctx context.Context, in *DeleteDonationByIdRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
-	UpdateDonation(ctx context.Context, in *CreateDonationsRequest, opts ...grpc.CallOption) (*CreateDonationsResponse, error)
+	UpdateDonation(ctx context.Context, in *UpdateDonationsRequest, opts ...grpc.CallOption) (*CreateDonationsResponse, error)
 	// Подопечные
 	Wards(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*WardsResponse, error)
 	CreateWard(ctx context.Context, in *CreateWardRequest, opts ...grpc.CallOption) (*Ward, error)
@@ -542,7 +542,7 @@ func (c *databaseServiceClient) FindDonationById(ctx context.Context, in *FindDo
 	return out, nil
 }
 
-func (c *databaseServiceClient) DeleteDonationByModel(ctx context.Context, in *CreateDonationsRequest, opts ...grpc.CallOption) (*HTTPCodes, error) {
+func (c *databaseServiceClient) DeleteDonationByModel(ctx context.Context, in *DeleteDonationByModelRequest, opts ...grpc.CallOption) (*HTTPCodes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(HTTPCodes)
 	err := c.cc.Invoke(ctx, DatabaseService_DeleteDonationByModel_FullMethodName, in, out, cOpts...)
@@ -562,7 +562,7 @@ func (c *databaseServiceClient) DeleteDonationById(ctx context.Context, in *Dele
 	return out, nil
 }
 
-func (c *databaseServiceClient) UpdateDonation(ctx context.Context, in *CreateDonationsRequest, opts ...grpc.CallOption) (*CreateDonationsResponse, error) {
+func (c *databaseServiceClient) UpdateDonation(ctx context.Context, in *UpdateDonationsRequest, opts ...grpc.CallOption) (*CreateDonationsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateDonationsResponse)
 	err := c.cc.Invoke(ctx, DatabaseService_UpdateDonation_FullMethodName, in, out, cOpts...)
@@ -684,9 +684,9 @@ type DatabaseServiceServer interface {
 	CreateDonations(context.Context, *CreateDonationsRequest) (*CreateDonationsResponse, error)
 	FindDonationWards(context.Context, *FindDonationWardsRequest) (*FindDonationWardsResponse, error)
 	FindDonationById(context.Context, *FindDonationByIdRequest) (*CreateDonationsResponse, error)
-	DeleteDonationByModel(context.Context, *CreateDonationsRequest) (*HTTPCodes, error)
+	DeleteDonationByModel(context.Context, *DeleteDonationByModelRequest) (*HTTPCodes, error)
 	DeleteDonationById(context.Context, *DeleteDonationByIdRequest) (*HTTPCodes, error)
-	UpdateDonation(context.Context, *CreateDonationsRequest) (*CreateDonationsResponse, error)
+	UpdateDonation(context.Context, *UpdateDonationsRequest) (*CreateDonationsResponse, error)
 	// Подопечные
 	Wards(context.Context, *Empty) (*WardsResponse, error)
 	CreateWard(context.Context, *CreateWardRequest) (*Ward, error)
@@ -824,13 +824,13 @@ func (UnimplementedDatabaseServiceServer) FindDonationWards(context.Context, *Fi
 func (UnimplementedDatabaseServiceServer) FindDonationById(context.Context, *FindDonationByIdRequest) (*CreateDonationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindDonationById not implemented")
 }
-func (UnimplementedDatabaseServiceServer) DeleteDonationByModel(context.Context, *CreateDonationsRequest) (*HTTPCodes, error) {
+func (UnimplementedDatabaseServiceServer) DeleteDonationByModel(context.Context, *DeleteDonationByModelRequest) (*HTTPCodes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteDonationByModel not implemented")
 }
 func (UnimplementedDatabaseServiceServer) DeleteDonationById(context.Context, *DeleteDonationByIdRequest) (*HTTPCodes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteDonationById not implemented")
 }
-func (UnimplementedDatabaseServiceServer) UpdateDonation(context.Context, *CreateDonationsRequest) (*CreateDonationsResponse, error) {
+func (UnimplementedDatabaseServiceServer) UpdateDonation(context.Context, *UpdateDonationsRequest) (*CreateDonationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateDonation not implemented")
 }
 func (UnimplementedDatabaseServiceServer) Wards(context.Context, *Empty) (*WardsResponse, error) {
@@ -1593,7 +1593,7 @@ func _DatabaseService_FindDonationById_Handler(srv interface{}, ctx context.Cont
 }
 
 func _DatabaseService_DeleteDonationByModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateDonationsRequest)
+	in := new(DeleteDonationByModelRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1605,7 +1605,7 @@ func _DatabaseService_DeleteDonationByModel_Handler(srv interface{}, ctx context
 		FullMethod: DatabaseService_DeleteDonationByModel_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DatabaseServiceServer).DeleteDonationByModel(ctx, req.(*CreateDonationsRequest))
+		return srv.(DatabaseServiceServer).DeleteDonationByModel(ctx, req.(*DeleteDonationByModelRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1629,7 +1629,7 @@ func _DatabaseService_DeleteDonationById_Handler(srv interface{}, ctx context.Co
 }
 
 func _DatabaseService_UpdateDonation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateDonationsRequest)
+	in := new(UpdateDonationsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1641,7 +1641,7 @@ func _DatabaseService_UpdateDonation_Handler(srv interface{}, ctx context.Contex
 		FullMethod: DatabaseService_UpdateDonation_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DatabaseServiceServer).UpdateDonation(ctx, req.(*CreateDonationsRequest))
+		return srv.(DatabaseServiceServer).UpdateDonation(ctx, req.(*UpdateDonationsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
