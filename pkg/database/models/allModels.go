@@ -19,7 +19,7 @@ type Donations struct {
 	ID        uint64    `json:"id,omitempty"`
 	Title     string    `gorm:"not null" json:"title,omitempty"`
 	Amount    float64   `gorm:"not null" json:"amount,omitempty"`
-	Wards     []*Ward   `gorm:"foreignKey:donations_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"wards,omitempty"`
+	Ward      *Ward     `gorm:"foreignKey:donations_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"wards,omitempty"`
 	UserID    uint64    `json:"userId,omitempty"`
 	User      *User     `json:"omitempty"`
 	CreatedAt time.Time `json:"createdAt,omitempty"`

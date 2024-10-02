@@ -6,429 +6,749 @@ option go_package = "collapse.DatabaseService.v1;DatabaseServicev1"; //Техн�
 
 service DatabaseService {
   //Работа с сущностью пользователя
+  /**
+*
+ */
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse); //Создание сущности User
+  /**
+*
+ */
   rpc Users(Empty) returns (UsersResponse); //Все сущности User
+  /**
+*
+ */
   rpc IsRole(IsRoleRequest) returns (IsRoleResponse); //Проверяет принадлежность User к роли
+  /**
+*
+ */
   rpc ComparePassword(ComparePasswordRequest) returns (ComparePasswordResponse); //Сравнивает пароль с паролем в БД
+  /**
+*
+ */
   rpc UserIsExists(UserIsExistsRequest) returns (UserIsExistsResponse); //Проверяет существует ли такой юзер
+  /**
+*
+ */
   rpc FindUserById(FindUserByIdRequest) returns (CreateUserResponse); //Поиск сущности User по id
+  /**
+*
+ */
   rpc FindUserByEmail(FindUserByEmailRequest) returns (CreateUserResponse); // Поиск сущности User по email
+  /**
+*
+ */
   rpc FindUserByPhone(FindUserByPhoneRequest) returns (CreateUserResponse); //Поиск сущности по phone
+  /**
+*
+ */
   rpc ChangeUserType(ChangeUserTypeRequest) returns (ChangeUserTypeResponse); //Меняет тип сущности User (0 -
   // физическое лицо, 1 - юридическое лицо)
+  /**
+*
+ */
   rpc FindUserCompany(FindUserByIdRequest) returns (Company); //Возвращает данные компании сущности User
+  /**
+*
+ */
   rpc FindUserDonations(FindUserDonationsRequest) returns (FindUserDonationsResponse); //Возвращает донаты сущности User
+  /**
+*
+ */
   rpc FindUserCard(FindUserCardRequest) returns (FindUserCardResponse); //Возвращает карты сущности User
+  /**
+*
+ */
   rpc AddCardToUser(AddCardToUserRequest) returns (AddCardToUserResponse); //Добавляет карту к пользователю
+  /**
+*
+ */
   rpc DeleteUserByModel(DeleteUserByModelRequest) returns (HTTPCodes); //Удаляет сущность User, возвращает HTTP STATUS
   // CODE
+  /**
+*
+ */
   rpc DeleteUserById(DeleteUserByIdRequest) returns (HTTPCodes); //Удаляет сущность User по ID, возвращает HTTP
   // STATUS CODE
+  /**
+*
+ */
   rpc UpdateUser(UpdateUserRequest) returns (CreateUserResponse); //Обновляет сущность
   //
 
   //Работа с сущностью компании
+  /**
+*
+ */
   rpc Companies(Empty) returns (CompaniesResponse);
+  /**
+*
+ */
   rpc CreateCompany(CreateCompanyRequest) returns (Company);
+  /**
+*
+ */
   rpc FindCompanyById(FindCompanyByIdRequest) returns (Company);
+  /**
+*
+ */
   rpc FindCompanyByPhone(FindCompanyByIdPhoneRequest) returns (Company);
+  /**
+*
+ */
   rpc FindCompanyCard(FindCompanyCardRequest) returns (CardCompany);
+  /**
+*
+ */
   rpc DeleteCompanyByModel(DeleteCompanyByModelRequest) returns (HTTPCodes);
+  /**
+*
+ */
   rpc DeleteCompanyById(DeleteCompanyByIdRequest) returns (HTTPCodes);
+  /**
+*
+ */
   rpc UpdateCompany(UpdateCompanyRequest) returns (HTTPCodes);
 
   //Сущность Card для User
+  /**
+*
+ */
   rpc Cards(Empty) returns (CardsResponse);
+  /**
+*
+ */
   rpc CreateCard(CreateCardRequest) returns (Card);
+  /**
+*
+ */
   rpc FindCardById(FindCardByIdRequest) returns (Card);
+  /**
+*
+ */
   rpc DeleteCardByModel(Card) returns (HTTPCodes);
+  /**
+*
+ */
   rpc DeleteCardById(DeleteCardByIdRequest) returns (HTTPCodes);
+  /**
+*
+ */
   rpc UpdateCard(Card) returns (Card);
 
   //Сущность CardCompany для Company
+  /**
+*
+ */
   rpc CardsCompanies(Empty) returns (CardsCompaniesResponse);
+  /**
+*
+ */
   rpc CreateCardCompany(CreateCardCompanyRequest) returns (CardCompany);
+  /**
+*
+ */
   rpc FindCardCompanyByID(FindCardCompanyByIDRequest) returns (CardCompany);
+  /**
+*
+ */
   rpc DeleteCardCompanyByModel(CardCompany) returns (HTTPCodes);
+  /**
+*
+ */
   rpc DeleteCardCompanyById(DeleteCardCompanyByIdRequest) returns (HTTPCodes);
+  /**
+*
+ */
   rpc UpdateCardCompany(CardCompany) returns (CardCompany);
 
   //Донаты
+  /**
+*
+ */
   rpc Donations(Empty) returns (DonationsResponse);
+  /**
+*
+ */
   rpc CreateDonations(CreateDonationsRequest) returns (CreateDonationsResponse);
+  /**
+*
+ */
   rpc FindDonationWards(FindDonationWardsRequest) returns (FindDonationWardsResponse);
+  /**
+*
+ */
   rpc FindDonationById(FindDonationByIdRequest) returns (CreateDonationsResponse);
+  /**
+*
+ */
   rpc DeleteDonationByModel(DeleteDonationByModelRequest) returns (HTTPCodes);
+  /**
+*
+ */
   rpc DeleteDonationById(DeleteDonationByIdRequest) returns (HTTPCodes);
+  /**
+*
+ */
   rpc UpdateDonation(UpdateDonationsRequest) returns (CreateDonationsResponse);
 
   //Подопечные
+  /**
+*
+ */
   rpc Wards(Empty) returns (WardsResponse);
+  /**
+*
+ */
   rpc CreateWard(CreateWardRequest) returns (Ward);
+  /**
+*
+ */
   rpc FindWardById(FindWardByIdRequest) returns (Ward);
+  /**
+*
+ */
   rpc DeleteWardByModel(Ward) returns (HTTPCodes);
+  /**
+*
+ */
   rpc DeleteWardById(DeleteWardByIdRequest) returns (HTTPCodes);
+  /**
+*
+ */
   rpc UpdateWard(Ward) returns (Ward);
 }
 
+/**
+*
+ */
 message Empty {}
 
+/**
+*
+ */
 message HTTPCodes {
-  int64 code = 1;
+  int64 code = 1; /** */
 }
 
+/**
+*
+ */
 message AddCardToUserRequest {
-  CreateCardRequest card = 1;
+  CreateCardRequest card = 1; /** */
 }
 
+/**
+*
+ */
 message UpdateDonationsRequest {
-  uint64 id = 1;
-  string title = 2;
-  float amount = 3;
-  repeated Ward wards = 4;
-  uint64 userId = 5;
-  string createdAt = 6;
-  string updatedAt = 7;
+  uint64 id = 1; /** */
+  string title = 2; /** */
+  float amount = 3; /** */
+  repeated Ward wards = 4; /** */
+  uint64 userId = 5; /** */
+  string createdAt = 6; /** */
+  string updatedAt = 7; /** */
 }
 
+/**
+*
+ */
 message DeleteDonationByModelRequest {
-  uint64 id = 1;
-  string title = 2;
-  float amount = 3;
-  repeated Ward wards = 4;
-  uint64 userId = 5;
-  string createdAt = 6;
-  string updatedAt = 7;
+  uint64 id = 1; /** */
+  string title = 2; /** */
+  float amount = 3; /** */
+  repeated Ward wards = 4; /** */
+  uint64 userId = 5; /** */
+  string createdAt = 6; /** */
+  string updatedAt = 7; /** */
 }
 
+/**
+*
+ */
 message AddCardToUserResponse {
-  uint64 id = 1; //ID записи в таблице
-  string email = 2;
-  string username = 3;
-  string password = 4;
-  string phone = 5;
-  repeated Card card = 6;
-  string role = 7;
-  Company company = 8;
-  uint64 type = 9;
-  Donations donations = 10;
-  string createdAt = 11;
-  string updatedAt = 12;
+  uint64 id = 1; /** */
+  string email = 2; /** */
+  string username = 3; /** */
+  string password = 4; /** */
+  string phone = 5; /** */
+  repeated Card card = 6; /** */
+  string role = 7; /** */
+  Company company = 8; /** */
+  uint64 type = 9; /** */
+  Donations donations = 10; /** */
+  string createdAt = 11; /** */
+  string updatedAt = 12; /** */
 }
 
+/**
+*
+ */
 message CreateDonationsResponse {
-  uint64 id = 1;
-  string title = 2;
-  float amount = 3;
-  repeated Ward wards = 4;
-  uint64 userId = 5;
-  string createdAt = 6;
-  string updatedAt = 7;
+  uint64 id = 1; /** */
+  string title = 2; /** */
+  float amount = 3; /** */
+  repeated Ward wards = 4; /** */
+  uint64 userId = 5; /** */
+  string createdAt = 6; /** */
+  string updatedAt = 7; /** */
 }
 
+/**
+*
+ */
 message DeleteWardByIdRequest {
-  uint64 id = 1;
+  uint64 id = 1; /** */
 }
 
+/**
+*
+ */
 message FindWardByIdRequest {
-  uint64 id = 1;
+  uint64 id = 1; /** */
 }
 
+/**
+*
+ */
 message CreateWardRequest {
-  string title = 2;
-  string fullName = 3;
-  string want = 4;
-  string necessary = 5;
-  uint64 donationId = 6;
+  string title = 2; /** */
+  string fullName = 3; /** */
+  string want = 4; /** */
+  string necessary = 5; /** */
+  uint64 donationId = 6; /** */
 }
 
+/**
+*
+ */
 message WardsResponse {
-  repeated Ward wards = 1;
+  repeated Ward wards = 1; /** */
 }
 
+/**
+*
+ */
 message DeleteDonationByIdRequest {
-    uint64 id = 1;
+    uint64 id = 1; /** */
 }
 
+/**
+*
+ */
 message FindDonationByIdRequest {
-  uint64 id = 1;
+  uint64 id = 1; /** */
 }
 
+/**
+*
+ */
 message FindDonationWardsResponse {
-  repeated Ward wards = 1;
+  repeated Ward wards = 1; /** */
 }
 
+/**
+*
+ */
 message FindDonationWardsRequest {
-  uint64 id = 1;
+  uint64 id = 1; /** */
 }
 
+/**
+*
+ */
 message CreateDonationsRequest {
-  string title = 1;
-  float amount = 2;
-  repeated Ward wards = 3;
-  uint64 userId = 4;
+  string title = 1; /** */
+  float amount = 2; /** */
+  repeated Ward wards = 3; /** */
+  uint64 userId = 4; /** */
 }
 
+/**
+*
+ */
 message DonationsResponse {
-  repeated Donations donations = 1;
+  repeated Donations donations = 1; /** */
 }
 
+/**
+*
+ */
 message DeleteCardCompanyByIdRequest {
-  uint64 id = 1;
+  uint64 id = 1; /** */
 }
 
+/**
+*
+ */
 message FindCardCompanyByIDRequest {
-  uint64 id = 1;
+  uint64 id = 1; /** */
 }
 
+/**
+*
+ */
 message CreateCardCompanyRequest {
-  string fullName = 2;
-  string number = 3;
-  string date = 4;
-  string cvv = 5;
-  uint64 companyId = 6;
+  string fullName = 2; /** */
+  string number = 3; /** */
+  string date = 4; /** */
+  string cvv = 5; /** */
+  uint64 companyId = 6; /** */
 }
 
+/**
+*
+ */
 message CardsCompaniesResponse {
-  repeated CardCompany cards = 1;
+  repeated CardCompany cards = 1; /** */
 }
 
+/**
+*
+ */
 message DeleteCardByIdRequest {
-  uint64 id = 1;
+  uint64 id = 1; /** */
 }
 
+/**
+*
+ */
 message FindCardByIdRequest {
-  uint64 id = 1;
+  uint64 id = 1; /** */
 }
 
+/**
+*
+ */
 message CreateCardRequest {
-  string fullName = 1;
-  string number = 2;
-  string date = 3;
-  string cvv = 4;
-  string userId = 5;
+  string fullName = 1; /** */
+  string number = 2; /** */
+  string date = 3; /** */
+  string cvv = 4; /** */
+  string userId = 5; /** */
 }
 
+/**
+* Ответ на запрос получения всех банковских карт пользователя
+ */
 message CardsResponse {
-  repeated Card cards = 1;
+  repeated Card cards = 1; /** Массив банковских карт пользователя */
 }
 
+/**
+* Запрос на обновление компании
+ */
 message UpdateCompanyRequest {
-  Company company = 1;
+  Company company = 1; /** Компания которую обновляем */
 }
 
+/**
+* Удаление компании по модели
+ */
 message DeleteCompanyByModelRequest {
-  Company company = 1;
+  Company company = 1; /** Полная сущность модели для удаления */
 }
 
+/**
+* Запрос на удаление компании по ID
+ */
 message DeleteCompanyByIdRequest {
-  uint64 id = 1;
+  uint64 id = 1; /** ID компании которую будем удалять */
 }
 
+/**
+* Запрос на поиск компании по ID
+ */
 message FindCompanyCardRequest {
-  uint64 id = 1;
+  uint64 id = 1; /** ID компании которую будем искать */
 }
 
+/**
+* Запрос на поиск компании по ID
+ */
 message FindCompanyByIdRequest {
-  uint64 id = 1;
+  uint64 id = 1; /** ID по которому ищем компанию */
 }
 
+/**
+* Запрос на поиск компании по номеру телефона
+ */
 message FindCompanyByIdPhoneRequest {
-  string phone = 1;
+  string phone = 1; /** Номер телефона компании по которому будем искать */
 }
 
+/**
+* Запрос на создание компании
+ */
 message CreateCompanyRequest {
-  string title = 2;
-  string phone = 3;
-  string address = 4;
-  string site = 5;
-  string inn = 6;
-  string kpp = 7;
-  string okpo = 8;
-  uint64 userId = 9;
-  CardCompany card = 10;
+  string title = 1; /** Название компании */
+  string phone = 2; /** Номер телефона компании */
+  string address = 3; /** Адрес офиса компании */
+  string site = 4; /** Сайт компании */
+  string inn = 5; /** ИНН юридического лица */
+  string kpp = 6; /** КПП юридического лица */
+  string okpo = 7; /** ОКПО предприятия/организации */
+  CardCompany card = 8; /** Банковская карта компании */
+  uint64 userId = 9; /** ID пользователя к которому относится данная компания */
 }
 
+/**
+* Ответ на запрос извлечения всех компаний
+ */
 message CompaniesResponse {
-  repeated Company companies = 1;
+  repeated Company companies = 1; /** Массив компаний */
 }
 
+/**
+* Запрос на обновление сущности пользователя
+ */
 message UpdateUserRequest {
-  uint64 id = 1; //ID записи в таблице
-  string email = 2;
-  string username = 3;
-  string password = 4;
-  string phone = 5;
-  repeated Card card = 6;
-  string role = 7;
-  Company company = 8;
-  uint64 type = 9;
-  Donations donations = 10;
-  string createdAt = 11;
-  string updatedAt = 12;
+  uint64 id = 1; /** ID пользователя в базе данных */
+  string email = 2; /** Email пользователя */
+  string username = 3; /** Имя (никнейм) пользователя */
+  string password = 4; /** Пароль пользователя (закодирован в MD5Hash) */
+  string phone = 5; /** Номер телефона пользователя */
+  repeated Card card = 6; /** Массив банковских карт пользователя */
+  string role = 7; /** Роль пользователя */
+  Company company = 8; /** Компания пользователя, если он является юридическим лицом (type = 1) */
+  uint64 type = 9; /** Тип пользователя (0 - физическое лицо, 1 - юридическое лицо) */
+  repeated Donations donations = 10; /** Массив пожертвований пользователя */
+  string createdAt = 11; /** Дата создания сущности в базе данных */
+  string updatedAt = 12; /** Дата последнего обновления сущности в базе данных */
 }
 
+/**
+* Запрос на удаление пользователя по сущности
+ */
 message DeleteUserByModelRequest {
-  CreateUserResponse user = 1;
+  CreateUserResponse user = 1; /** Сущность пользователя для удаления (полная модель пользователя) */
 }
 
+/**
+* Запрос на удаление пользователя по ID
+ */
 message DeleteUserByIdRequest {
-  uint64 id = 1;
+  uint64 id = 1; /** ID пользователя для удаления */
 }
 
+/**
+* Запрос на извлечение банковских карт пользователя
+ */
 message FindUserCardRequest {
-  uint64 id = 1;
+  uint64 id = 1; /** ID пользователя чьи банковские карты нужно извлечь */
 }
 
+/**
+* Ответ на запрос извлечения банковских карт пользователя
+ */
 message FindUserCardResponse {
-  repeated Card cards = 1;
+  repeated Card cards = 1; /** Массив банковских карт */
 }
 
+/**
+* Запрос на изменение типа пользователя
+ */
 message ChangeUserTypeRequest{
-  uint64 id = 1;
-  uint64 type = 2;
+  uint64 id = 1; /** ID пользователя */
+  uint64 type = 2; /** Тип пользователя на который меняем (0 - физическое лицо, 1 - юридическое лицо) */
 }
 
+/**
+* Ответ на запрос изменений типа пользователя
+ */
 message ChangeUserTypeResponse{
-  bool accessory = 1;
+  bool accessory = 1; /** Успешность операции изменения типа (true/false) */
 }
 
+/**
+* Запрос на поиск пользователя по номеру телефона
+ */
 message FindUserByPhoneRequest{
-  string phone = 1;
+  string phone = 1; /** Номер телефона по которому будет искать пользователя */
 }
 
+/**
+* Запрос на поиск пользователя
+ */
 message FindUserByIdRequest {
-  uint64 id = 1;
+  uint64 id = 1; /** ID пользователя которого будем искать */
 }
 
+/**
+* Запрос на извлечение пожертвований пользователя
+ */
 message FindUserDonationsRequest {
-  uint64 id = 1;
+  uint64 id = 1; /** ID пользователя чьи пожертвования нужно извлечь */
 }
 
+/**
+* Ответ на запрос извлечения пожертвований пользователя
+ */
 message FindUserDonationsResponse {
-  repeated Donations donations = 1;
+  repeated Donations donations = 1; /** Массив пожертвований пользователя */
 }
 
+/**
+* Запрос на поиск пользователя по email
+ */
 message FindUserByEmailRequest {
-  string email = 1;
+  string email = 1; /** Email пользователя для поиска */
 }
 
+/**
+* Ответ на запрос списка всех пользователей в базе данных
+ */
 message UsersResponse {
-  repeated CreateUserResponse users = 1;
+  repeated CreateUserResponse users = 1; /** Массив пользователей */
 }
 
-//UserIsExists
+/**
+* Запрос на проверку существования пользователя в базе данных
+ */
 message UserIsExistsRequest {
-  string phone = 1;
+  string phone = 1; /** Номер телефона пользователя, по которому будем искать сущность */
 }
 
+/**
+* Ответ на запрос проверки существования пользователя в базе данных
+ */
 message UserIsExistsResponse {
-  bool isExists = 1;
+  bool isExists = 1; /** Существует ли пользователь в базе данных (true/false) */
 }
 
-//ComparePassword
+/**
+* Запрос на сравнение пароля
+ */
 message ComparePasswordRequest {
-  string phone = 1;
-  string password = 2;
+  string phone = 1; /** Номер телефона пользователя, чей пароль будем искать для сравнения */
+  string password = 2; /** Пароль который будем сравнивать с тем, что есть в базе данных */
 }
 
+/**
+* Ответ на запрос сравнения пароля
+ */
 message ComparePasswordResponse {
-  bool accessory = 1;
+  bool accessory = 1; /** Совпадает ли пароль (true/false) */
 }
 
+/**
+* Компания
+ */
 message Company {
-  uint64 id = 1;
-  string title = 2;
-  string phone = 3;
-  string address = 4;
-  string site = 5;
-  string inn = 6;
-  string kpp = 7;
-  string okpo = 8;
-  CardCompany card = 9;
-  uint64 userId = 10;
-  string createdAt = 11;
-  string updatedAt = 12;
+  uint64 id = 1; /** ID компании в базе данных */
+  string title = 2; /** Название компании */
+  string phone = 3; /** Номер телефона компании */
+  string address = 4; /** Адрес офиса компании */
+  string site = 5; /** Сайт компании */
+  string inn = 6; /** ИНН юридического лица */
+  string kpp = 7; /** КПП юридического лица */
+  string okpo = 8; /** ОКПО предприятия/организации */
+  CardCompany card = 9; /** Банковская карта компании */
+  uint64 userId = 10; /** ID пользователя к которому относится данная компания */
+  string createdAt = 11; /** Дата создания сущности в базе данных */
+  string updatedAt = 12; /** Дата последнего обновления сущности в базе данных */
 }
 
+/**
+* Банковская карта компании
+ */
 message CardCompany {
-  uint64 id = 1;
-  string fullName = 2;
-  string number = 3;
-  string date = 4;
-  uint64 cvv = 5;
-  uint64 companyId = 6;
-  string createdAt = 7;
-  string updatedAt = 8;
+  uint64 id = 1; /** ID банковской карты в базе данных */
+  string fullName = 2; /** ФИО с банковской карты */
+  string number = 3; /** Номер карты */
+  string date = 4; /** Дата до которой активна карта */
+  uint64 cvv = 5; /** CVV код карты */
+  uint64 companyId = 6; /** ID компании которой принадлежит данная карта */
+  string createdAt = 7; /** Дата создания сущности в базе данных */
+  string updatedAt = 8; /** Дата последнего обновления сущности в базе данных */
 }
 
+/**
+* Банковская карта для пользователей
+ */
 message Card {
-  uint64 id = 1;
-  string fullName = 2;
-  string number = 3;
-  string date = 4;
-  uint64 cvv = 5;
-  uint64 userId = 6;
-  string createdAt = 7;
-  string updatedAt = 8;
+  uint64 id = 1; /** ID банковской карты в базе данных */
+  string fullName = 2; /** ФИО с банковской карты */
+  string number = 3; /** Номер карты */
+  string date = 4; /** Дата до которой активна карта */
+  uint64 cvv = 5; /** CVV код карты */
+  uint64 userId = 6; /** ID пользователя которому принадлежит данная карта */
+  string createdAt = 7; /** Дата создания сущности в базе данных */
+  string updatedAt = 8; /** Дата последнего обновления сущности в базе данных */
 }
 
+/**
+* Подопечные
+ */
 message Ward {
-  uint64 id = 1;
-  string title = 2;
-  string fullName = 3;
-  string want = 4;
-  string necessary = 5;
-  uint64 donationId = 6;
-  string createdAt = 7;
-  string updatedAt = 8;
+  uint64 id = 1; /** ID подопечного в базе данных */
+  string title = 2; /** Дополнительный текст к подопечному */
+  string fullName = 3; /** Полное имя подопечного */
+  string want = 4; /** Необходимость подопечного (то в чем он нуждается, например "Лекарства") */
+  string necessary = 5; /** Необходимая сумма денег на необходимость */
+  uint64 donationId = 6; /** ID пожертвования к которому относится данный подопечный */
+  string createdAt = 7; /** Дата создания сущности в базе данных */
+  string updatedAt = 8; /** Дата последнего обновления сущности в базе данных */
 }
 
+/**
+* Пожертвования
+ */
 message Donations {
-      uint64 id = 1;
-      string title = 2;
-      float amount = 3;
-      repeated Ward wards = 4;
-      uint64 userId = 5;
-      string createdAt = 6;
-      string updatedAt = 7;
+      uint64 id = 1; /** ID пожертвования в базе данных */
+      string title = 2; /** Название пожертвования (например "На лекарства") */
+      float amount = 3; /** Сумма пожертвования */
+      Ward ward = 4; /** Подопечный этого пожертвования */
+      uint64 userId = 5; /** ID пользователя, которому принадлежит пожертвование */
+      string createdAt = 6; /** Дата создания сущности в базе данных */
+      string updatedAt = 7; /** Дата последнего обновления сущности в базе данных */
 }
 
+/**
+* Запрос на создание пользователя (Поля <b>card</b>, <b>company</b>, <b>donations</b> необязательные)
+ */
 message CreateUserRequest {
-      string email = 1;
-      string username = 2;
-      string password = 3;
-      string phone = 4;
-      repeated Card card = 5;
-      string role = 6;
-      Company company = 7;
-      uint64 type = 8;
-      Donations donations = 9;
-  string createdAt = 10;
-  string updatedAt = 11;
+      string email = 1; /** Email пользователя (обязательно проверяем на формат email@email.com) */
+      string username = 2; /** Имя (никнейм) пользователя */
+      string password = 3; /** Пароль пользователя (необходимо дополнительно валидировать корректность пароля) */
+      string phone = 4; /** Номер телефона (необходимо дополнительно валидировать формат) */
+      repeated CreateCardRequest card = 5; /** Банковские карты пользователя (если влаживаем в этот запрос, то userId
+       не указываем) */
+      string role = 6; /** Роль пользователя */
+      CreateCompanyRequest company = 7; /** Компания пользователя, если он является юридическим лицом */
+      uint64 type = 8; /** Тип пользователя, 0 - физическое лицо, 1 - юридическое лицо */
+      repeated CreateDonationsRequest donations = 9; /** Пожертвования пользователя */
 }
 
+/**
+* Ответ на запрос создания пользователя
+ */
 message CreateUserResponse {
-  uint64 id = 1; //ID записи в таблице
-  string email = 2;
-  string username = 3;
-  string password = 4;
-  string phone = 5;
-  repeated Card card = 6;
-  string role = 7;
-  Company company = 8;
-  uint64 type = 9;
-  Donations donations = 10;
-  string createdAt = 11;
-  string updatedAt = 12;
+  uint64 id = 1; /** ID пользователя */
+  string email = 2; /** Email пользователя */
+  string username = 3; /** Имя (никнейм) пользователя */
+  string password = 4; /** Пароль пользователя (закодирован в MD5Hash) */
+  string phone = 5; /** Номер телефона пользователя */
+  repeated Card card = 6; /** Банковские карты пользователя */
+  string role = 7; /** Роль пользователя */
+  Company company = 8; /** Компания пользователя, если он является юридическим лицом */
+  uint64 type = 9; /** Тип пользователя, 0 - физическое лицо, 1 - юридическое лицо */
+  repeated Donations donations = 10; /** Пожертвования пользователя */
+  string createdAt = 11; /** Дата создания сущности записи в базе данных */
+  string updatedAt = 12; /** Дата последнего обновления сущности в базе данных */
 }
 
-//IsRole
+/**
+* Запрос на проверку принадлежности пользователя к роли
+ */
 message IsRoleRequest {
-  uint64 id = 1; //ID юзера
-  string role = 2; //Роль к которой проверяем принадлежность
+  uint64 id = 1; /** ID пользователя*/
+  string role = 2; /** Роль пользователя которую мы ожиданием */
 }
 
+/**
+* Ответ на запрос проверки принадлежности пользователя к роли
+ */
 message IsRoleResponse {
-  bool accessory = 1; //ID записи в таблице
+  bool accessory = 1; /** Принадлежность к роли (true/false) */
 }

@@ -74,63 +74,103 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DatabaseServiceClient interface {
-	// Работа с сущностью пользователя
+	// *
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
+	// *
 	Users(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*UsersResponse, error)
+	// *
 	IsRole(ctx context.Context, in *IsRoleRequest, opts ...grpc.CallOption) (*IsRoleResponse, error)
+	// *
 	ComparePassword(ctx context.Context, in *ComparePasswordRequest, opts ...grpc.CallOption) (*ComparePasswordResponse, error)
+	// *
 	UserIsExists(ctx context.Context, in *UserIsExistsRequest, opts ...grpc.CallOption) (*UserIsExistsResponse, error)
+	// *
 	FindUserById(ctx context.Context, in *FindUserByIdRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
+	// *
 	FindUserByEmail(ctx context.Context, in *FindUserByEmailRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
+	// *
 	FindUserByPhone(ctx context.Context, in *FindUserByPhoneRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
+	// *
 	ChangeUserType(ctx context.Context, in *ChangeUserTypeRequest, opts ...grpc.CallOption) (*ChangeUserTypeResponse, error)
-	// физическое лицо, 1 - юридическое лицо)
+	// *
 	FindUserCompany(ctx context.Context, in *FindUserByIdRequest, opts ...grpc.CallOption) (*Company, error)
+	// *
 	FindUserDonations(ctx context.Context, in *FindUserDonationsRequest, opts ...grpc.CallOption) (*FindUserDonationsResponse, error)
+	// *
 	FindUserCard(ctx context.Context, in *FindUserCardRequest, opts ...grpc.CallOption) (*FindUserCardResponse, error)
+	// *
 	AddCardToUser(ctx context.Context, in *AddCardToUserRequest, opts ...grpc.CallOption) (*AddCardToUserResponse, error)
+	// *
 	DeleteUserByModel(ctx context.Context, in *DeleteUserByModelRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
-	// CODE
+	// *
 	DeleteUserById(ctx context.Context, in *DeleteUserByIdRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
-	// STATUS CODE
+	// *
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
-	// Работа с сущностью компании
+	// *
 	Companies(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CompaniesResponse, error)
+	// *
 	CreateCompany(ctx context.Context, in *CreateCompanyRequest, opts ...grpc.CallOption) (*Company, error)
+	// *
 	FindCompanyById(ctx context.Context, in *FindCompanyByIdRequest, opts ...grpc.CallOption) (*Company, error)
+	// *
 	FindCompanyByPhone(ctx context.Context, in *FindCompanyByIdPhoneRequest, opts ...grpc.CallOption) (*Company, error)
+	// *
 	FindCompanyCard(ctx context.Context, in *FindCompanyCardRequest, opts ...grpc.CallOption) (*CardCompany, error)
+	// *
 	DeleteCompanyByModel(ctx context.Context, in *DeleteCompanyByModelRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
+	// *
 	DeleteCompanyById(ctx context.Context, in *DeleteCompanyByIdRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
+	// *
 	UpdateCompany(ctx context.Context, in *UpdateCompanyRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
-	// Сущность Card для User
+	// *
 	Cards(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CardsResponse, error)
+	// *
 	CreateCard(ctx context.Context, in *CreateCardRequest, opts ...grpc.CallOption) (*Card, error)
+	// *
 	FindCardById(ctx context.Context, in *FindCardByIdRequest, opts ...grpc.CallOption) (*Card, error)
+	// *
 	DeleteCardByModel(ctx context.Context, in *Card, opts ...grpc.CallOption) (*HTTPCodes, error)
+	// *
 	DeleteCardById(ctx context.Context, in *DeleteCardByIdRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
+	// *
 	UpdateCard(ctx context.Context, in *Card, opts ...grpc.CallOption) (*Card, error)
-	// Сущность CardCompany для Company
+	// *
 	CardsCompanies(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CardsCompaniesResponse, error)
+	// *
 	CreateCardCompany(ctx context.Context, in *CreateCardCompanyRequest, opts ...grpc.CallOption) (*CardCompany, error)
+	// *
 	FindCardCompanyByID(ctx context.Context, in *FindCardCompanyByIDRequest, opts ...grpc.CallOption) (*CardCompany, error)
+	// *
 	DeleteCardCompanyByModel(ctx context.Context, in *CardCompany, opts ...grpc.CallOption) (*HTTPCodes, error)
+	// *
 	DeleteCardCompanyById(ctx context.Context, in *DeleteCardCompanyByIdRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
+	// *
 	UpdateCardCompany(ctx context.Context, in *CardCompany, opts ...grpc.CallOption) (*CardCompany, error)
-	// Донаты
+	// *
 	Donations(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*DonationsResponse, error)
+	// *
 	CreateDonations(ctx context.Context, in *CreateDonationsRequest, opts ...grpc.CallOption) (*CreateDonationsResponse, error)
+	// *
 	FindDonationWards(ctx context.Context, in *FindDonationWardsRequest, opts ...grpc.CallOption) (*FindDonationWardsResponse, error)
+	// *
 	FindDonationById(ctx context.Context, in *FindDonationByIdRequest, opts ...grpc.CallOption) (*CreateDonationsResponse, error)
+	// *
 	DeleteDonationByModel(ctx context.Context, in *DeleteDonationByModelRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
+	// *
 	DeleteDonationById(ctx context.Context, in *DeleteDonationByIdRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
+	// *
 	UpdateDonation(ctx context.Context, in *UpdateDonationsRequest, opts ...grpc.CallOption) (*CreateDonationsResponse, error)
-	// Подопечные
+	// *
 	Wards(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*WardsResponse, error)
+	// *
 	CreateWard(ctx context.Context, in *CreateWardRequest, opts ...grpc.CallOption) (*Ward, error)
+	// *
 	FindWardById(ctx context.Context, in *FindWardByIdRequest, opts ...grpc.CallOption) (*Ward, error)
+	// *
 	DeleteWardByModel(ctx context.Context, in *Ward, opts ...grpc.CallOption) (*HTTPCodes, error)
+	// *
 	DeleteWardById(ctx context.Context, in *DeleteWardByIdRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
+	// *
 	UpdateWard(ctx context.Context, in *Ward, opts ...grpc.CallOption) (*Ward, error)
 }
 
@@ -636,63 +676,103 @@ func (c *databaseServiceClient) UpdateWard(ctx context.Context, in *Ward, opts .
 // All implementations must embed UnimplementedDatabaseServiceServer
 // for forward compatibility.
 type DatabaseServiceServer interface {
-	// Работа с сущностью пользователя
+	// *
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
+	// *
 	Users(context.Context, *Empty) (*UsersResponse, error)
+	// *
 	IsRole(context.Context, *IsRoleRequest) (*IsRoleResponse, error)
+	// *
 	ComparePassword(context.Context, *ComparePasswordRequest) (*ComparePasswordResponse, error)
+	// *
 	UserIsExists(context.Context, *UserIsExistsRequest) (*UserIsExistsResponse, error)
+	// *
 	FindUserById(context.Context, *FindUserByIdRequest) (*CreateUserResponse, error)
+	// *
 	FindUserByEmail(context.Context, *FindUserByEmailRequest) (*CreateUserResponse, error)
+	// *
 	FindUserByPhone(context.Context, *FindUserByPhoneRequest) (*CreateUserResponse, error)
+	// *
 	ChangeUserType(context.Context, *ChangeUserTypeRequest) (*ChangeUserTypeResponse, error)
-	// физическое лицо, 1 - юридическое лицо)
+	// *
 	FindUserCompany(context.Context, *FindUserByIdRequest) (*Company, error)
+	// *
 	FindUserDonations(context.Context, *FindUserDonationsRequest) (*FindUserDonationsResponse, error)
+	// *
 	FindUserCard(context.Context, *FindUserCardRequest) (*FindUserCardResponse, error)
+	// *
 	AddCardToUser(context.Context, *AddCardToUserRequest) (*AddCardToUserResponse, error)
+	// *
 	DeleteUserByModel(context.Context, *DeleteUserByModelRequest) (*HTTPCodes, error)
-	// CODE
+	// *
 	DeleteUserById(context.Context, *DeleteUserByIdRequest) (*HTTPCodes, error)
-	// STATUS CODE
+	// *
 	UpdateUser(context.Context, *UpdateUserRequest) (*CreateUserResponse, error)
-	// Работа с сущностью компании
+	// *
 	Companies(context.Context, *Empty) (*CompaniesResponse, error)
+	// *
 	CreateCompany(context.Context, *CreateCompanyRequest) (*Company, error)
+	// *
 	FindCompanyById(context.Context, *FindCompanyByIdRequest) (*Company, error)
+	// *
 	FindCompanyByPhone(context.Context, *FindCompanyByIdPhoneRequest) (*Company, error)
+	// *
 	FindCompanyCard(context.Context, *FindCompanyCardRequest) (*CardCompany, error)
+	// *
 	DeleteCompanyByModel(context.Context, *DeleteCompanyByModelRequest) (*HTTPCodes, error)
+	// *
 	DeleteCompanyById(context.Context, *DeleteCompanyByIdRequest) (*HTTPCodes, error)
+	// *
 	UpdateCompany(context.Context, *UpdateCompanyRequest) (*HTTPCodes, error)
-	// Сущность Card для User
+	// *
 	Cards(context.Context, *Empty) (*CardsResponse, error)
+	// *
 	CreateCard(context.Context, *CreateCardRequest) (*Card, error)
+	// *
 	FindCardById(context.Context, *FindCardByIdRequest) (*Card, error)
+	// *
 	DeleteCardByModel(context.Context, *Card) (*HTTPCodes, error)
+	// *
 	DeleteCardById(context.Context, *DeleteCardByIdRequest) (*HTTPCodes, error)
+	// *
 	UpdateCard(context.Context, *Card) (*Card, error)
-	// Сущность CardCompany для Company
+	// *
 	CardsCompanies(context.Context, *Empty) (*CardsCompaniesResponse, error)
+	// *
 	CreateCardCompany(context.Context, *CreateCardCompanyRequest) (*CardCompany, error)
+	// *
 	FindCardCompanyByID(context.Context, *FindCardCompanyByIDRequest) (*CardCompany, error)
+	// *
 	DeleteCardCompanyByModel(context.Context, *CardCompany) (*HTTPCodes, error)
+	// *
 	DeleteCardCompanyById(context.Context, *DeleteCardCompanyByIdRequest) (*HTTPCodes, error)
+	// *
 	UpdateCardCompany(context.Context, *CardCompany) (*CardCompany, error)
-	// Донаты
+	// *
 	Donations(context.Context, *Empty) (*DonationsResponse, error)
+	// *
 	CreateDonations(context.Context, *CreateDonationsRequest) (*CreateDonationsResponse, error)
+	// *
 	FindDonationWards(context.Context, *FindDonationWardsRequest) (*FindDonationWardsResponse, error)
+	// *
 	FindDonationById(context.Context, *FindDonationByIdRequest) (*CreateDonationsResponse, error)
+	// *
 	DeleteDonationByModel(context.Context, *DeleteDonationByModelRequest) (*HTTPCodes, error)
+	// *
 	DeleteDonationById(context.Context, *DeleteDonationByIdRequest) (*HTTPCodes, error)
+	// *
 	UpdateDonation(context.Context, *UpdateDonationsRequest) (*CreateDonationsResponse, error)
-	// Подопечные
+	// *
 	Wards(context.Context, *Empty) (*WardsResponse, error)
+	// *
 	CreateWard(context.Context, *CreateWardRequest) (*Ward, error)
+	// *
 	FindWardById(context.Context, *FindWardByIdRequest) (*Ward, error)
+	// *
 	DeleteWardByModel(context.Context, *Ward) (*HTTPCodes, error)
+	// *
 	DeleteWardById(context.Context, *DeleteWardByIdRequest) (*HTTPCodes, error)
+	// *
 	UpdateWard(context.Context, *Ward) (*Ward, error)
 	mustEmbedUnimplementedDatabaseServiceServer()
 }
