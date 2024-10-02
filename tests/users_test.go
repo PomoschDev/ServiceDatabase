@@ -60,9 +60,9 @@ func Test_IsRole_BadPath(t *testing.T) {
 
 	_, err := st.ClientAPI.IsRole(ctx, requestRandom)
 	if err != nil {
-		status, ok := status.FromError(err)
-		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", status.Code().String(),
-			status.Message(), ok, status.Err())
+		status1, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", status1.Code().String(),
+			status1.Message(), ok, status1.Err())
 	}
 
 	request := &DatabaseServicev1.IsRoleRequest{
@@ -78,6 +78,53 @@ func Test_IsRole_BadPath(t *testing.T) {
 
 	t.Logf("Ответ от сервера: %t", respIsRole.Accessory)
 }
+
+func Test_ComparePassword_HappyPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	request := &DatabaseServicev1.ComparePasswordRequest{Password: randomFakePassword(), Phone: "7682740246"}
+	response, err := st.ClientAPI.ComparePassword(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %t", response.Accessory)
+}
+
+func Test_ComparePassword_BadPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	request := &DatabaseServicev1.ComparePasswordRequest{Password: randomFakePassword(), Phone: gofakeit.Phone()}
+	response, err := st.ClientAPI.ComparePassword(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %t", response.Accessory)
+}
+
+func Test_UserIsExists_HappyPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	request := &DatabaseServicev1.UserIsExistsRequest{Phone: "7682740246"}
+	response, err := st.ClientAPI.UserIsExists(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %t", response.IsExists)
+}
+
+//--------------------
 
 func randomUser() *models.User {
 	user := new(models.User)
