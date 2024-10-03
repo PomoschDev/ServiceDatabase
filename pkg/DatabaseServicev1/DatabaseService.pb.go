@@ -21,6 +21,7 @@ const (
 )
 
 // *
+// Пустая структура, необходимая для запросов без входящих аргументов
 type Empty struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -60,12 +61,13 @@ func (*Empty) Descriptor() ([]byte, []int) {
 }
 
 // *
+// Стандартные HTTP ответы на запросы
 type HTTPCodes struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Code int64 `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"` //*
+	Code int64 `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"` //* HTTP код ответа
 }
 
 func (x *HTTPCodes) Reset() {
@@ -108,12 +110,13 @@ func (x *HTTPCodes) GetCode() int64 {
 }
 
 // *
+// Запрос на добавление банковской карты пользователю
 type AddCardToUserRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Card *CreateCardRequest `protobuf:"bytes,1,opt,name=card,proto3" json:"card,omitempty"` //*
+	Card *CreateCardRequest `protobuf:"bytes,1,opt,name=card,proto3" json:"card,omitempty"` //* Банковская карта
 }
 
 func (x *AddCardToUserRequest) Reset() {
@@ -156,18 +159,19 @@ func (x *AddCardToUserRequest) GetCard() *CreateCardRequest {
 }
 
 // *
+// Запрос на обновление пожертвования
 type UpdateDonationsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id        uint64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`              //*
-	Title     string  `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`         //*
-	Amount    float32 `protobuf:"fixed32,3,opt,name=amount,proto3" json:"amount,omitempty"`     //*
-	Wards     []*Ward `protobuf:"bytes,4,rep,name=wards,proto3" json:"wards,omitempty"`         //*
-	UserId    uint64  `protobuf:"varint,5,opt,name=userId,proto3" json:"userId,omitempty"`      //*
-	CreatedAt string  `protobuf:"bytes,6,opt,name=createdAt,proto3" json:"createdAt,omitempty"` //*
-	UpdatedAt string  `protobuf:"bytes,7,opt,name=updatedAt,proto3" json:"updatedAt,omitempty"` //*
+	Id        uint64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`              //* ID пожертвования в базе данных
+	Title     string  `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`         //* Название пожертвования (например "На лекарства")
+	Amount    float32 `protobuf:"fixed32,3,opt,name=amount,proto3" json:"amount,omitempty"`     //* Сумма пожертвования
+	Wards     *Ward   `protobuf:"bytes,4,opt,name=wards,proto3" json:"wards,omitempty"`         //* Подопечный этого пожертвования
+	UserId    uint64  `protobuf:"varint,5,opt,name=userId,proto3" json:"userId,omitempty"`      //* ID пользователя, которому принадлежит пожертвование
+	CreatedAt string  `protobuf:"bytes,6,opt,name=createdAt,proto3" json:"createdAt,omitempty"` //* Дата создания сущности в базе данных
+	UpdatedAt string  `protobuf:"bytes,7,opt,name=updatedAt,proto3" json:"updatedAt,omitempty"` //* Дата последнего обновления сущности в базе данных
 }
 
 func (x *UpdateDonationsRequest) Reset() {
@@ -223,7 +227,7 @@ func (x *UpdateDonationsRequest) GetAmount() float32 {
 	return 0
 }
 
-func (x *UpdateDonationsRequest) GetWards() []*Ward {
+func (x *UpdateDonationsRequest) GetWards() *Ward {
 	if x != nil {
 		return x.Wards
 	}
@@ -252,18 +256,19 @@ func (x *UpdateDonationsRequest) GetUpdatedAt() string {
 }
 
 // *
+// Запрос на удаление пожертвования по модели
 type DeleteDonationByModelRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id        uint64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`              //*
-	Title     string  `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`         //*
-	Amount    float32 `protobuf:"fixed32,3,opt,name=amount,proto3" json:"amount,omitempty"`     //*
-	Wards     []*Ward `protobuf:"bytes,4,rep,name=wards,proto3" json:"wards,omitempty"`         //*
-	UserId    uint64  `protobuf:"varint,5,opt,name=userId,proto3" json:"userId,omitempty"`      //*
-	CreatedAt string  `protobuf:"bytes,6,opt,name=createdAt,proto3" json:"createdAt,omitempty"` //*
-	UpdatedAt string  `protobuf:"bytes,7,opt,name=updatedAt,proto3" json:"updatedAt,omitempty"` //*
+	Id        uint64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`              //* ID пожертвования в базе данных
+	Title     string  `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`         //* Название пожертвования (например "На лекарства")
+	Amount    float32 `protobuf:"fixed32,3,opt,name=amount,proto3" json:"amount,omitempty"`     //* Сумма пожертвования
+	Wards     *Ward   `protobuf:"bytes,4,opt,name=wards,proto3" json:"wards,omitempty"`         //* Подопечный этого пожертвования
+	UserId    uint64  `protobuf:"varint,5,opt,name=userId,proto3" json:"userId,omitempty"`      //* ID пользователя, которому принадлежит пожертвование
+	CreatedAt string  `protobuf:"bytes,6,opt,name=createdAt,proto3" json:"createdAt,omitempty"` //* Дата создания сущности в базе данных
+	UpdatedAt string  `protobuf:"bytes,7,opt,name=updatedAt,proto3" json:"updatedAt,omitempty"` //* Дата последнего обновления сущности в базе данных
 }
 
 func (x *DeleteDonationByModelRequest) Reset() {
@@ -319,7 +324,7 @@ func (x *DeleteDonationByModelRequest) GetAmount() float32 {
 	return 0
 }
 
-func (x *DeleteDonationByModelRequest) GetWards() []*Ward {
+func (x *DeleteDonationByModelRequest) GetWards() *Ward {
 	if x != nil {
 		return x.Wards
 	}
@@ -348,23 +353,24 @@ func (x *DeleteDonationByModelRequest) GetUpdatedAt() string {
 }
 
 // *
+// Ответ на запрос добавления банковской карты пользователю
 type AddCardToUserResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id        uint64     `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`               //*
-	Email     string     `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`          //*
-	Username  string     `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`    //*
-	Password  string     `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`    //*
-	Phone     string     `protobuf:"bytes,5,opt,name=phone,proto3" json:"phone,omitempty"`          //*
-	Card      []*Card    `protobuf:"bytes,6,rep,name=card,proto3" json:"card,omitempty"`            //*
-	Role      string     `protobuf:"bytes,7,opt,name=role,proto3" json:"role,omitempty"`            //*
-	Company   *Company   `protobuf:"bytes,8,opt,name=company,proto3" json:"company,omitempty"`      //*
-	Type      uint64     `protobuf:"varint,9,opt,name=type,proto3" json:"type,omitempty"`           //*
-	Donations *Donations `protobuf:"bytes,10,opt,name=donations,proto3" json:"donations,omitempty"` //*
-	CreatedAt string     `protobuf:"bytes,11,opt,name=createdAt,proto3" json:"createdAt,omitempty"` //*
-	UpdatedAt string     `protobuf:"bytes,12,opt,name=updatedAt,proto3" json:"updatedAt,omitempty"` //*
+	Id        uint64     `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`               //* ID пользователя в базе данных
+	Email     string     `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`          //* Email пользователя
+	Username  string     `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`    //* Имя (никнейм) пользователя
+	Password  string     `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`    //* Пароль пользователя (закодирован в MD5Hash)
+	Phone     string     `protobuf:"bytes,5,opt,name=phone,proto3" json:"phone,omitempty"`          //* Номер телефона пользователя
+	Card      []*Card    `protobuf:"bytes,6,rep,name=card,proto3" json:"card,omitempty"`            //* Массив банковских карт пользователя
+	Role      string     `protobuf:"bytes,7,opt,name=role,proto3" json:"role,omitempty"`            //* Роль пользователя
+	Company   *Company   `protobuf:"bytes,8,opt,name=company,proto3" json:"company,omitempty"`      //* Компания пользователя, если он является юридическим лицом (type = 1)
+	Type      uint64     `protobuf:"varint,9,opt,name=type,proto3" json:"type,omitempty"`           //* Тип пользователя (0 - физическое лицо, 1 - юридическое лицо)
+	Donations *Donations `protobuf:"bytes,10,opt,name=donations,proto3" json:"donations,omitempty"` //* Массив пожертвований пользователя
+	CreatedAt string     `protobuf:"bytes,11,opt,name=createdAt,proto3" json:"createdAt,omitempty"` //* Дата создания сущности в базе данных
+	UpdatedAt string     `protobuf:"bytes,12,opt,name=updatedAt,proto3" json:"updatedAt,omitempty"` //* Дата последнего обновления сущности в базе данных
 }
 
 func (x *AddCardToUserResponse) Reset() {
@@ -484,18 +490,19 @@ func (x *AddCardToUserResponse) GetUpdatedAt() string {
 }
 
 // *
+// Ответ на запрос создания пожертвования
 type CreateDonationsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id        uint64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`              //*
-	Title     string  `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`         //*
-	Amount    float32 `protobuf:"fixed32,3,opt,name=amount,proto3" json:"amount,omitempty"`     //*
-	Wards     []*Ward `protobuf:"bytes,4,rep,name=wards,proto3" json:"wards,omitempty"`         //*
-	UserId    uint64  `protobuf:"varint,5,opt,name=userId,proto3" json:"userId,omitempty"`      //*
-	CreatedAt string  `protobuf:"bytes,6,opt,name=createdAt,proto3" json:"createdAt,omitempty"` //*
-	UpdatedAt string  `protobuf:"bytes,7,opt,name=updatedAt,proto3" json:"updatedAt,omitempty"` //*
+	Id        uint64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`              //* ID записи в базе данных
+	Title     string  `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`         //* Название пожертвования (например "На лекарства")
+	Amount    float32 `protobuf:"fixed32,3,opt,name=amount,proto3" json:"amount,omitempty"`     //* Сумма пожертвования
+	Wards     *Ward   `protobuf:"bytes,4,opt,name=wards,proto3" json:"wards,omitempty"`         //* Подопечный этого пожертвования
+	UserId    uint64  `protobuf:"varint,5,opt,name=userId,proto3" json:"userId,omitempty"`      //* ID пользователя, которому принадлежит пожертвование
+	CreatedAt string  `protobuf:"bytes,6,opt,name=createdAt,proto3" json:"createdAt,omitempty"` //* Дата создания сущности в базе данных
+	UpdatedAt string  `protobuf:"bytes,7,opt,name=updatedAt,proto3" json:"updatedAt,omitempty"` //* Дата последнего обновления сущности в базе данных
 }
 
 func (x *CreateDonationsResponse) Reset() {
@@ -551,7 +558,7 @@ func (x *CreateDonationsResponse) GetAmount() float32 {
 	return 0
 }
 
-func (x *CreateDonationsResponse) GetWards() []*Ward {
+func (x *CreateDonationsResponse) GetWards() *Ward {
 	if x != nil {
 		return x.Wards
 	}
@@ -580,12 +587,13 @@ func (x *CreateDonationsResponse) GetUpdatedAt() string {
 }
 
 // *
+// Удаление подопечного по его ID
 type DeleteWardByIdRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"` //*
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"` //* ID подопечного которого будем удалять
 }
 
 func (x *DeleteWardByIdRequest) Reset() {
@@ -628,12 +636,13 @@ func (x *DeleteWardByIdRequest) GetId() uint64 {
 }
 
 // *
+// Запрос на поиск подопечного по ID
 type FindWardByIdRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"` //*
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"` //* ID подопечного которого будем искать
 }
 
 func (x *FindWardByIdRequest) Reset() {
@@ -676,16 +685,17 @@ func (x *FindWardByIdRequest) GetId() uint64 {
 }
 
 // *
+// Запрос на создание подопечного
 type CreateWardRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Title      string `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`            //*
-	FullName   string `protobuf:"bytes,3,opt,name=fullName,proto3" json:"fullName,omitempty"`      //*
-	Want       string `protobuf:"bytes,4,opt,name=want,proto3" json:"want,omitempty"`              //*
-	Necessary  string `protobuf:"bytes,5,opt,name=necessary,proto3" json:"necessary,omitempty"`    //*
-	DonationId uint64 `protobuf:"varint,6,opt,name=donationId,proto3" json:"donationId,omitempty"` //*
+	Title      string  `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`            //* Дополнительный текст к подопечному
+	FullName   string  `protobuf:"bytes,3,opt,name=fullName,proto3" json:"fullName,omitempty"`      //* Полное имя подопечного
+	Want       string  `protobuf:"bytes,4,opt,name=want,proto3" json:"want,omitempty"`              //* Необходимость подопечного (то в чем он нуждается, например "Лекарства")
+	Necessary  float32 `protobuf:"fixed32,5,opt,name=necessary,proto3" json:"necessary,omitempty"`  //* Необходимая сумма денег на необходимость
+	DonationId uint64  `protobuf:"varint,6,opt,name=donationId,proto3" json:"donationId,omitempty"` //* ID пожертвования
 }
 
 func (x *CreateWardRequest) Reset() {
@@ -741,11 +751,11 @@ func (x *CreateWardRequest) GetWant() string {
 	return ""
 }
 
-func (x *CreateWardRequest) GetNecessary() string {
+func (x *CreateWardRequest) GetNecessary() float32 {
 	if x != nil {
 		return x.Necessary
 	}
-	return ""
+	return 0
 }
 
 func (x *CreateWardRequest) GetDonationId() uint64 {
@@ -756,12 +766,13 @@ func (x *CreateWardRequest) GetDonationId() uint64 {
 }
 
 // *
+// Ответ на запрос получения всех подопечных
 type WardsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Wards []*Ward `protobuf:"bytes,1,rep,name=wards,proto3" json:"wards,omitempty"` //*
+	Wards []*Ward `protobuf:"bytes,1,rep,name=wards,proto3" json:"wards,omitempty"` //* Массив подопечных
 }
 
 func (x *WardsResponse) Reset() {
@@ -804,12 +815,13 @@ func (x *WardsResponse) GetWards() []*Ward {
 }
 
 // *
+// Запрос на удаление пожертвования по его ID
 type DeleteDonationByIdRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"` //*
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"` //* ID пожертвования которое будем удалять
 }
 
 func (x *DeleteDonationByIdRequest) Reset() {
@@ -852,12 +864,13 @@ func (x *DeleteDonationByIdRequest) GetId() uint64 {
 }
 
 // *
+// Запрос на поиск пожертвования по его ID
 type FindDonationByIdRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"` //*
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"` //* ID пожертвования которое будем искать
 }
 
 func (x *FindDonationByIdRequest) Reset() {
@@ -900,12 +913,13 @@ func (x *FindDonationByIdRequest) GetId() uint64 {
 }
 
 // *
+// Ответ на запрос извлечения подопечного пожертвования
 type FindDonationWardsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Wards []*Ward `protobuf:"bytes,1,rep,name=wards,proto3" json:"wards,omitempty"` //*
+	Wards *Ward `protobuf:"bytes,1,opt,name=wards,proto3" json:"wards,omitempty"` //* Подопечный пожертвования
 }
 
 func (x *FindDonationWardsResponse) Reset() {
@@ -940,7 +954,7 @@ func (*FindDonationWardsResponse) Descriptor() ([]byte, []int) {
 	return file_DatabaseService_DatabaseService_proto_rawDescGZIP(), []int{13}
 }
 
-func (x *FindDonationWardsResponse) GetWards() []*Ward {
+func (x *FindDonationWardsResponse) GetWards() *Ward {
 	if x != nil {
 		return x.Wards
 	}
@@ -948,12 +962,13 @@ func (x *FindDonationWardsResponse) GetWards() []*Ward {
 }
 
 // *
+// Запрос на извлечение подопечного пожертвования по ID
 type FindDonationWardsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"` //*
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"` //* ID пожертвования
 }
 
 func (x *FindDonationWardsRequest) Reset() {
@@ -996,15 +1011,16 @@ func (x *FindDonationWardsRequest) GetId() uint64 {
 }
 
 // *
+// Запрос на создание пожертвования
 type CreateDonationsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Title  string  `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`     //*
-	Amount float32 `protobuf:"fixed32,2,opt,name=amount,proto3" json:"amount,omitempty"` //*
-	Wards  []*Ward `protobuf:"bytes,3,rep,name=wards,proto3" json:"wards,omitempty"`     //*
-	UserId uint64  `protobuf:"varint,4,opt,name=userId,proto3" json:"userId,omitempty"`  //*
+	Title  string  `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`     //* Произвольное название пожертвования, примерно так: "На лекарства"
+	Amount float32 `protobuf:"fixed32,2,opt,name=amount,proto3" json:"amount,omitempty"` //* Сумма пожертвования
+	Wards  *Ward   `protobuf:"bytes,3,opt,name=wards,proto3" json:"wards,omitempty"`     //* Подопечный данного пожертвования
+	UserId uint64  `protobuf:"varint,4,opt,name=userId,proto3" json:"userId,omitempty"`  //* ID пользователя, чье это пожертвование
 }
 
 func (x *CreateDonationsRequest) Reset() {
@@ -1053,7 +1069,7 @@ func (x *CreateDonationsRequest) GetAmount() float32 {
 	return 0
 }
 
-func (x *CreateDonationsRequest) GetWards() []*Ward {
+func (x *CreateDonationsRequest) GetWards() *Ward {
 	if x != nil {
 		return x.Wards
 	}
@@ -1068,12 +1084,13 @@ func (x *CreateDonationsRequest) GetUserId() uint64 {
 }
 
 // *
+// Запрос на получение всех пожертвований
 type DonationsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Donations []*Donations `protobuf:"bytes,1,rep,name=donations,proto3" json:"donations,omitempty"` //*
+	Donations []*Donations `protobuf:"bytes,1,rep,name=donations,proto3" json:"donations,omitempty"` //* Массив пожертвований
 }
 
 func (x *DonationsResponse) Reset() {
@@ -1116,12 +1133,13 @@ func (x *DonationsResponse) GetDonations() []*Donations {
 }
 
 // *
+// Удаление банковской карты компании по ID
 type DeleteCardCompanyByIdRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"` //*
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"` //* ID банковской карты компании, которую нужно удалить
 }
 
 func (x *DeleteCardCompanyByIdRequest) Reset() {
@@ -1164,12 +1182,13 @@ func (x *DeleteCardCompanyByIdRequest) GetId() uint64 {
 }
 
 // *
+// Запрос на извлечение банковских карт компаний определенной компании
 type FindCardCompanyByIDRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"` //*
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"` //* ID компании, банковские карты которой нужно извлечь
 }
 
 func (x *FindCardCompanyByIDRequest) Reset() {
@@ -1212,16 +1231,17 @@ func (x *FindCardCompanyByIDRequest) GetId() uint64 {
 }
 
 // *
+// Запрос на создание банковской карты для компании
 type CreateCardCompanyRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	FullName  string `protobuf:"bytes,2,opt,name=fullName,proto3" json:"fullName,omitempty"`    //*
-	Number    string `protobuf:"bytes,3,opt,name=number,proto3" json:"number,omitempty"`        //*
-	Date      string `protobuf:"bytes,4,opt,name=date,proto3" json:"date,omitempty"`            //*
-	Cvv       string `protobuf:"bytes,5,opt,name=cvv,proto3" json:"cvv,omitempty"`              //*
-	CompanyId uint64 `protobuf:"varint,6,opt,name=companyId,proto3" json:"companyId,omitempty"` //*
+	FullName  string `protobuf:"bytes,2,opt,name=fullName,proto3" json:"fullName,omitempty"`    //* ФИО с банковской карты
+	Number    string `protobuf:"bytes,3,opt,name=number,proto3" json:"number,omitempty"`        //* Номер банковской карты
+	Date      string `protobuf:"bytes,4,opt,name=date,proto3" json:"date,omitempty"`            //* Дата до которой активна карта
+	Cvv       string `protobuf:"bytes,5,opt,name=cvv,proto3" json:"cvv,omitempty"`              //* CVV код банковской карты
+	CompanyId uint64 `protobuf:"varint,6,opt,name=companyId,proto3" json:"companyId,omitempty"` //* ID компании которой принадлежит данная карта
 }
 
 func (x *CreateCardCompanyRequest) Reset() {
@@ -1292,12 +1312,13 @@ func (x *CreateCardCompanyRequest) GetCompanyId() uint64 {
 }
 
 // *
+// Запрос на получение всех банковских карт компаний
 type CardsCompaniesResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Cards []*CardCompany `protobuf:"bytes,1,rep,name=cards,proto3" json:"cards,omitempty"` //*
+	Cards []*CardCompany `protobuf:"bytes,1,rep,name=cards,proto3" json:"cards,omitempty"` //* Массив банковских карт компаний
 }
 
 func (x *CardsCompaniesResponse) Reset() {
@@ -1340,12 +1361,13 @@ func (x *CardsCompaniesResponse) GetCards() []*CardCompany {
 }
 
 // *
+// Запрос на удаление банковской карты пользователя по ID
 type DeleteCardByIdRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"` //*
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"` //* ID банковской карты
 }
 
 func (x *DeleteCardByIdRequest) Reset() {
@@ -1388,12 +1410,13 @@ func (x *DeleteCardByIdRequest) GetId() uint64 {
 }
 
 // *
+// Запрос на поиск банковской карты пользователя по ID
 type FindCardByIdRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"` //*
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"` //* ID банковской карты
 }
 
 func (x *FindCardByIdRequest) Reset() {
@@ -1436,16 +1459,17 @@ func (x *FindCardByIdRequest) GetId() uint64 {
 }
 
 // *
+// Запрос на создание банковской карты для пользователя
 type CreateCardRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	FullName string `protobuf:"bytes,1,opt,name=fullName,proto3" json:"fullName,omitempty"` //*
-	Number   string `protobuf:"bytes,2,opt,name=number,proto3" json:"number,omitempty"`     //*
-	Date     string `protobuf:"bytes,3,opt,name=date,proto3" json:"date,omitempty"`         //*
-	Cvv      string `protobuf:"bytes,4,opt,name=cvv,proto3" json:"cvv,omitempty"`           //*
-	UserId   string `protobuf:"bytes,5,opt,name=userId,proto3" json:"userId,omitempty"`     //*
+	FullName string `protobuf:"bytes,1,opt,name=fullName,proto3" json:"fullName,omitempty"` //* ФИО с банковской карты
+	Number   string `protobuf:"bytes,2,opt,name=number,proto3" json:"number,omitempty"`     //* Номер карты
+	Date     string `protobuf:"bytes,3,opt,name=date,proto3" json:"date,omitempty"`         //* Дата до которой активна карта
+	Cvv      uint64 `protobuf:"varint,4,opt,name=cvv,proto3" json:"cvv,omitempty"`          //* CVV код карты
+	UserId   string `protobuf:"bytes,5,opt,name=userId,proto3" json:"userId,omitempty"`     //* ID пользователя кому принадлежит карта
 }
 
 func (x *CreateCardRequest) Reset() {
@@ -1501,11 +1525,11 @@ func (x *CreateCardRequest) GetDate() string {
 	return ""
 }
 
-func (x *CreateCardRequest) GetCvv() string {
+func (x *CreateCardRequest) GetCvv() uint64 {
 	if x != nil {
 		return x.Cvv
 	}
-	return ""
+	return 0
 }
 
 func (x *CreateCardRequest) GetUserId() string {
@@ -3311,14 +3335,14 @@ type Ward struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id         uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                 //* ID подопечного в базе данных
-	Title      string `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`            //* Дополнительный текст к подопечному
-	FullName   string `protobuf:"bytes,3,opt,name=fullName,proto3" json:"fullName,omitempty"`      //* Полное имя подопечного
-	Want       string `protobuf:"bytes,4,opt,name=want,proto3" json:"want,omitempty"`              //* Необходимость подопечного (то в чем он нуждается, например "Лекарства")
-	Necessary  string `protobuf:"bytes,5,opt,name=necessary,proto3" json:"necessary,omitempty"`    //* Необходимая сумма денег на необходимость
-	DonationId uint64 `protobuf:"varint,6,opt,name=donationId,proto3" json:"donationId,omitempty"` //* ID пожертвования к которому относится данный подопечный
-	CreatedAt  string `protobuf:"bytes,7,opt,name=createdAt,proto3" json:"createdAt,omitempty"`    //* Дата создания сущности в базе данных
-	UpdatedAt  string `protobuf:"bytes,8,opt,name=updatedAt,proto3" json:"updatedAt,omitempty"`    //* Дата последнего обновления сущности в базе данных
+	Id         uint64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                 //* ID подопечного в базе данных
+	Title      string  `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`            //* Дополнительный текст к подопечному
+	FullName   string  `protobuf:"bytes,3,opt,name=fullName,proto3" json:"fullName,omitempty"`      //* Полное имя подопечного
+	Want       string  `protobuf:"bytes,4,opt,name=want,proto3" json:"want,omitempty"`              //* Необходимость подопечного (то в чем он нуждается, например "Лекарства")
+	Necessary  float32 `protobuf:"fixed32,5,opt,name=necessary,proto3" json:"necessary,omitempty"`  //* Необходимая сумма денег на необходимость
+	DonationId uint64  `protobuf:"varint,6,opt,name=donationId,proto3" json:"donationId,omitempty"` //* ID пожертвования к которому относится данный подопечный
+	CreatedAt  string  `protobuf:"bytes,7,opt,name=createdAt,proto3" json:"createdAt,omitempty"`    //* Дата создания сущности в базе данных
+	UpdatedAt  string  `protobuf:"bytes,8,opt,name=updatedAt,proto3" json:"updatedAt,omitempty"`    //* Дата последнего обновления сущности в базе данных
 }
 
 func (x *Ward) Reset() {
@@ -3381,11 +3405,11 @@ func (x *Ward) GetWant() string {
 	return ""
 }
 
-func (x *Ward) GetNecessary() string {
+func (x *Ward) GetNecessary() float32 {
 	if x != nil {
 		return x.Necessary
 	}
-	return ""
+	return 0
 }
 
 func (x *Ward) GetDonationId() uint64 {
@@ -3881,7 +3905,7 @@ var file_DatabaseService_DatabaseService_proto_rawDesc = []byte{
 	0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x69,
 	0x74, 0x6c, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x03, 0x20,
 	0x01, 0x28, 0x02, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x23, 0x0a, 0x05, 0x77,
-	0x61, 0x72, 0x64, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x0d, 0x2e, 0x73, 0x65, 0x72,
+	0x61, 0x72, 0x64, 0x73, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0d, 0x2e, 0x73, 0x65, 0x72,
 	0x76, 0x69, 0x63, 0x65, 0x2e, 0x57, 0x61, 0x72, 0x64, 0x52, 0x05, 0x77, 0x61, 0x72, 0x64, 0x73,
 	0x12, 0x16, 0x0a, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x18, 0x05, 0x20, 0x01, 0x28, 0x04,
 	0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12, 0x1c, 0x0a, 0x09, 0x63, 0x72, 0x65, 0x61,
@@ -3894,7 +3918,7 @@ var file_DatabaseService_DatabaseService_proto_rawDesc = []byte{
 	0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x18, 0x02,
 	0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x61,
 	0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x02, 0x52, 0x06, 0x61, 0x6d, 0x6f,
-	0x75, 0x6e, 0x74, 0x12, 0x23, 0x0a, 0x05, 0x77, 0x61, 0x72, 0x64, 0x73, 0x18, 0x04, 0x20, 0x03,
+	0x75, 0x6e, 0x74, 0x12, 0x23, 0x0a, 0x05, 0x77, 0x61, 0x72, 0x64, 0x73, 0x18, 0x04, 0x20, 0x01,
 	0x28, 0x0b, 0x32, 0x0d, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x57, 0x61, 0x72,
 	0x64, 0x52, 0x05, 0x77, 0x61, 0x72, 0x64, 0x73, 0x12, 0x16, 0x0a, 0x06, 0x75, 0x73, 0x65, 0x72,
 	0x49, 0x64, 0x18, 0x05, 0x20, 0x01, 0x28, 0x04, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64,
@@ -3931,7 +3955,7 @@ var file_DatabaseService_DatabaseService_proto_rawDesc = []byte{
 	0x69, 0x74, 0x6c, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x69, 0x74, 0x6c,
 	0x65, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28,
 	0x02, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x23, 0x0a, 0x05, 0x77, 0x61, 0x72,
-	0x64, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x0d, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69,
+	0x64, 0x73, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0d, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69,
 	0x63, 0x65, 0x2e, 0x57, 0x61, 0x72, 0x64, 0x52, 0x05, 0x77, 0x61, 0x72, 0x64, 0x73, 0x12, 0x16,
 	0x0a, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x18, 0x05, 0x20, 0x01, 0x28, 0x04, 0x52, 0x06,
 	0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12, 0x1c, 0x0a, 0x09, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65,
@@ -3950,7 +3974,7 @@ var file_DatabaseService_DatabaseService_proto_rawDesc = []byte{
 	0x52, 0x08, 0x66, 0x75, 0x6c, 0x6c, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x77, 0x61,
 	0x6e, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x77, 0x61, 0x6e, 0x74, 0x12, 0x1c,
 	0x0a, 0x09, 0x6e, 0x65, 0x63, 0x65, 0x73, 0x73, 0x61, 0x72, 0x79, 0x18, 0x05, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x09, 0x6e, 0x65, 0x63, 0x65, 0x73, 0x73, 0x61, 0x72, 0x79, 0x12, 0x1e, 0x0a, 0x0a,
+	0x02, 0x52, 0x09, 0x6e, 0x65, 0x63, 0x65, 0x73, 0x73, 0x61, 0x72, 0x79, 0x12, 0x1e, 0x0a, 0x0a,
 	0x64, 0x6f, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28, 0x04,
 	0x52, 0x0a, 0x64, 0x6f, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x22, 0x34, 0x0a, 0x0d,
 	0x57, 0x61, 0x72, 0x64, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x23, 0x0a,
@@ -3964,7 +3988,7 @@ var file_DatabaseService_DatabaseService_proto_rawDesc = []byte{
 	0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x22, 0x40, 0x0a, 0x19, 0x46, 0x69,
 	0x6e, 0x64, 0x44, 0x6f, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x57, 0x61, 0x72, 0x64, 0x73, 0x52,
 	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x23, 0x0a, 0x05, 0x77, 0x61, 0x72, 0x64, 0x73,
-	0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x0d, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0d, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
 	0x2e, 0x57, 0x61, 0x72, 0x64, 0x52, 0x05, 0x77, 0x61, 0x72, 0x64, 0x73, 0x22, 0x2a, 0x0a, 0x18,
 	0x46, 0x69, 0x6e, 0x64, 0x44, 0x6f, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x57, 0x61, 0x72, 0x64,
 	0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01,
@@ -3973,7 +3997,7 @@ var file_DatabaseService_DatabaseService_proto_rawDesc = []byte{
 	0x65, 0x73, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x6d, 0x6f,
 	0x75, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x02, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e,
-	0x74, 0x12, 0x23, 0x0a, 0x05, 0x77, 0x61, 0x72, 0x64, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b,
+	0x74, 0x12, 0x23, 0x0a, 0x05, 0x77, 0x61, 0x72, 0x64, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b,
 	0x32, 0x0d, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x57, 0x61, 0x72, 0x64, 0x52,
 	0x05, 0x77, 0x61, 0x72, 0x64, 0x73, 0x12, 0x16, 0x0a, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64,
 	0x18, 0x04, 0x20, 0x01, 0x28, 0x04, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x45,
@@ -4012,7 +4036,7 @@ var file_DatabaseService_DatabaseService_proto_rawDesc = []byte{
 	0x12, 0x16, 0x0a, 0x06, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
 	0x52, 0x06, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x65,
 	0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x64, 0x61, 0x74, 0x65, 0x12, 0x10, 0x0a, 0x03,
-	0x63, 0x76, 0x76, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x63, 0x76, 0x76, 0x12, 0x16,
+	0x63, 0x76, 0x76, 0x18, 0x04, 0x20, 0x01, 0x28, 0x04, 0x52, 0x03, 0x63, 0x76, 0x76, 0x12, 0x16,
 	0x0a, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06,
 	0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x34, 0x0a, 0x0d, 0x43, 0x61, 0x72, 0x64, 0x73, 0x52,
 	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x23, 0x0a, 0x05, 0x63, 0x61, 0x72, 0x64, 0x73,
@@ -4187,7 +4211,7 @@ var file_DatabaseService_DatabaseService_proto_rawDesc = []byte{
 	0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x66, 0x75, 0x6c, 0x6c, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x12,
 	0x0a, 0x04, 0x77, 0x61, 0x6e, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x77, 0x61,
 	0x6e, 0x74, 0x12, 0x1c, 0x0a, 0x09, 0x6e, 0x65, 0x63, 0x65, 0x73, 0x73, 0x61, 0x72, 0x79, 0x18,
-	0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x6e, 0x65, 0x63, 0x65, 0x73, 0x73, 0x61, 0x72, 0x79,
+	0x05, 0x20, 0x01, 0x28, 0x02, 0x52, 0x09, 0x6e, 0x65, 0x63, 0x65, 0x73, 0x73, 0x61, 0x72, 0x79,
 	0x12, 0x1e, 0x0a, 0x0a, 0x64, 0x6f, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x18, 0x06,
 	0x20, 0x01, 0x28, 0x04, 0x52, 0x0a, 0x64, 0x6f, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64,
 	0x12, 0x1c, 0x0a, 0x09, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x41, 0x74, 0x18, 0x07, 0x20,

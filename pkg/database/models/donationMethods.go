@@ -25,20 +25,20 @@ func (d *Donations) Create() error {
 	return result.Error
 }
 
-func FindDonationWards(id uint64) ([]*Ward, error) {
+func FindDonationWards(id uint64) (*Ward, error) {
 	db := database.GetDB()
 	d := new(Donations)
-	err := db.Preload("Wards").Where(&Donations{ID: id}).Find(&d).Error
+	err := db.Preload("Ward").Where(&Donations{ID: id}).Find(&d).Error
 
 	if err != nil {
 		return nil, err
 	}
 
 	if d.ID == 0 {
-		return []*Ward{}, nil
+		return &Ward{}, nil
 	}
 
-	return d.Wards, err
+	return d.Ward, err
 }
 
 func (d *Donations) FindDonationID() error {
@@ -50,12 +50,12 @@ func (d *Donations) FindDonationID() error {
 func (d *Donations) Delete() error {
 	db := database.GetDB()
 
-	return db.Select("Wards").Delete(&d).Error
+	return db.Select("Ward").Delete(&d).Error
 }
 
 func (d *Donations) DeleteByID() error {
 	dbase := database.GetDB()
-	result := dbase.Select("Wards").Delete(&Donations{}, d.ID)
+	result := dbase.Select("Ward").Delete(&Donations{}, d.ID)
 
 	return result.Error
 }
