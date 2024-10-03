@@ -73,6 +73,9 @@ const (
 // DatabaseServiceClient is the client API for DatabaseService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// *
+// Доступные API методы
 type DatabaseServiceClient interface {
 	// *
 	// Создание нового пользователя
@@ -724,6 +727,9 @@ func (c *databaseServiceClient) UpdateWard(ctx context.Context, in *Ward, opts .
 // DatabaseServiceServer is the server API for DatabaseService service.
 // All implementations must embed UnimplementedDatabaseServiceServer
 // for forward compatibility.
+//
+// *
+// Доступные API методы
 type DatabaseServiceServer interface {
 	// *
 	// Создание нового пользователя
