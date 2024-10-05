@@ -10,4 +10,5 @@ generate_go:
 
 generate_python:
 		@echo Step 1: Generate proto files...
-		python -m grpc_tools.protoc -I proto proto/DatabaseService/*.proto --python_out=./gen/python/ --pyi_out=./gen/python/ --grpc_python_out=./gen/python/
+		@python -m grpc_tools.protoc -I proto proto/DatabaseService/*.proto --python_out=./gen/python/ --pyi_out=./gen/python/ --grpc_python_out=./gen/python/
+		@echo Successfully!!!

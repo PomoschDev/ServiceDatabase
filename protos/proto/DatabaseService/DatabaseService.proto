@@ -47,7 +47,7 @@ service DatabaseService {
   /**
 * Поиск компании определенного пользователя
  */
-  rpc FindUserCompany(FindUserByIdRequest) returns (Company);
+  rpc FindUserCompany(FindUserCompanyRequest) returns (Company);
   /**
 * Поиск пожертвований определенного пользователя
  */
@@ -216,6 +216,13 @@ service DatabaseService {
 * Пустая структура, необходимая для запросов без входящих аргументов
  */
 message Empty {}
+
+/**
+* Запрос на извлечение компании пользователя (если его поле type = 1)
+ */
+message FindUserCompanyRequest {
+  uint64 id = 1; /** ID пользователя чью компанию нужно найти */
+}
 
 /**
 * Стандартные HTTP ответы на запросы
@@ -419,7 +426,7 @@ message CreateCardRequest {
   string number = 2; /** Номер карты */
   string date = 3; /** Дата до которой активна карта */
   uint64 cvv = 4; /** CVV код карты */
-  string userId = 5; /** ID пользователя кому принадлежит карта */
+  uint64 userId = 5; /** ID пользователя кому принадлежит карта */
 }
 
 /**

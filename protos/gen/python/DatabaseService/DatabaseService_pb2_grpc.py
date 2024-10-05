@@ -83,7 +83,7 @@ class DatabaseServiceStub(object):
                 _registered_method=True)
         self.FindUserCompany = channel.unary_unary(
                 '/service.DatabaseService/FindUserCompany',
-                request_serializer=DatabaseService_dot_DatabaseService__pb2.FindUserByIdRequest.SerializeToString,
+                request_serializer=DatabaseService_dot_DatabaseService__pb2.FindUserCompanyRequest.SerializeToString,
                 response_deserializer=DatabaseService_dot_DatabaseService__pb2.Company.FromString,
                 _registered_method=True)
         self.FindUserDonations = channel.unary_unary(
@@ -730,7 +730,7 @@ def add_DatabaseServiceServicer_to_server(servicer, server):
             ),
             'FindUserCompany': grpc.unary_unary_rpc_method_handler(
                     servicer.FindUserCompany,
-                    request_deserializer=DatabaseService_dot_DatabaseService__pb2.FindUserByIdRequest.FromString,
+                    request_deserializer=DatabaseService_dot_DatabaseService__pb2.FindUserCompanyRequest.FromString,
                     response_serializer=DatabaseService_dot_DatabaseService__pb2.Company.SerializeToString,
             ),
             'FindUserDonations': grpc.unary_unary_rpc_method_handler(
@@ -1199,7 +1199,7 @@ class DatabaseService(object):
             request,
             target,
             '/service.DatabaseService/FindUserCompany',
-            DatabaseService_dot_DatabaseService__pb2.FindUserByIdRequest.SerializeToString,
+            DatabaseService_dot_DatabaseService__pb2.FindUserCompanyRequest.SerializeToString,
             DatabaseService_dot_DatabaseService__pb2.Company.FromString,
             options,
             channel_credentials,

@@ -9,6 +9,12 @@ class Empty(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...
 
+class FindUserCompanyRequest(_message.Message):
+    __slots__ = ("id",)
+    ID_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    def __init__(self, id: _Optional[int] = ...) -> None: ...
+
 class HTTPCodes(_message.Message):
     __slots__ = ("code",)
     CODE_FIELD_NUMBER: _ClassVar[int]
@@ -232,8 +238,8 @@ class CreateCardRequest(_message.Message):
     number: str
     date: str
     cvv: int
-    userId: str
-    def __init__(self, fullName: _Optional[str] = ..., number: _Optional[str] = ..., date: _Optional[str] = ..., cvv: _Optional[int] = ..., userId: _Optional[str] = ...) -> None: ...
+    userId: int
+    def __init__(self, fullName: _Optional[str] = ..., number: _Optional[str] = ..., date: _Optional[str] = ..., cvv: _Optional[int] = ..., userId: _Optional[int] = ...) -> None: ...
 
 class CardsResponse(_message.Message):
     __slots__ = ("cards",)
