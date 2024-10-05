@@ -24,9 +24,6 @@ WORKDIR /app
 #Порт для прослушки
 ENV PORT=44044
 
-RUN apk add curl
-RUN apk add nano
-
 # Копируем исполняемый файл из предыдущего образа
 COPY --from=builder /go/service/entrypoint ./service
 

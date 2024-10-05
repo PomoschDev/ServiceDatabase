@@ -108,6 +108,11 @@ func (s *serverAPI) ComparePassword(ctx context.Context, req *ComparePasswordReq
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
 	}
 
+	if user.ID == 0 {
+		logger.Log.Warn("user.ID == 0")
+		return nil, status.Error(codes.NotFound, fmt.Sprintf("Пользователь не найден"))
+	}
+
 	isValid, err := models.ComparePassword(req.GetPhone(), req.GetPassword())
 	if err != nil {
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка при сравнении пароля: %v", err))
@@ -121,10 +126,14 @@ func (s *serverAPI) ComparePassword(ctx context.Context, req *ComparePasswordReq
 }
 
 func (s *serverAPI) UserIsExists(ctx context.Context, req *UserIsExistsRequest) (*UserIsExistsResponse, error) {
+	if len(req.GetPhone()) == 0 || req.GetPhone() == "" {
+		logger.Log.Warn("len(req.GetPhone()) == 0 || req.GetPhone() == \"\"")
+		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("Неверные аргументы"))
+	}
 	isExists, err := models.UserIsExists(req.GetPhone())
 	if err != nil {
 		logger.Log.Error("models.UserIsExists(req.GetPhone())", sl.Err(err))
-		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
+		return nil, status.Error(codes.NotFound, fmt.Sprintf("%v", err))
 	}
 
 	response := &UserIsExistsResponse{
@@ -135,6 +144,11 @@ func (s *serverAPI) UserIsExists(ctx context.Context, req *UserIsExistsRequest) 
 }
 
 func (s *serverAPI) FindUserById(ctx context.Context, req *FindUserByIdRequest) (*CreateUserResponse, error) {
+	if req.GetId() <= 0 {
+		logger.Log.Warn("req.GetId() == 0")
+		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("ID не может быть меньше или равен 0"))
+	}
+
 	user := &models.User{ID: req.GetId()}
 	if err := user.FindUserID(); err != nil {
 		logger.Log.Error("user.FindUserID()", sl.Err(err))
@@ -156,6 +170,10 @@ func (s *serverAPI) FindUserById(ctx context.Context, req *FindUserByIdRequest) 
 }
 
 func (s *serverAPI) FindUserByEmail(ctx context.Context, req *FindUserByEmailRequest) (*CreateUserResponse, error) {
+	if len(req.GetEmail()) == 0 || req.GetEmail() == "" {
+		logger.Log.Warn("len(req.GetEmail()) == 0 || req.GetEmail() == \"\"")
+		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("Email не может быть пустым"))
+	}
 	user := &models.User{Email: req.GetEmail()}
 	if err := user.FindUserEmail(); err != nil {
 		logger.Log.Error("user.FindUserEmail()", sl.Err(err))
@@ -177,6 +195,10 @@ func (s *serverAPI) FindUserByEmail(ctx context.Context, req *FindUserByEmailReq
 }
 
 func (s *serverAPI) FindUserByPhone(ctx context.Context, req *FindUserByPhoneRequest) (*CreateUserResponse, error) {
+	if len(req.GetPhone()) == 0 || req.GetPhone() == "" {
+		logger.Log.Warn("len(req.GetPhone()) == 0 || req.GetPhone() == \"\"")
+		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("Неверные аргументы"))
+	}
 	user := &models.User{Phone: req.GetPhone()}
 	if err := user.FindUserPhone(); err != nil {
 		logger.Log.Error("user.FindUserPhone()", sl.Err(err))
@@ -199,10 +221,21 @@ func (s *serverAPI) FindUserByPhone(ctx context.Context, req *FindUserByPhoneReq
 }
 
 func (s *serverAPI) ChangeUserType(ctx context.Context, req *ChangeUserTypeRequest) (*ChangeUserTypeResponse, error) {
+	if req.GetId() <= 0 {
+		logger.Log.Error("req.GetId() <= 0")
+		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("ID не может быть меньше или равен 0"))
+	}
+
+	if req.GetType() > 1 {
+		logger.Log.Error("req.GetType() > 1")
+		return nil, status.Error(codes.InvalidArgument,
+			fmt.Sprintf("Поле type может принимать значения только 0 или 1"))
+	}
+
 	user := &models.User{ID: req.GetId()}
 	if err := user.ChangeUserType(req.GetType()); err != nil {
 		logger.Log.Error("user.ChangeUserType(req.GetType())", sl.Err(err))
-		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
+		return nil, status.Error(codes.NotFound, fmt.Sprintf("%v", err))
 	}
 
 	response := &ChangeUserTypeResponse{
@@ -212,7 +245,12 @@ func (s *serverAPI) ChangeUserType(ctx context.Context, req *ChangeUserTypeReque
 	return response, nil
 }
 
-func (s *serverAPI) FindUserCompany(ctx context.Context, req *FindUserByIdRequest) (*Company, error) {
+func (s *serverAPI) FindUserCompany(ctx context.Context, req *FindUserCompanyRequest) (*Company, error) {
+	if req.GetId() <= 0 {
+		logger.Log.Error("req.GetId() <= 0")
+		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("ID не может быть меньше или равен 0"))
+	}
+
 	company, err := models.FindUserCompany(req.GetId())
 	if err != nil {
 		logger.Log.Error("models.FindUserCompany(req.GetId())", sl.Err(err))
@@ -231,6 +269,10 @@ func (s *serverAPI) FindUserCompany(ctx context.Context, req *FindUserByIdReques
 
 func (s *serverAPI) FindUserDonations(ctx context.Context,
 	req *FindUserDonationsRequest) (*FindUserDonationsResponse, error) {
+	if req.GetId() <= 0 {
+		logger.Log.Error("req.GetId() <= 0")
+		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("ID не может быть меньше или равен 0"))
+	}
 
 	donations, err := models.FindUserDonations(req.GetId())
 	if err != nil {
@@ -239,7 +281,7 @@ func (s *serverAPI) FindUserDonations(ctx context.Context,
 	}
 
 	obj := struct {
-		Donations []*models.Donations `json:"dontations"`
+		Donations []*models.Donations `json:"donations"`
 	}{}
 
 	obj.Donations = donations
@@ -255,6 +297,11 @@ func (s *serverAPI) FindUserDonations(ctx context.Context,
 }
 
 func (s *serverAPI) FindUserCard(ctx context.Context, req *FindUserCardRequest) (*FindUserCardResponse, error) {
+	if req.GetId() <= 0 {
+		logger.Log.Error("req.GetId() <= 0")
+		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("ID не может быть меньше или равен 0"))
+	}
+
 	cards, err := models.FindUserCard(req.GetId())
 	if err != nil && !strings.Contains(err.Error(), "Информация о банковской карте отсутствует") {
 		logger.Log.Error("models.FindUserCard(req.GetId())", sl.Err(err))
@@ -299,6 +346,11 @@ func (s *serverAPI) DeleteUserByModel(ctx context.Context, req *DeleteUserByMode
 }
 
 func (s *serverAPI) DeleteUserById(ctx context.Context, req *DeleteUserByIdRequest) (*HTTPCodes, error) {
+	if req.GetId() <= 0 {
+		logger.Log.Error("req.GetId() <= 0")
+		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("ID не может быть меньше или равен 0"))
+	}
+
 	user := &models.User{ID: req.GetId()}
 	if err := user.DeleteByID(); err != nil {
 		logger.Log.Error("user.DeleteByID()", sl.Err(err))
@@ -337,7 +389,7 @@ func (s *serverAPI) UpdateUser(ctx context.Context, req *UpdateUserRequest) (*Cr
 		return nil, status.Error(codes.NotFound, fmt.Sprintf("Обновленный пользователь не найден: %v", result.Error))
 	}
 
-	response := &CreateUserResponse{}
+	response := new(CreateUserResponse)
 	if err := utilities.Transformation(user, response); err != nil {
 		logger.Log.Error("utilities.Transformation(req, user)", sl.Err(err))
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
@@ -357,7 +409,7 @@ func (s *serverAPI) AddCardToUser(ctx context.Context, req *AddCardToUserRequest
 
 	db := database.GetDB()
 	user = nil
-	result := db.Preload("Card").Preload("Company.Card").Preload("Donations.Wards").Where(&models.User{ID: card.
+	result := db.Preload("Card").Preload("Company.Card").Preload("Donations.Ward").Where(&models.User{ID: card.
 		UserID}).
 		Find(&user)
 

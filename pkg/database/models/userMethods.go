@@ -118,7 +118,7 @@ func (u *User) ChangeUserType(newType uint64) error {
 		return errors.New("Пользователь не найден")
 	}
 
-	return db.UpdateColumn("type", newType).Error
+	return db.Model(&u).UpdateColumn("type", newType).Error
 }
 
 func FindUserCompany(id uint64) (*Company, error) {

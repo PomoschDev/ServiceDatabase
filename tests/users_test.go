@@ -124,6 +124,499 @@ func Test_UserIsExists_HappyPath(t *testing.T) {
 	t.Logf("Ответ от сервера: %t", response.IsExists)
 }
 
+func Test_UserIsExists_BadPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	t.Logf("Проверка с пустым полем phone")
+	request := &DatabaseServicev1.UserIsExistsRequest{}
+	response, err := st.ClientAPI.UserIsExists(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+	}
+
+	t.Logf("Проверка с случайным phone")
+	request = &DatabaseServicev1.UserIsExistsRequest{Phone: gofakeit.Phone()}
+	response, err = st.ClientAPI.UserIsExists(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %t", response.IsExists)
+}
+
+func Test_FindUserById_HappyPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	request := &DatabaseServicev1.FindUserByIdRequest{Id: 1}
+	response, err := st.ClientAPI.FindUserById(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %s", utilities.ToJSON(response))
+}
+
+func Test_FindUserById_BadPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	t.Logf("Поиск с случайным id")
+	request := &DatabaseServicev1.FindUserByIdRequest{Id: uint64(gofakeit.Uint8())}
+	response, err := st.ClientAPI.FindUserById(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+	}
+
+	t.Logf("Поиск с пустым id")
+	request = &DatabaseServicev1.FindUserByIdRequest{}
+	response, err = st.ClientAPI.FindUserById(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %s", utilities.ToJSON(response))
+}
+
+func Test_FindUserByEmail_HappyPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	request := &DatabaseServicev1.FindUserByEmailRequest{Email: "tyriquepagac@borer.biz"}
+	response, err := st.ClientAPI.FindUserByEmail(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %s", utilities.ToJSON(response))
+}
+
+func Test_FindUserByEmail_BadPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	t.Logf("Поиск по случайному email")
+	request := &DatabaseServicev1.FindUserByEmailRequest{Email: gofakeit.Email()}
+	response, err := st.ClientAPI.FindUserByEmail(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+	}
+
+	t.Logf("Поиск по пустому email")
+	request = &DatabaseServicev1.FindUserByEmailRequest{}
+	response, err = st.ClientAPI.FindUserByEmail(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+	}
+
+	t.Logf("Ответ от сервера: %s", utilities.ToJSON(response))
+}
+
+func Test_FindUserByPhone_HappyPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	request := &DatabaseServicev1.FindUserByPhoneRequest{Phone: "7682740246"}
+	response, err := st.ClientAPI.FindUserByPhone(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %s", utilities.ToJSON(response))
+}
+
+func Test_FindUserByPhone_BadPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	t.Logf("Поиск с пустым полем phone")
+	request := &DatabaseServicev1.FindUserByPhoneRequest{}
+	response, err := st.ClientAPI.FindUserByPhone(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+	}
+
+	t.Logf("Поиск с случайным полем phone")
+	request = &DatabaseServicev1.FindUserByPhoneRequest{Phone: gofakeit.Phone()}
+	response, err = st.ClientAPI.FindUserByPhone(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+	}
+
+	t.Logf("Ответ от сервера: %s", utilities.ToJSON(response))
+}
+
+func Test_ChangeUserType_HappyPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	request := &DatabaseServicev1.ChangeUserTypeRequest{Id: 1, Type: 1}
+	response, err := st.ClientAPI.ChangeUserType(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %t", response.Accessory)
+
+	request = &DatabaseServicev1.ChangeUserTypeRequest{Id: 1, Type: 0}
+	response, err = st.ClientAPI.ChangeUserType(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %t", response.Accessory)
+}
+
+func Test_ChangeUserType_BadPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	t.Logf("id 0 type 1")
+	request := &DatabaseServicev1.ChangeUserTypeRequest{Id: 0, Type: 1}
+	response, err := st.ClientAPI.ChangeUserType(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+	}
+
+	t.Logf("id 1 type 3")
+	request = &DatabaseServicev1.ChangeUserTypeRequest{Id: 1, Type: 3}
+	response, err = st.ClientAPI.ChangeUserType(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %s", utilities.ToJSON(response))
+}
+
+func Test_FindUserCompany_HappyPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	request := &DatabaseServicev1.FindUserCompanyRequest{Id: 1}
+	response, err := st.ClientAPI.FindUserCompany(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %s", utilities.ToJSON(response))
+}
+
+func Test_FindUserCompany_BadPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	t.Logf("Поиск с id = 0")
+	request := &DatabaseServicev1.FindUserCompanyRequest{Id: 0}
+	response, err := st.ClientAPI.FindUserCompany(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+	}
+
+	t.Logf("Поиск с случайным id")
+	request = &DatabaseServicev1.FindUserCompanyRequest{Id: uint64(gofakeit.Uint8())}
+	response, err = st.ClientAPI.FindUserCompany(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %s", utilities.ToJSON(response))
+}
+
+func Test_FindUserDonations_HappyPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	request := &DatabaseServicev1.FindUserDonationsRequest{Id: 1}
+	response, err := st.ClientAPI.FindUserDonations(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %s", utilities.ToJSON(response))
+}
+
+func Test_FindUserDonations_BadPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	t.Logf("Поиск с id = 0")
+	request := &DatabaseServicev1.FindUserDonationsRequest{Id: 0}
+	response, err := st.ClientAPI.FindUserDonations(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+	}
+
+	t.Logf("Поиск с случайным id")
+	request = &DatabaseServicev1.FindUserDonationsRequest{Id: uint64(gofakeit.Uint8())}
+	response, err = st.ClientAPI.FindUserDonations(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %s", utilities.ToJSON(response))
+}
+
+func Test_FindUserCard_HappyPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	request := &DatabaseServicev1.FindUserCardRequest{Id: 6}
+	response, err := st.ClientAPI.FindUserCard(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %s", utilities.ToJSON(response))
+}
+
+func Test_FindUserCard_BadPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	t.Logf("Поиск с id = 0")
+	request := &DatabaseServicev1.FindUserCardRequest{Id: 0}
+	response, err := st.ClientAPI.FindUserCard(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+	}
+
+	t.Logf("Поиск с рандомным id")
+	request = &DatabaseServicev1.FindUserCardRequest{Id: uint64(gofakeit.Uint8())}
+	response, err = st.ClientAPI.FindUserCard(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %s", utilities.ToJSON(response))
+}
+
+func Test_DeleteUserByModel_HappyPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	request := &DatabaseServicev1.FindUserByIdRequest{Id: 4}
+	response, err := st.ClientAPI.FindUserById(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	requestDelete := &DatabaseServicev1.DeleteUserByModelRequest{User: response}
+	responseDelete, err := st.ClientAPI.DeleteUserByModel(ctx, requestDelete)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %d", responseDelete.Code)
+}
+
+func Test_DeleteUserByModel_BadPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	request := &DatabaseServicev1.FindUserByIdRequest{Id: 0}
+	response, err := st.ClientAPI.FindUserById(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	requestDelete := &DatabaseServicev1.DeleteUserByModelRequest{User: response}
+	responseDelete, err := st.ClientAPI.DeleteUserByModel(ctx, requestDelete)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %d", responseDelete.Code)
+}
+
+func Test_DeleteUserById_HappyPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	request := &DatabaseServicev1.DeleteUserByIdRequest{Id: 5}
+	response, err := st.ClientAPI.DeleteUserById(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %d", response.Code)
+}
+
+func Test_DeleteUserById_BadPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	t.Logf("Удаление с id = 0")
+	request := &DatabaseServicev1.DeleteUserByIdRequest{Id: 0}
+	response, err := st.ClientAPI.DeleteUserById(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+	}
+
+	t.Logf("Удаление с случайным id")
+	request = &DatabaseServicev1.DeleteUserByIdRequest{Id: uint64(gofakeit.Uint8())}
+	response, err = st.ClientAPI.DeleteUserById(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+	}
+
+	t.Logf("Ответ от сервера: %d", response.Code)
+}
+
+func Test_UpdateUser_HappyPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	requestFind := &DatabaseServicev1.FindUserByIdRequest{Id: 6}
+	responseFind, err := st.ClientAPI.FindUserById(ctx, requestFind)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	responseFind.Username = "Kavon Mertz Updated"
+
+	request := new(DatabaseServicev1.UpdateUserRequest)
+
+	if err := utilities.Transformation(responseFind, request); err != nil {
+		t.Errorf("Ошибка при конвертации: %v", err)
+	}
+
+	response, err := st.ClientAPI.UpdateUser(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %s", utilities.ToJSON(response))
+}
+
+func Test_UpdateUser_BadPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	requestFind := &DatabaseServicev1.FindUserByIdRequest{Id: uint64(gofakeit.Uint8())}
+	responseFind, err := st.ClientAPI.FindUserById(ctx, requestFind)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	responseFind.Username = "Kavon Mertz Updated"
+
+	request := new(DatabaseServicev1.UpdateUserRequest)
+
+	if err := utilities.Transformation(responseFind, request); err != nil {
+		t.Errorf("Ошибка при конвертации: %v", err)
+	}
+
+	response, err := st.ClientAPI.UpdateUser(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %s", utilities.ToJSON(response))
+}
+
+func Test_AddCardToUser_HappyPath(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	cardData := gofakeit.CreditCard()
+	cvv, err := strconv.Atoi(cardData.Cvv)
+	if err != nil {
+		cvv = 123
+	}
+
+	card := &DatabaseServicev1.CreateCardRequest{
+		FullName: "Kavon Mertz",
+		Number:   cardData.Number,
+		Date:     cardData.Exp,
+		Cvv:      uint64(cvv),
+		UserId:   6,
+	}
+
+	request := &DatabaseServicev1.AddCardToUserRequest{Card: card}
+
+	response, err := st.ClientAPI.AddCardToUser(ctx, request)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	t.Logf("Ответ от сервера: %s", utilities.ToJSON(response))
+}
+
 //--------------------
 
 func randomUser() *models.User {

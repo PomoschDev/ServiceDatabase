@@ -106,7 +106,7 @@ type DatabaseServiceClient interface {
 	ChangeUserType(ctx context.Context, in *ChangeUserTypeRequest, opts ...grpc.CallOption) (*ChangeUserTypeResponse, error)
 	// *
 	// Поиск компании определенного пользователя
-	FindUserCompany(ctx context.Context, in *FindUserByIdRequest, opts ...grpc.CallOption) (*Company, error)
+	FindUserCompany(ctx context.Context, in *FindUserCompanyRequest, opts ...grpc.CallOption) (*Company, error)
 	// *
 	// Поиск пожертвований определенного пользователя
 	FindUserDonations(ctx context.Context, in *FindUserDonationsRequest, opts ...grpc.CallOption) (*FindUserDonationsResponse, error)
@@ -324,7 +324,7 @@ func (c *databaseServiceClient) ChangeUserType(ctx context.Context, in *ChangeUs
 	return out, nil
 }
 
-func (c *databaseServiceClient) FindUserCompany(ctx context.Context, in *FindUserByIdRequest, opts ...grpc.CallOption) (*Company, error) {
+func (c *databaseServiceClient) FindUserCompany(ctx context.Context, in *FindUserCompanyRequest, opts ...grpc.CallOption) (*Company, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Company)
 	err := c.cc.Invoke(ctx, DatabaseService_FindUserCompany_FullMethodName, in, out, cOpts...)
@@ -760,7 +760,7 @@ type DatabaseServiceServer interface {
 	ChangeUserType(context.Context, *ChangeUserTypeRequest) (*ChangeUserTypeResponse, error)
 	// *
 	// Поиск компании определенного пользователя
-	FindUserCompany(context.Context, *FindUserByIdRequest) (*Company, error)
+	FindUserCompany(context.Context, *FindUserCompanyRequest) (*Company, error)
 	// *
 	// Поиск пожертвований определенного пользователя
 	FindUserDonations(context.Context, *FindUserDonationsRequest) (*FindUserDonationsResponse, error)
@@ -915,7 +915,7 @@ func (UnimplementedDatabaseServiceServer) FindUserByPhone(context.Context, *Find
 func (UnimplementedDatabaseServiceServer) ChangeUserType(context.Context, *ChangeUserTypeRequest) (*ChangeUserTypeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangeUserType not implemented")
 }
-func (UnimplementedDatabaseServiceServer) FindUserCompany(context.Context, *FindUserByIdRequest) (*Company, error) {
+func (UnimplementedDatabaseServiceServer) FindUserCompany(context.Context, *FindUserCompanyRequest) (*Company, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindUserCompany not implemented")
 }
 func (UnimplementedDatabaseServiceServer) FindUserDonations(context.Context, *FindUserDonationsRequest) (*FindUserDonationsResponse, error) {
@@ -1219,7 +1219,7 @@ func _DatabaseService_ChangeUserType_Handler(srv interface{}, ctx context.Contex
 }
 
 func _DatabaseService_FindUserCompany_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(FindUserByIdRequest)
+	in := new(FindUserCompanyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1231,7 +1231,7 @@ func _DatabaseService_FindUserCompany_Handler(srv interface{}, ctx context.Conte
 		FullMethod: DatabaseService_FindUserCompany_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DatabaseServiceServer).FindUserCompany(ctx, req.(*FindUserByIdRequest))
+		return srv.(DatabaseServiceServer).FindUserCompany(ctx, req.(*FindUserCompanyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

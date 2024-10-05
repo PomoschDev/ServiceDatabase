@@ -21,9 +21,6 @@ WORKDIR /app
 #Порт для прослушки
 ENV PORT=44044
 
-RUN apk add curl
-RUN apk add nano
-
 # Копируем исполняемый файл из предыдущего образа
 COPY --from=builder /go/service/entrypoint ./service
 
@@ -32,7 +29,7 @@ RUN apk add tzdata && echo "Europe/Moscow" > /etc/timezone && ln -s /usr/share/z
 #
 
 # Копируем файл конфигурации и сертификаты/ключи в контейнер
-COPY ./config/local.yaml .
+COPY ./config/prod.yaml .
 
 # Открываем порты
 EXPOSE ${PORT}

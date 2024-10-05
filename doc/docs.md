@@ -49,6 +49,7 @@
     - [FindUserByPhoneRequest](#service-FindUserByPhoneRequest)
     - [FindUserCardRequest](#service-FindUserCardRequest)
     - [FindUserCardResponse](#service-FindUserCardResponse)
+    - [FindUserCompanyRequest](#service-FindUserCompanyRequest)
     - [FindUserDonationsRequest](#service-FindUserDonationsRequest)
     - [FindUserDonationsResponse](#service-FindUserDonationsResponse)
     - [FindWardByIdRequest](#service-FindWardByIdRequest)
@@ -340,7 +341,7 @@
 | number | [string](#string) |  | Номер карты |
 | date | [string](#string) |  | Дата до которой активна карта |
 | cvv | [uint64](#uint64) |  | CVV код карты |
-| userId | [string](#string) |  | ID пользователя кому принадлежит карта |
+| userId | [uint64](#uint64) |  | ID пользователя кому принадлежит карта |
 
 
 
@@ -890,6 +891,22 @@
 
 
 
+<a name="service-FindUserCompanyRequest"></a>
+
+### FindUserCompanyRequest
+
+Запрос на извлечение компании пользователя (если его поле type = 1)
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  | ID пользователя чью компанию нужно найти |
+
+
+
+
+
+
 <a name="service-FindUserDonationsRequest"></a>
 
 ### FindUserDonationsRequest
@@ -1162,7 +1179,7 @@
 | FindUserByEmail | [FindUserByEmailRequest](#service-FindUserByEmailRequest) | [CreateUserResponse](#service-CreateUserResponse) |  Поиск пользователя по его email |
 | FindUserByPhone | [FindUserByPhoneRequest](#service-FindUserByPhoneRequest) | [CreateUserResponse](#service-CreateUserResponse) |  Поиск пользователя по номеру телефона |
 | ChangeUserType | [ChangeUserTypeRequest](#service-ChangeUserTypeRequest) | [ChangeUserTypeResponse](#service-ChangeUserTypeResponse) |  Изменение типа пользователя (0 - физическое лицо, 1 - юридическое лицо) |
-| FindUserCompany | [FindUserByIdRequest](#service-FindUserByIdRequest) | [Company](#service-Company) |  Поиск компании определенного пользователя |
+| FindUserCompany | [FindUserCompanyRequest](#service-FindUserCompanyRequest) | [Company](#service-Company) |  Поиск компании определенного пользователя |
 | FindUserDonations | [FindUserDonationsRequest](#service-FindUserDonationsRequest) | [FindUserDonationsResponse](#service-FindUserDonationsResponse) |  Поиск пожертвований определенного пользователя |
 | FindUserCard | [FindUserCardRequest](#service-FindUserCardRequest) | [FindUserCardResponse](#service-FindUserCardResponse) |  Поиск банковских карт определенного пользователя |
 | AddCardToUser | [AddCardToUserRequest](#service-AddCardToUserRequest) | [AddCardToUserResponse](#service-AddCardToUserResponse) |  Добавляет банковскую карту пользователю |
