@@ -74,7 +74,7 @@ func main() {
 	//Инициализация БД
 	db, err := database.Init(cfg)
 	if err != nil {
-		panic(any(fmt.Errorf("%w", err)))
+		panic(any(fmt.Errorf("ошибка инициализации базы данных: %w", err)))
 	}
 
 	//Миграции
