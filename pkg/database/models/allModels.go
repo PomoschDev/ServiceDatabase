@@ -16,14 +16,15 @@ const (
 )
 
 type Donations struct {
-	ID        uint64    `json:"id,omitempty"`
-	Title     string    `gorm:"not null" json:"title,omitempty"`
-	Amount    float64   `gorm:"not null" json:"amount,omitempty"`
-	Ward      *Ward     `gorm:"foreignKey:donations_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"wards,omitempty"`
-	UserID    uint64    `json:"userId,omitempty"`
-	User      *User     `json:"omitempty"`
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	ID         uint64    `json:"id,omitempty"`
+	Title      string    `gorm:"not null" json:"title,omitempty"`
+	Amount     float64   `gorm:"not null" json:"amount,omitempty"`
+	Ward       *Ward     `gorm:"foreignKey:donations_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"wards,omitempty"`
+	UserID     uint64    `json:"userId,omitempty"`
+	AvatarPath string    `json:"avatarPath,omitempty"`
+	User       *User     `json:"omitempty"`
+	CreatedAt  time.Time `json:"createdAt,omitempty"`
+	UpdatedAt  time.Time `json:"updatedAt,omitempty"`
 }
 
 type Ward struct {
@@ -80,16 +81,17 @@ type Card struct {
 
 // User - модель пользователей
 type User struct {
-	ID        uint64       `json:"id,omitempty"`
-	Email     string       `gorm:"index:,unique" json:"email,omitempty"`
-	Username  string       `gorm:"not null" json:"username,omitempty"`
-	Password  string       `gorm:"not null" json:"password,omitempty"`
-	Phone     string       `gorm:"index:,unique,not null" json:"phone,omitempty"`
-	Card      []*Card      `gorm:"foreignKey:user_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"card,omitempty"`
-	Role      string       `gorm:"not null" json:"role,omitempty"`
-	Company   *Company     `gorm:"foreignKey:user_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"company,omitempty"`
-	Type      uint64       `gorm:"default:0" json:"type,omitempty"`
-	Donations []*Donations `gorm:"foreignKey:user_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"donations,omitempty"`
-	CreatedAt time.Time    `json:"createdAt,omitempty"`
-	UpdatedAt time.Time    `json:"updatedAt,omitempty"`
+	ID         uint64       `json:"id,omitempty"`
+	Email      string       `gorm:"index:,unique" json:"email,omitempty"`
+	Username   string       `gorm:"not null" json:"username,omitempty"`
+	Password   string       `gorm:"not null" json:"password,omitempty"`
+	Phone      string       `gorm:"index:,unique,not null" json:"phone,omitempty"`
+	Card       []*Card      `gorm:"foreignKey:user_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"card,omitempty"`
+	Role       string       `gorm:"not null" json:"role,omitempty"`
+	Company    *Company     `gorm:"foreignKey:user_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"company,omitempty"`
+	Type       uint64       `gorm:"default:0" json:"type,omitempty"`
+	Donations  []*Donations `gorm:"foreignKey:user_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"donations,omitempty"`
+	AvatarPath string       `json:"avatarPath,omitempty"`
+	CreatedAt  time.Time    `json:"createdAt,omitempty"`
+	UpdatedAt  time.Time    `json:"updatedAt,omitempty"`
 }
