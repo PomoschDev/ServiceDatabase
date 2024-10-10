@@ -210,12 +210,177 @@ service DatabaseService {
 * Обновление подопечного
  */
   rpc UpdateWard(Ward) returns (Ward);
+
+
+  /**
+* Создание новой сессии
+*/
+  rpc CreateSessions(CreateSessionRequest) returns (CreateSessionResponse);
+
+  /**
+* Список всех сессии
+ */
+  rpc Sessions(Empty) returns (SessionsResponse);
+
+  /**
+* Поиск сессии по его ID
+ */
+  rpc FindSessionsById(FindSessionsByIdRequest) returns (FindSessionsByIdResponse);
+
+  /**
+* Поиск сессии по UserID
+*/
+  rpc FindSessionsByUserId(FindSessionsByUserIdRequest) returns (FindSessionsByUserIdResponse);
+
+
+  /**
+* Обновление поля RefreshToken по ID сессии
+ */
+  rpc ChangeRefreshTokenById(ChangeRefreshTokenByIdRequest) returns (ChangeRefreshTokenByIdResponse);
+
+  /**
+* Обновление поля RefreshToken по UserID пользователя
+*/
+  rpc ChangeRefreshTokenByUserId(ChangeRefreshTokenByUserIdRequest) returns (ChangeRefreshTokenByUserIdResponse);
+
+  /**
+* Удаление сессии по полной модели (например полученной с помощью FindSessionById)
+ */
+  rpc DeleteSessionByModel(DeleteSessionByModelRequest) returns (HTTPCodes);
+
+  /**
+* Удаляет сессию по ее ID
+ */
+  rpc DeleteSessionById(DeleteSessionByIdRequest) returns (HTTPCodes);
+
+  /**
+* Удаляет сессию по ее UserID
+*/
+  rpc DeleteSessionByUserId(DeleteSessionByUserIdRequest) returns (HTTPCodes);
 }
 
 /**
 * Пустая структура, необходимая для запросов без входящих аргументов
  */
 message Empty {}
+
+/**
+* Запрос на удаление сессии по ее ID
+ */
+message DeleteSessionByUserIdRequest {
+  uint64 userId = 1; /** UserID(ID пользователя в БД) пользователя, сессию которую будем удалять */
+}
+
+
+/**
+* Запрос на удаление сессии по ее ID
+ */
+message DeleteSessionByIdRequest {
+  uint64 id = 1; /** ID сессии которую будем удалять */
+}
+
+/**
+* Запрос на удаление сессии по сущности (например полученную с помощью FindSessionById)
+ */
+message DeleteSessionByModelRequest {
+  uint64 id = 1; /** ID сессии в базе данных */
+  uint64 userId = 2; /** ID пользователя, кому принадлежит сессия */
+  string refreshToken = 3; /** Refresh token */
+  string createdAt = 4; /** Дата создания сущности в базе данных */
+  string updatedAt = 5; /** Дата последнего обновления сущности в базе данных */
+}
+
+/**
+* Запрос на обновление Refresh Token по ID
+ */
+message ChangeRefreshTokenByUserIdRequest{
+  uint64 userId = 1; /** UserID(ID пользователя в БД) пользователя которому принадлежит сессия */
+  string refreshToken = 2; /** Refresh Token */
+}
+
+/**
+* Ответ на запрос обновления Refresh Token по ID
+ */
+message ChangeRefreshTokenByUserIdResponse{
+  bool accessory = 1; /** Успешность операции обновления Refresh Token */
+}
+
+/**
+* Запрос на обновление Refresh Token по ID
+ */
+message ChangeRefreshTokenByIdRequest{
+  uint64 id = 1; /** ID сессии */
+  string refreshToken = 2; /** Refresh Token */
+}
+
+/**
+* Ответ на запрос обновления Refresh Token по ID
+ */
+message ChangeRefreshTokenByIdResponse{
+  bool accessory = 1; /** Успешность операции обновления Refresh Token */
+}
+
+/**
+* Запрос на поиск сессии по UserID(ID пользователя в БД)
+ */
+message FindSessionsByUserIdRequest {
+  uint64 userId = 1; /** UserID(ID пользователя в БД) чью сессию необходимо найти */
+}
+
+/**
+* Ответ на запрос поиска сессии по UserID
+ */
+message FindSessionsByUserIdResponse {
+  uint64 id = 1; /** ID сессии в базе данных */
+  uint64 userId = 2; /** ID пользователя, кому принадлежит сессия */
+  string refreshToken = 3; /** Refresh token */
+  string createdAt = 4; /** Дата создания сущности в базе данных */
+  string updatedAt = 5; /** Дата последнего обновления сущности в базе данных */
+}
+
+/**
+* Запрос на поиск сессии по ID
+ */
+message FindSessionsByIdRequest {
+  uint64 id = 1; /** ID сессии которую необходимо найти */
+}
+
+/**
+* Ответ на запрос поиска сессии по ID
+ */
+message FindSessionsByIdResponse {
+  uint64 id = 1; /** ID сессии в базе данных */
+  uint64 userId = 2; /** ID пользователя, кому принадлежит сессия */
+  string refreshToken = 3; /** Refresh token */
+  string createdAt = 4; /** Дата создания сущности в базе данных */
+  string updatedAt = 5; /** Дата последнего обновления сущности в базе данных */
+}
+
+/**
+* Ответ на запрос списка всех сессий в базе данных
+ */
+message SessionsResponse {
+  repeated CreateSessionResponse sessions = 1; /** Массив сессий */
+}
+
+/**
+* Запрос на создание сессии
+ */
+message CreateSessionRequest {
+  uint64 userId = 1; /** ID пользователя, кому принадлежит сессия */
+  string refreshToken = 2; /** Refresh token */
+}
+
+/**
+* Ответ на запрос создания сессии
+ */
+message CreateSessionResponse {
+  uint64 id = 1; /** ID сессии в базе данных */
+  uint64 userId = 2; /** ID пользователя, кому принадлежит сессия */
+  string refreshToken = 3; /** Refresh token */
+  string createdAt = 4; /** Дата создания сущности в базе данных */
+  string updatedAt = 5; /** Дата последнего обновления сущности в базе данных */
+}
 
 /**
 * Запрос на извлечение компании пользователя (если его поле type = 1)

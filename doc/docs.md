@@ -10,6 +10,10 @@
     - [CardCompany](#service-CardCompany)
     - [CardsCompaniesResponse](#service-CardsCompaniesResponse)
     - [CardsResponse](#service-CardsResponse)
+    - [ChangeRefreshTokenByIdRequest](#service-ChangeRefreshTokenByIdRequest)
+    - [ChangeRefreshTokenByIdResponse](#service-ChangeRefreshTokenByIdResponse)
+    - [ChangeRefreshTokenByUserIdRequest](#service-ChangeRefreshTokenByUserIdRequest)
+    - [ChangeRefreshTokenByUserIdResponse](#service-ChangeRefreshTokenByUserIdResponse)
     - [ChangeUserTypeRequest](#service-ChangeUserTypeRequest)
     - [ChangeUserTypeResponse](#service-ChangeUserTypeResponse)
     - [CompaniesResponse](#service-CompaniesResponse)
@@ -21,6 +25,8 @@
     - [CreateCompanyRequest](#service-CreateCompanyRequest)
     - [CreateDonationsRequest](#service-CreateDonationsRequest)
     - [CreateDonationsResponse](#service-CreateDonationsResponse)
+    - [CreateSessionRequest](#service-CreateSessionRequest)
+    - [CreateSessionResponse](#service-CreateSessionResponse)
     - [CreateUserRequest](#service-CreateUserRequest)
     - [CreateUserResponse](#service-CreateUserResponse)
     - [CreateWardRequest](#service-CreateWardRequest)
@@ -30,6 +36,9 @@
     - [DeleteCompanyByModelRequest](#service-DeleteCompanyByModelRequest)
     - [DeleteDonationByIdRequest](#service-DeleteDonationByIdRequest)
     - [DeleteDonationByModelRequest](#service-DeleteDonationByModelRequest)
+    - [DeleteSessionByIdRequest](#service-DeleteSessionByIdRequest)
+    - [DeleteSessionByModelRequest](#service-DeleteSessionByModelRequest)
+    - [DeleteSessionByUserIdRequest](#service-DeleteSessionByUserIdRequest)
     - [DeleteUserByIdRequest](#service-DeleteUserByIdRequest)
     - [DeleteUserByModelRequest](#service-DeleteUserByModelRequest)
     - [DeleteWardByIdRequest](#service-DeleteWardByIdRequest)
@@ -44,6 +53,10 @@
     - [FindDonationByIdRequest](#service-FindDonationByIdRequest)
     - [FindDonationWardsRequest](#service-FindDonationWardsRequest)
     - [FindDonationWardsResponse](#service-FindDonationWardsResponse)
+    - [FindSessionsByIdRequest](#service-FindSessionsByIdRequest)
+    - [FindSessionsByIdResponse](#service-FindSessionsByIdResponse)
+    - [FindSessionsByUserIdRequest](#service-FindSessionsByUserIdRequest)
+    - [FindSessionsByUserIdResponse](#service-FindSessionsByUserIdResponse)
     - [FindUserByEmailRequest](#service-FindUserByEmailRequest)
     - [FindUserByIdRequest](#service-FindUserByIdRequest)
     - [FindUserByPhoneRequest](#service-FindUserByPhoneRequest)
@@ -56,6 +69,7 @@
     - [HTTPCodes](#service-HTTPCodes)
     - [IsRoleRequest](#service-IsRoleRequest)
     - [IsRoleResponse](#service-IsRoleResponse)
+    - [SessionsResponse](#service-SessionsResponse)
     - [UpdateCompanyRequest](#service-UpdateCompanyRequest)
     - [UpdateDonationsRequest](#service-UpdateDonationsRequest)
     - [UpdateUserRequest](#service-UpdateUserRequest)
@@ -194,6 +208,72 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | cards | [Card](#service-Card) | repeated | Массив банковских карт пользователя |
+
+
+
+
+
+
+<a name="service-ChangeRefreshTokenByIdRequest"></a>
+
+### ChangeRefreshTokenByIdRequest
+
+Запрос на обновление Refresh Token по ID
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  | ID сессии |
+| refreshToken | [string](#string) |  | Refresh Token |
+
+
+
+
+
+
+<a name="service-ChangeRefreshTokenByIdResponse"></a>
+
+### ChangeRefreshTokenByIdResponse
+
+Ответ на запрос обновления Refresh Token по ID
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| accessory | [bool](#bool) |  | Успешность операции обновления Refresh Token |
+
+
+
+
+
+
+<a name="service-ChangeRefreshTokenByUserIdRequest"></a>
+
+### ChangeRefreshTokenByUserIdRequest
+
+Запрос на обновление Refresh Token по ID
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| userId | [uint64](#uint64) |  | UserID(ID пользователя в БД) пользователя которому принадлежит сессия |
+| refreshToken | [string](#string) |  | Refresh Token |
+
+
+
+
+
+
+<a name="service-ChangeRefreshTokenByUserIdResponse"></a>
+
+### ChangeRefreshTokenByUserIdResponse
+
+Ответ на запрос обновления Refresh Token по ID
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| accessory | [bool](#bool) |  | Успешность операции обновления Refresh Token |
 
 
 
@@ -414,6 +494,43 @@
 
 
 
+<a name="service-CreateSessionRequest"></a>
+
+### CreateSessionRequest
+
+Запрос на создание сессии
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| userId | [uint64](#uint64) |  | ID пользователя, кому принадлежит сессия |
+| refreshToken | [string](#string) |  | Refresh token |
+
+
+
+
+
+
+<a name="service-CreateSessionResponse"></a>
+
+### CreateSessionResponse
+
+Ответ на запрос создания сессии
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  | ID сессии в базе данных |
+| userId | [uint64](#uint64) |  | ID пользователя, кому принадлежит сессия |
+| refreshToken | [string](#string) |  | Refresh token |
+| createdAt | [string](#string) |  | Дата создания сущности в базе данных |
+| updatedAt | [string](#string) |  | Дата последнего обновления сущности в базе данных |
+
+
+
+
+
+
 <a name="service-CreateUserRequest"></a>
 
 ### CreateUserRequest
@@ -582,6 +699,58 @@
 | userId | [uint64](#uint64) |  | ID пользователя, которому принадлежит пожертвование |
 | createdAt | [string](#string) |  | Дата создания сущности в базе данных |
 | updatedAt | [string](#string) |  | Дата последнего обновления сущности в базе данных |
+
+
+
+
+
+
+<a name="service-DeleteSessionByIdRequest"></a>
+
+### DeleteSessionByIdRequest
+
+Запрос на удаление сессии по ее ID
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  | ID сессии которую будем удалять |
+
+
+
+
+
+
+<a name="service-DeleteSessionByModelRequest"></a>
+
+### DeleteSessionByModelRequest
+
+Запрос на удаление сессии по сущности (например полученную с помощью FindSessionById)
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  | ID сессии в базе данных |
+| userId | [uint64](#uint64) |  | ID пользователя, кому принадлежит сессия |
+| refreshToken | [string](#string) |  | Refresh token |
+| createdAt | [string](#string) |  | Дата создания сущности в базе данных |
+| updatedAt | [string](#string) |  | Дата последнего обновления сущности в базе данных |
+
+
+
+
+
+
+<a name="service-DeleteSessionByUserIdRequest"></a>
+
+### DeleteSessionByUserIdRequest
+
+Запрос на удаление сессии по ее ID
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| userId | [uint64](#uint64) |  | UserID(ID пользователя в БД) пользователя, сессию которую будем удалять |
 
 
 
@@ -813,6 +982,78 @@
 
 
 
+<a name="service-FindSessionsByIdRequest"></a>
+
+### FindSessionsByIdRequest
+
+Запрос на поиск сессии по ID
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  | ID сессии которую необходимо найти |
+
+
+
+
+
+
+<a name="service-FindSessionsByIdResponse"></a>
+
+### FindSessionsByIdResponse
+
+Ответ на запрос поиска сессии по ID
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  | ID сессии в базе данных |
+| userId | [uint64](#uint64) |  | ID пользователя, кому принадлежит сессия |
+| refreshToken | [string](#string) |  | Refresh token |
+| createdAt | [string](#string) |  | Дата создания сущности в базе данных |
+| updatedAt | [string](#string) |  | Дата последнего обновления сущности в базе данных |
+
+
+
+
+
+
+<a name="service-FindSessionsByUserIdRequest"></a>
+
+### FindSessionsByUserIdRequest
+
+Запрос на поиск сессии по UserID(ID пользователя в БД)
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| userId | [uint64](#uint64) |  | UserID(ID пользователя в БД) чью сессию необходимо найти |
+
+
+
+
+
+
+<a name="service-FindSessionsByUserIdResponse"></a>
+
+### FindSessionsByUserIdResponse
+
+Ответ на запрос поиска сессии по UserID
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  | ID сессии в базе данных |
+| userId | [uint64](#uint64) |  | ID пользователя, кому принадлежит сессия |
+| refreshToken | [string](#string) |  | Refresh token |
+| createdAt | [string](#string) |  | Дата создания сущности в базе данных |
+| updatedAt | [string](#string) |  | Дата последнего обновления сущности в базе данных |
+
+
+
+
+
+
 <a name="service-FindUserByEmailRequest"></a>
 
 ### FindUserByEmailRequest
@@ -1000,6 +1241,22 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | accessory | [bool](#bool) |  | Принадлежность к роли (true/false) |
+
+
+
+
+
+
+<a name="service-SessionsResponse"></a>
+
+### SessionsResponse
+
+Ответ на запрос списка всех сессий в базе данных
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| sessions | [CreateSessionResponse](#service-CreateSessionResponse) | repeated | Массив сессий |
 
 
 
@@ -1223,6 +1480,15 @@
 | DeleteWardByModel | [Ward](#service-Ward) | [HTTPCodes](#service-HTTPCodes) |  Удаление подопечного по модели (например полученной с помощью FindWardById) |
 | DeleteWardById | [DeleteWardByIdRequest](#service-DeleteWardByIdRequest) | [HTTPCodes](#service-HTTPCodes) |  Удаление подопечного по его ID |
 | UpdateWard | [Ward](#service-Ward) | [Ward](#service-Ward) |  Обновление подопечного |
+| CreateSessions | [CreateSessionRequest](#service-CreateSessionRequest) | [CreateSessionResponse](#service-CreateSessionResponse) |  Создание новой сессии |
+| Sessions | [Empty](#service-Empty) | [SessionsResponse](#service-SessionsResponse) |  Список всех сессии |
+| FindSessionsById | [FindSessionsByIdRequest](#service-FindSessionsByIdRequest) | [FindSessionsByIdResponse](#service-FindSessionsByIdResponse) |  Поиск сессии по его ID |
+| FindSessionsByUserId | [FindSessionsByUserIdRequest](#service-FindSessionsByUserIdRequest) | [FindSessionsByUserIdResponse](#service-FindSessionsByUserIdResponse) |  Поиск сессии по UserID |
+| ChangeRefreshTokenById | [ChangeRefreshTokenByIdRequest](#service-ChangeRefreshTokenByIdRequest) | [ChangeRefreshTokenByIdResponse](#service-ChangeRefreshTokenByIdResponse) |  Обновление поля RefreshToken по ID сессии |
+| ChangeRefreshTokenByUserId | [ChangeRefreshTokenByUserIdRequest](#service-ChangeRefreshTokenByUserIdRequest) | [ChangeRefreshTokenByUserIdResponse](#service-ChangeRefreshTokenByUserIdResponse) |  Обновление поля RefreshToken по UserID пользователя |
+| DeleteSessionByModel | [DeleteSessionByModelRequest](#service-DeleteSessionByModelRequest) | [HTTPCodes](#service-HTTPCodes) |  Удаление сессии по полной модели (например полученной с помощью FindSessionById) |
+| DeleteSessionById | [DeleteSessionByIdRequest](#service-DeleteSessionByIdRequest) | [HTTPCodes](#service-HTTPCodes) |  Удаляет сессию по ее ID |
+| DeleteSessionByUserId | [DeleteSessionByUserIdRequest](#service-DeleteSessionByUserIdRequest) | [HTTPCodes](#service-HTTPCodes) |  Удаляет сессию по ее UserID |
 
  
 

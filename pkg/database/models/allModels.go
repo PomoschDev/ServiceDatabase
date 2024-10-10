@@ -95,3 +95,12 @@ type User struct {
 	CreatedAt  time.Time    `json:"createdAt,omitempty"`
 	UpdatedAt  time.Time    `json:"updatedAt,omitempty"`
 }
+
+// Session - сессия пользователей
+type Session struct {
+	ID           uint64    `json:"id,omitempty"`
+	UserID       uint64    `gorm:"index:,unique" json:"userId,omitempty"`
+	RefreshToken string    `json:"refreshToken,omitempty"`
+	CreatedAt    time.Time `json:"createdAt,omitempty"`
+	UpdatedAt    time.Time `json:"updatedAt,omitempty"`
+}

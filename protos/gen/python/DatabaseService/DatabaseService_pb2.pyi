@@ -9,6 +9,128 @@ class Empty(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...
 
+class DeleteSessionByUserIdRequest(_message.Message):
+    __slots__ = ("userId",)
+    USERID_FIELD_NUMBER: _ClassVar[int]
+    userId: int
+    def __init__(self, userId: _Optional[int] = ...) -> None: ...
+
+class DeleteSessionByIdRequest(_message.Message):
+    __slots__ = ("id",)
+    ID_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    def __init__(self, id: _Optional[int] = ...) -> None: ...
+
+class DeleteSessionByModelRequest(_message.Message):
+    __slots__ = ("id", "userId", "refreshToken", "createdAt", "updatedAt")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    USERID_FIELD_NUMBER: _ClassVar[int]
+    REFRESHTOKEN_FIELD_NUMBER: _ClassVar[int]
+    CREATEDAT_FIELD_NUMBER: _ClassVar[int]
+    UPDATEDAT_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    userId: int
+    refreshToken: str
+    createdAt: str
+    updatedAt: str
+    def __init__(self, id: _Optional[int] = ..., userId: _Optional[int] = ..., refreshToken: _Optional[str] = ..., createdAt: _Optional[str] = ..., updatedAt: _Optional[str] = ...) -> None: ...
+
+class ChangeRefreshTokenByUserIdRequest(_message.Message):
+    __slots__ = ("userId", "refreshToken")
+    USERID_FIELD_NUMBER: _ClassVar[int]
+    REFRESHTOKEN_FIELD_NUMBER: _ClassVar[int]
+    userId: int
+    refreshToken: str
+    def __init__(self, userId: _Optional[int] = ..., refreshToken: _Optional[str] = ...) -> None: ...
+
+class ChangeRefreshTokenByUserIdResponse(_message.Message):
+    __slots__ = ("accessory",)
+    ACCESSORY_FIELD_NUMBER: _ClassVar[int]
+    accessory: bool
+    def __init__(self, accessory: bool = ...) -> None: ...
+
+class ChangeRefreshTokenByIdRequest(_message.Message):
+    __slots__ = ("id", "refreshToken")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    REFRESHTOKEN_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    refreshToken: str
+    def __init__(self, id: _Optional[int] = ..., refreshToken: _Optional[str] = ...) -> None: ...
+
+class ChangeRefreshTokenByIdResponse(_message.Message):
+    __slots__ = ("accessory",)
+    ACCESSORY_FIELD_NUMBER: _ClassVar[int]
+    accessory: bool
+    def __init__(self, accessory: bool = ...) -> None: ...
+
+class FindSessionsByUserIdRequest(_message.Message):
+    __slots__ = ("userId",)
+    USERID_FIELD_NUMBER: _ClassVar[int]
+    userId: int
+    def __init__(self, userId: _Optional[int] = ...) -> None: ...
+
+class FindSessionsByUserIdResponse(_message.Message):
+    __slots__ = ("id", "userId", "refreshToken", "createdAt", "updatedAt")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    USERID_FIELD_NUMBER: _ClassVar[int]
+    REFRESHTOKEN_FIELD_NUMBER: _ClassVar[int]
+    CREATEDAT_FIELD_NUMBER: _ClassVar[int]
+    UPDATEDAT_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    userId: int
+    refreshToken: str
+    createdAt: str
+    updatedAt: str
+    def __init__(self, id: _Optional[int] = ..., userId: _Optional[int] = ..., refreshToken: _Optional[str] = ..., createdAt: _Optional[str] = ..., updatedAt: _Optional[str] = ...) -> None: ...
+
+class FindSessionsByIdRequest(_message.Message):
+    __slots__ = ("id",)
+    ID_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    def __init__(self, id: _Optional[int] = ...) -> None: ...
+
+class FindSessionsByIdResponse(_message.Message):
+    __slots__ = ("id", "userId", "refreshToken", "createdAt", "updatedAt")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    USERID_FIELD_NUMBER: _ClassVar[int]
+    REFRESHTOKEN_FIELD_NUMBER: _ClassVar[int]
+    CREATEDAT_FIELD_NUMBER: _ClassVar[int]
+    UPDATEDAT_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    userId: int
+    refreshToken: str
+    createdAt: str
+    updatedAt: str
+    def __init__(self, id: _Optional[int] = ..., userId: _Optional[int] = ..., refreshToken: _Optional[str] = ..., createdAt: _Optional[str] = ..., updatedAt: _Optional[str] = ...) -> None: ...
+
+class SessionsResponse(_message.Message):
+    __slots__ = ("sessions",)
+    SESSIONS_FIELD_NUMBER: _ClassVar[int]
+    sessions: _containers.RepeatedCompositeFieldContainer[CreateSessionResponse]
+    def __init__(self, sessions: _Optional[_Iterable[_Union[CreateSessionResponse, _Mapping]]] = ...) -> None: ...
+
+class CreateSessionRequest(_message.Message):
+    __slots__ = ("userId", "refreshToken")
+    USERID_FIELD_NUMBER: _ClassVar[int]
+    REFRESHTOKEN_FIELD_NUMBER: _ClassVar[int]
+    userId: int
+    refreshToken: str
+    def __init__(self, userId: _Optional[int] = ..., refreshToken: _Optional[str] = ...) -> None: ...
+
+class CreateSessionResponse(_message.Message):
+    __slots__ = ("id", "userId", "refreshToken", "createdAt", "updatedAt")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    USERID_FIELD_NUMBER: _ClassVar[int]
+    REFRESHTOKEN_FIELD_NUMBER: _ClassVar[int]
+    CREATEDAT_FIELD_NUMBER: _ClassVar[int]
+    UPDATEDAT_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    userId: int
+    refreshToken: str
+    createdAt: str
+    updatedAt: str
+    def __init__(self, id: _Optional[int] = ..., userId: _Optional[int] = ..., refreshToken: _Optional[str] = ..., createdAt: _Optional[str] = ..., updatedAt: _Optional[str] = ...) -> None: ...
+
 class FindUserCompanyRequest(_message.Message):
     __slots__ = ("id",)
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -64,7 +186,7 @@ class DeleteDonationByModelRequest(_message.Message):
     def __init__(self, id: _Optional[int] = ..., title: _Optional[str] = ..., amount: _Optional[float] = ..., wards: _Optional[_Union[Ward, _Mapping]] = ..., userId: _Optional[int] = ..., createdAt: _Optional[str] = ..., updatedAt: _Optional[str] = ...) -> None: ...
 
 class AddCardToUserResponse(_message.Message):
-    __slots__ = ("id", "email", "username", "password", "phone", "card", "role", "company", "type", "donations", "createdAt", "updatedAt")
+    __slots__ = ("id", "email", "username", "password", "phone", "card", "role", "company", "type", "donations", "AvatarPath", "createdAt", "updatedAt")
     ID_FIELD_NUMBER: _ClassVar[int]
     EMAIL_FIELD_NUMBER: _ClassVar[int]
     USERNAME_FIELD_NUMBER: _ClassVar[int]
@@ -75,6 +197,7 @@ class AddCardToUserResponse(_message.Message):
     COMPANY_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
     DONATIONS_FIELD_NUMBER: _ClassVar[int]
+    AVATARPATH_FIELD_NUMBER: _ClassVar[int]
     CREATEDAT_FIELD_NUMBER: _ClassVar[int]
     UPDATEDAT_FIELD_NUMBER: _ClassVar[int]
     id: int
@@ -87,9 +210,10 @@ class AddCardToUserResponse(_message.Message):
     company: Company
     type: int
     donations: Donations
+    AvatarPath: str
     createdAt: str
     updatedAt: str
-    def __init__(self, id: _Optional[int] = ..., email: _Optional[str] = ..., username: _Optional[str] = ..., password: _Optional[str] = ..., phone: _Optional[str] = ..., card: _Optional[_Iterable[_Union[Card, _Mapping]]] = ..., role: _Optional[str] = ..., company: _Optional[_Union[Company, _Mapping]] = ..., type: _Optional[int] = ..., donations: _Optional[_Union[Donations, _Mapping]] = ..., createdAt: _Optional[str] = ..., updatedAt: _Optional[str] = ...) -> None: ...
+    def __init__(self, id: _Optional[int] = ..., email: _Optional[str] = ..., username: _Optional[str] = ..., password: _Optional[str] = ..., phone: _Optional[str] = ..., card: _Optional[_Iterable[_Union[Card, _Mapping]]] = ..., role: _Optional[str] = ..., company: _Optional[_Union[Company, _Mapping]] = ..., type: _Optional[int] = ..., donations: _Optional[_Union[Donations, _Mapping]] = ..., AvatarPath: _Optional[str] = ..., createdAt: _Optional[str] = ..., updatedAt: _Optional[str] = ...) -> None: ...
 
 class CreateDonationsResponse(_message.Message):
     __slots__ = ("id", "title", "amount", "wards", "userId", "createdAt", "updatedAt")
@@ -312,7 +436,7 @@ class CompaniesResponse(_message.Message):
     def __init__(self, companies: _Optional[_Iterable[_Union[Company, _Mapping]]] = ...) -> None: ...
 
 class UpdateUserRequest(_message.Message):
-    __slots__ = ("id", "email", "username", "password", "phone", "card", "role", "company", "type", "donations", "createdAt", "updatedAt")
+    __slots__ = ("id", "email", "username", "password", "phone", "card", "role", "company", "type", "donations", "AvatarPath", "createdAt", "updatedAt")
     ID_FIELD_NUMBER: _ClassVar[int]
     EMAIL_FIELD_NUMBER: _ClassVar[int]
     USERNAME_FIELD_NUMBER: _ClassVar[int]
@@ -323,6 +447,7 @@ class UpdateUserRequest(_message.Message):
     COMPANY_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
     DONATIONS_FIELD_NUMBER: _ClassVar[int]
+    AVATARPATH_FIELD_NUMBER: _ClassVar[int]
     CREATEDAT_FIELD_NUMBER: _ClassVar[int]
     UPDATEDAT_FIELD_NUMBER: _ClassVar[int]
     id: int
@@ -335,9 +460,10 @@ class UpdateUserRequest(_message.Message):
     company: Company
     type: int
     donations: _containers.RepeatedCompositeFieldContainer[Donations]
+    AvatarPath: str
     createdAt: str
     updatedAt: str
-    def __init__(self, id: _Optional[int] = ..., email: _Optional[str] = ..., username: _Optional[str] = ..., password: _Optional[str] = ..., phone: _Optional[str] = ..., card: _Optional[_Iterable[_Union[Card, _Mapping]]] = ..., role: _Optional[str] = ..., company: _Optional[_Union[Company, _Mapping]] = ..., type: _Optional[int] = ..., donations: _Optional[_Iterable[_Union[Donations, _Mapping]]] = ..., createdAt: _Optional[str] = ..., updatedAt: _Optional[str] = ...) -> None: ...
+    def __init__(self, id: _Optional[int] = ..., email: _Optional[str] = ..., username: _Optional[str] = ..., password: _Optional[str] = ..., phone: _Optional[str] = ..., card: _Optional[_Iterable[_Union[Card, _Mapping]]] = ..., role: _Optional[str] = ..., company: _Optional[_Union[Company, _Mapping]] = ..., type: _Optional[int] = ..., donations: _Optional[_Iterable[_Union[Donations, _Mapping]]] = ..., AvatarPath: _Optional[str] = ..., createdAt: _Optional[str] = ..., updatedAt: _Optional[str] = ...) -> None: ...
 
 class DeleteUserByModelRequest(_message.Message):
     __slots__ = ("user",)
@@ -508,13 +634,14 @@ class Card(_message.Message):
     def __init__(self, id: _Optional[int] = ..., fullName: _Optional[str] = ..., number: _Optional[str] = ..., date: _Optional[str] = ..., cvv: _Optional[int] = ..., userId: _Optional[int] = ..., createdAt: _Optional[str] = ..., updatedAt: _Optional[str] = ...) -> None: ...
 
 class Ward(_message.Message):
-    __slots__ = ("id", "title", "fullName", "want", "necessary", "donationId", "createdAt", "updatedAt")
+    __slots__ = ("id", "title", "fullName", "want", "necessary", "donationId", "AvatarPath", "createdAt", "updatedAt")
     ID_FIELD_NUMBER: _ClassVar[int]
     TITLE_FIELD_NUMBER: _ClassVar[int]
     FULLNAME_FIELD_NUMBER: _ClassVar[int]
     WANT_FIELD_NUMBER: _ClassVar[int]
     NECESSARY_FIELD_NUMBER: _ClassVar[int]
     DONATIONID_FIELD_NUMBER: _ClassVar[int]
+    AVATARPATH_FIELD_NUMBER: _ClassVar[int]
     CREATEDAT_FIELD_NUMBER: _ClassVar[int]
     UPDATEDAT_FIELD_NUMBER: _ClassVar[int]
     id: int
@@ -523,9 +650,10 @@ class Ward(_message.Message):
     want: str
     necessary: float
     donationId: int
+    AvatarPath: str
     createdAt: str
     updatedAt: str
-    def __init__(self, id: _Optional[int] = ..., title: _Optional[str] = ..., fullName: _Optional[str] = ..., want: _Optional[str] = ..., necessary: _Optional[float] = ..., donationId: _Optional[int] = ..., createdAt: _Optional[str] = ..., updatedAt: _Optional[str] = ...) -> None: ...
+    def __init__(self, id: _Optional[int] = ..., title: _Optional[str] = ..., fullName: _Optional[str] = ..., want: _Optional[str] = ..., necessary: _Optional[float] = ..., donationId: _Optional[int] = ..., AvatarPath: _Optional[str] = ..., createdAt: _Optional[str] = ..., updatedAt: _Optional[str] = ...) -> None: ...
 
 class Donations(_message.Message):
     __slots__ = ("id", "title", "amount", "ward", "userId", "createdAt", "updatedAt")
@@ -568,7 +696,7 @@ class CreateUserRequest(_message.Message):
     def __init__(self, email: _Optional[str] = ..., username: _Optional[str] = ..., password: _Optional[str] = ..., phone: _Optional[str] = ..., card: _Optional[_Iterable[_Union[CreateCardRequest, _Mapping]]] = ..., role: _Optional[str] = ..., company: _Optional[_Union[CreateCompanyRequest, _Mapping]] = ..., type: _Optional[int] = ..., donations: _Optional[_Iterable[_Union[CreateDonationsRequest, _Mapping]]] = ...) -> None: ...
 
 class CreateUserResponse(_message.Message):
-    __slots__ = ("id", "email", "username", "password", "phone", "card", "role", "company", "type", "donations", "createdAt", "updatedAt")
+    __slots__ = ("id", "email", "username", "password", "phone", "card", "role", "company", "type", "donations", "AvatarPath", "createdAt", "updatedAt")
     ID_FIELD_NUMBER: _ClassVar[int]
     EMAIL_FIELD_NUMBER: _ClassVar[int]
     USERNAME_FIELD_NUMBER: _ClassVar[int]
@@ -579,6 +707,7 @@ class CreateUserResponse(_message.Message):
     COMPANY_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
     DONATIONS_FIELD_NUMBER: _ClassVar[int]
+    AVATARPATH_FIELD_NUMBER: _ClassVar[int]
     CREATEDAT_FIELD_NUMBER: _ClassVar[int]
     UPDATEDAT_FIELD_NUMBER: _ClassVar[int]
     id: int
@@ -591,9 +720,10 @@ class CreateUserResponse(_message.Message):
     company: Company
     type: int
     donations: _containers.RepeatedCompositeFieldContainer[Donations]
+    AvatarPath: str
     createdAt: str
     updatedAt: str
-    def __init__(self, id: _Optional[int] = ..., email: _Optional[str] = ..., username: _Optional[str] = ..., password: _Optional[str] = ..., phone: _Optional[str] = ..., card: _Optional[_Iterable[_Union[Card, _Mapping]]] = ..., role: _Optional[str] = ..., company: _Optional[_Union[Company, _Mapping]] = ..., type: _Optional[int] = ..., donations: _Optional[_Iterable[_Union[Donations, _Mapping]]] = ..., createdAt: _Optional[str] = ..., updatedAt: _Optional[str] = ...) -> None: ...
+    def __init__(self, id: _Optional[int] = ..., email: _Optional[str] = ..., username: _Optional[str] = ..., password: _Optional[str] = ..., phone: _Optional[str] = ..., card: _Optional[_Iterable[_Union[Card, _Mapping]]] = ..., role: _Optional[str] = ..., company: _Optional[_Union[Company, _Mapping]] = ..., type: _Optional[int] = ..., donations: _Optional[_Iterable[_Union[Donations, _Mapping]]] = ..., AvatarPath: _Optional[str] = ..., createdAt: _Optional[str] = ..., updatedAt: _Optional[str] = ...) -> None: ...
 
 class IsRoleRequest(_message.Message):
     __slots__ = ("id", "role")

@@ -281,6 +281,51 @@ class DatabaseServiceStub(object):
                 request_serializer=DatabaseService_dot_DatabaseService__pb2.Ward.SerializeToString,
                 response_deserializer=DatabaseService_dot_DatabaseService__pb2.Ward.FromString,
                 _registered_method=True)
+        self.CreateSessions = channel.unary_unary(
+                '/service.DatabaseService/CreateSessions',
+                request_serializer=DatabaseService_dot_DatabaseService__pb2.CreateSessionRequest.SerializeToString,
+                response_deserializer=DatabaseService_dot_DatabaseService__pb2.CreateSessionResponse.FromString,
+                _registered_method=True)
+        self.Sessions = channel.unary_unary(
+                '/service.DatabaseService/Sessions',
+                request_serializer=DatabaseService_dot_DatabaseService__pb2.Empty.SerializeToString,
+                response_deserializer=DatabaseService_dot_DatabaseService__pb2.SessionsResponse.FromString,
+                _registered_method=True)
+        self.FindSessionsById = channel.unary_unary(
+                '/service.DatabaseService/FindSessionsById',
+                request_serializer=DatabaseService_dot_DatabaseService__pb2.FindSessionsByIdRequest.SerializeToString,
+                response_deserializer=DatabaseService_dot_DatabaseService__pb2.FindSessionsByIdResponse.FromString,
+                _registered_method=True)
+        self.FindSessionsByUserId = channel.unary_unary(
+                '/service.DatabaseService/FindSessionsByUserId',
+                request_serializer=DatabaseService_dot_DatabaseService__pb2.FindSessionsByUserIdRequest.SerializeToString,
+                response_deserializer=DatabaseService_dot_DatabaseService__pb2.FindSessionsByUserIdResponse.FromString,
+                _registered_method=True)
+        self.ChangeRefreshTokenById = channel.unary_unary(
+                '/service.DatabaseService/ChangeRefreshTokenById',
+                request_serializer=DatabaseService_dot_DatabaseService__pb2.ChangeRefreshTokenByIdRequest.SerializeToString,
+                response_deserializer=DatabaseService_dot_DatabaseService__pb2.ChangeRefreshTokenByIdResponse.FromString,
+                _registered_method=True)
+        self.ChangeRefreshTokenByUserId = channel.unary_unary(
+                '/service.DatabaseService/ChangeRefreshTokenByUserId',
+                request_serializer=DatabaseService_dot_DatabaseService__pb2.ChangeRefreshTokenByUserIdRequest.SerializeToString,
+                response_deserializer=DatabaseService_dot_DatabaseService__pb2.ChangeRefreshTokenByUserIdResponse.FromString,
+                _registered_method=True)
+        self.DeleteSessionByModel = channel.unary_unary(
+                '/service.DatabaseService/DeleteSessionByModel',
+                request_serializer=DatabaseService_dot_DatabaseService__pb2.DeleteSessionByModelRequest.SerializeToString,
+                response_deserializer=DatabaseService_dot_DatabaseService__pb2.HTTPCodes.FromString,
+                _registered_method=True)
+        self.DeleteSessionById = channel.unary_unary(
+                '/service.DatabaseService/DeleteSessionById',
+                request_serializer=DatabaseService_dot_DatabaseService__pb2.DeleteSessionByIdRequest.SerializeToString,
+                response_deserializer=DatabaseService_dot_DatabaseService__pb2.HTTPCodes.FromString,
+                _registered_method=True)
+        self.DeleteSessionByUserId = channel.unary_unary(
+                '/service.DatabaseService/DeleteSessionByUserId',
+                request_serializer=DatabaseService_dot_DatabaseService__pb2.DeleteSessionByUserIdRequest.SerializeToString,
+                response_deserializer=DatabaseService_dot_DatabaseService__pb2.HTTPCodes.FromString,
+                _registered_method=True)
 
 
 class DatabaseServiceServicer(object):
@@ -680,6 +725,78 @@ class DatabaseServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def CreateSessions(self, request, context):
+        """*
+        Создание новой сессии
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Sessions(self, request, context):
+        """*
+        Список всех сессии
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def FindSessionsById(self, request, context):
+        """*
+        Поиск сессии по его ID
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def FindSessionsByUserId(self, request, context):
+        """*
+        Поиск сессии по UserID
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ChangeRefreshTokenById(self, request, context):
+        """*
+        Обновление поля RefreshToken по ID сессии
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ChangeRefreshTokenByUserId(self, request, context):
+        """*
+        Обновление поля RefreshToken по UserID пользователя
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteSessionByModel(self, request, context):
+        """*
+        Удаление сессии по полной модели (например полученной с помощью FindSessionById)
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteSessionById(self, request, context):
+        """*
+        Удаляет сессию по ее ID
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteSessionByUserId(self, request, context):
+        """*
+        Удаляет сессию по ее UserID
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_DatabaseServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -927,6 +1044,51 @@ def add_DatabaseServiceServicer_to_server(servicer, server):
                     servicer.UpdateWard,
                     request_deserializer=DatabaseService_dot_DatabaseService__pb2.Ward.FromString,
                     response_serializer=DatabaseService_dot_DatabaseService__pb2.Ward.SerializeToString,
+            ),
+            'CreateSessions': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateSessions,
+                    request_deserializer=DatabaseService_dot_DatabaseService__pb2.CreateSessionRequest.FromString,
+                    response_serializer=DatabaseService_dot_DatabaseService__pb2.CreateSessionResponse.SerializeToString,
+            ),
+            'Sessions': grpc.unary_unary_rpc_method_handler(
+                    servicer.Sessions,
+                    request_deserializer=DatabaseService_dot_DatabaseService__pb2.Empty.FromString,
+                    response_serializer=DatabaseService_dot_DatabaseService__pb2.SessionsResponse.SerializeToString,
+            ),
+            'FindSessionsById': grpc.unary_unary_rpc_method_handler(
+                    servicer.FindSessionsById,
+                    request_deserializer=DatabaseService_dot_DatabaseService__pb2.FindSessionsByIdRequest.FromString,
+                    response_serializer=DatabaseService_dot_DatabaseService__pb2.FindSessionsByIdResponse.SerializeToString,
+            ),
+            'FindSessionsByUserId': grpc.unary_unary_rpc_method_handler(
+                    servicer.FindSessionsByUserId,
+                    request_deserializer=DatabaseService_dot_DatabaseService__pb2.FindSessionsByUserIdRequest.FromString,
+                    response_serializer=DatabaseService_dot_DatabaseService__pb2.FindSessionsByUserIdResponse.SerializeToString,
+            ),
+            'ChangeRefreshTokenById': grpc.unary_unary_rpc_method_handler(
+                    servicer.ChangeRefreshTokenById,
+                    request_deserializer=DatabaseService_dot_DatabaseService__pb2.ChangeRefreshTokenByIdRequest.FromString,
+                    response_serializer=DatabaseService_dot_DatabaseService__pb2.ChangeRefreshTokenByIdResponse.SerializeToString,
+            ),
+            'ChangeRefreshTokenByUserId': grpc.unary_unary_rpc_method_handler(
+                    servicer.ChangeRefreshTokenByUserId,
+                    request_deserializer=DatabaseService_dot_DatabaseService__pb2.ChangeRefreshTokenByUserIdRequest.FromString,
+                    response_serializer=DatabaseService_dot_DatabaseService__pb2.ChangeRefreshTokenByUserIdResponse.SerializeToString,
+            ),
+            'DeleteSessionByModel': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteSessionByModel,
+                    request_deserializer=DatabaseService_dot_DatabaseService__pb2.DeleteSessionByModelRequest.FromString,
+                    response_serializer=DatabaseService_dot_DatabaseService__pb2.HTTPCodes.SerializeToString,
+            ),
+            'DeleteSessionById': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteSessionById,
+                    request_deserializer=DatabaseService_dot_DatabaseService__pb2.DeleteSessionByIdRequest.FromString,
+                    response_serializer=DatabaseService_dot_DatabaseService__pb2.HTTPCodes.SerializeToString,
+            ),
+            'DeleteSessionByUserId': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteSessionByUserId,
+                    request_deserializer=DatabaseService_dot_DatabaseService__pb2.DeleteSessionByUserIdRequest.FromString,
+                    response_serializer=DatabaseService_dot_DatabaseService__pb2.HTTPCodes.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -2254,6 +2416,249 @@ class DatabaseService(object):
             '/service.DatabaseService/UpdateWard',
             DatabaseService_dot_DatabaseService__pb2.Ward.SerializeToString,
             DatabaseService_dot_DatabaseService__pb2.Ward.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CreateSessions(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/service.DatabaseService/CreateSessions',
+            DatabaseService_dot_DatabaseService__pb2.CreateSessionRequest.SerializeToString,
+            DatabaseService_dot_DatabaseService__pb2.CreateSessionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Sessions(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/service.DatabaseService/Sessions',
+            DatabaseService_dot_DatabaseService__pb2.Empty.SerializeToString,
+            DatabaseService_dot_DatabaseService__pb2.SessionsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def FindSessionsById(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/service.DatabaseService/FindSessionsById',
+            DatabaseService_dot_DatabaseService__pb2.FindSessionsByIdRequest.SerializeToString,
+            DatabaseService_dot_DatabaseService__pb2.FindSessionsByIdResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def FindSessionsByUserId(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/service.DatabaseService/FindSessionsByUserId',
+            DatabaseService_dot_DatabaseService__pb2.FindSessionsByUserIdRequest.SerializeToString,
+            DatabaseService_dot_DatabaseService__pb2.FindSessionsByUserIdResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ChangeRefreshTokenById(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/service.DatabaseService/ChangeRefreshTokenById',
+            DatabaseService_dot_DatabaseService__pb2.ChangeRefreshTokenByIdRequest.SerializeToString,
+            DatabaseService_dot_DatabaseService__pb2.ChangeRefreshTokenByIdResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ChangeRefreshTokenByUserId(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/service.DatabaseService/ChangeRefreshTokenByUserId',
+            DatabaseService_dot_DatabaseService__pb2.ChangeRefreshTokenByUserIdRequest.SerializeToString,
+            DatabaseService_dot_DatabaseService__pb2.ChangeRefreshTokenByUserIdResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteSessionByModel(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/service.DatabaseService/DeleteSessionByModel',
+            DatabaseService_dot_DatabaseService__pb2.DeleteSessionByModelRequest.SerializeToString,
+            DatabaseService_dot_DatabaseService__pb2.HTTPCodes.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteSessionById(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/service.DatabaseService/DeleteSessionById',
+            DatabaseService_dot_DatabaseService__pb2.DeleteSessionByIdRequest.SerializeToString,
+            DatabaseService_dot_DatabaseService__pb2.HTTPCodes.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteSessionByUserId(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/service.DatabaseService/DeleteSessionByUserId',
+            DatabaseService_dot_DatabaseService__pb2.DeleteSessionByUserIdRequest.SerializeToString,
+            DatabaseService_dot_DatabaseService__pb2.HTTPCodes.FromString,
             options,
             channel_credentials,
             insecure,
