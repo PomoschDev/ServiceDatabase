@@ -64,5 +64,13 @@ func fetchConfigPath() string {
 		res = os.Getenv("CONFIG_PATH")
 	}
 
+	if res == "" {
+		path := "local.yaml"
+		if _, err := os.Stat(path); os.IsNotExist(err) {
+			path = "./config/local.yaml"
+		}
+		res = path
+	}
+
 	return res
 }

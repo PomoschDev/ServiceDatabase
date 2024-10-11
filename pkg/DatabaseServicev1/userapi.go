@@ -127,20 +127,17 @@ func (s *serverAPI) ComparePassword(ctx context.Context, req *ComparePasswordReq
 
 func (s *serverAPI) UserIsExists(ctx context.Context, req *UserIsExistsRequest) (*UserIsExistsResponse, error) {
 	if len(req.GetPhone()) == 0 || req.GetPhone() == "" {
-		logger.Log.Warn("len(req.GetPhone()) == 0 || req.GetPhone() == \"\"")
+		logger.Log.Warn("len(req.GetPhone()) == 0 req.GetPhone() == \"\"")
 		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("Неверные аргументы"))
 	}
+
 	isExists, err := models.UserIsExists(req.GetPhone())
 	if err != nil {
 		logger.Log.Error("models.UserIsExists(req.GetPhone())", sl.Err(err))
 		return nil, status.Error(codes.NotFound, fmt.Sprintf("%v", err))
 	}
 
-	response := &UserIsExistsResponse{
-		IsExists: isExists,
-	}
-
-	return response, nil
+	return &UserIsExistsResponse{IsExists: isExists}, nil
 }
 
 func (s *serverAPI) FindUserById(ctx context.Context, req *FindUserByIdRequest) (*CreateUserResponse, error) {
