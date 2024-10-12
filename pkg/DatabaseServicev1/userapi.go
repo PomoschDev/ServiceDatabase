@@ -90,6 +90,10 @@ func (s *serverAPI) IsRole(ctx context.Context, req *IsRoleRequest) (*IsRoleResp
 
 	accessory, err := user.IsRole(req.GetRole())
 	if err != nil {
+		if strings.Contains(err.Error(), "Пользователь не найден") {
+			logger.Log.Error("accessory, err := user.IsRole(req.GetRole())", sl.Err(err))
+			return nil, status.Error(codes.NotFound, fmt.Sprintf("%v", err))
+		}
 		logger.Log.Error("accessory, err := user.IsRole(req.GetRole())", sl.Err(err))
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
 	}
