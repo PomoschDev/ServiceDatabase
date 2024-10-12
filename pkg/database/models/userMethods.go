@@ -63,16 +63,12 @@ func ComparePassword(phone string, password string) (bool, error) {
 		return false, errors.New(fmt.Sprintf("Пользователь не найден"))
 	}
 
-	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	if err != nil {
-		return false, err
+	if err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password)); err != nil {
+		return false, nil
 	}
 
-	if string(hash) == u.Password {
-		return true, nil
-	}
+	return true, nil
 
-	return false, nil
 }
 
 func UserIsExists(phone string) (bool, error) {
