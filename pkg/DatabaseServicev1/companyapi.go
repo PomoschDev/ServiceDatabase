@@ -24,7 +24,7 @@ func (s *serverAPI) Companies(ctx context.Context, req *Empty) (*CompaniesRespon
 
 	response := new(CompaniesResponse)
 
-	if err := utilities.Transformation(companies, response.Companies); err != nil {
+	if err := utilities.Transformation(companies, &response.Companies); err != nil {
 		logger.Log.Error("utilities.Transformation(req, user)", sl.Err(err))
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
 	}

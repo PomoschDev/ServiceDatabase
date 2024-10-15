@@ -16,6 +16,10 @@ func AllCompanies() ([]*Company, error) {
 		return nil, err
 	}
 
+	if companies == nil {
+		return []*Company{}, nil
+	}
+
 	return companies, nil
 }
 

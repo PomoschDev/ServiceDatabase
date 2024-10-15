@@ -68,15 +68,9 @@ func (s *serverAPI) Users(ctx context.Context, req *Empty) (*UsersResponse, erro
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
 	}
 
-	obj := struct {
-		Users []*models.User `json:"users,omitempty"`
-	}{}
+	response := new(UsersResponse)
 
-	obj.Users = users
-
-	response := &UsersResponse{}
-
-	err = utilities.Transformation(obj, response)
+	err = utilities.Transformation(users, &response.Users)
 	if err != nil {
 		logger.Log.Error("utilities.Transformation(obj, response)", sl.Err(err))
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
@@ -281,15 +275,9 @@ func (s *serverAPI) FindUserDonations(ctx context.Context,
 		return nil, status.Error(codes.NotFound, fmt.Sprintf("%v", err))
 	}
 
-	obj := struct {
-		Donations []*models.Donations `json:"donations"`
-	}{}
-
-	obj.Donations = donations
-
 	response := new(FindUserDonationsResponse)
 
-	if err := utilities.Transformation(obj, response); err != nil {
+	if err := utilities.Transformation(donations, &response.Donations); err != nil {
 		logger.Log.Error("utilities.Transformation(company, response)", sl.Err(err))
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
 	}
@@ -313,15 +301,9 @@ func (s *serverAPI) FindUserCard(ctx context.Context, req *FindUserCardRequest) 
 		return nil, status.Error(codes.NotFound, fmt.Sprintf("%v", err))
 	}
 
-	obj := struct {
-		Cards []*models.Card `json:"cards"`
-	}{}
-
-	obj.Cards = cards
-
 	response := new(FindUserCardResponse)
 
-	if err := utilities.Transformation(obj, response); err != nil {
+	if err := utilities.Transformation(cards, &response.Cards); err != nil {
 		logger.Log.Error("utilities.Transformation(obj, response)", sl.Err(err))
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
 	}
