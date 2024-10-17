@@ -9,6 +9,40 @@ class Empty(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...
 
+class AddCardToCompanyResponse(_message.Message):
+    __slots__ = ("id", "title", "phone", "address", "site", "inn", "kpp", "okpo", "card", "userId", "createdAt", "updatedAt")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    TITLE_FIELD_NUMBER: _ClassVar[int]
+    PHONE_FIELD_NUMBER: _ClassVar[int]
+    ADDRESS_FIELD_NUMBER: _ClassVar[int]
+    SITE_FIELD_NUMBER: _ClassVar[int]
+    INN_FIELD_NUMBER: _ClassVar[int]
+    KPP_FIELD_NUMBER: _ClassVar[int]
+    OKPO_FIELD_NUMBER: _ClassVar[int]
+    CARD_FIELD_NUMBER: _ClassVar[int]
+    USERID_FIELD_NUMBER: _ClassVar[int]
+    CREATEDAT_FIELD_NUMBER: _ClassVar[int]
+    UPDATEDAT_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    title: str
+    phone: str
+    address: str
+    site: str
+    inn: str
+    kpp: str
+    okpo: str
+    card: CardCompany
+    userId: int
+    createdAt: str
+    updatedAt: str
+    def __init__(self, id: _Optional[int] = ..., title: _Optional[str] = ..., phone: _Optional[str] = ..., address: _Optional[str] = ..., site: _Optional[str] = ..., inn: _Optional[str] = ..., kpp: _Optional[str] = ..., okpo: _Optional[str] = ..., card: _Optional[_Union[CardCompany, _Mapping]] = ..., userId: _Optional[int] = ..., createdAt: _Optional[str] = ..., updatedAt: _Optional[str] = ...) -> None: ...
+
+class AddCardToCompanyRequest(_message.Message):
+    __slots__ = ("card",)
+    CARD_FIELD_NUMBER: _ClassVar[int]
+    card: CreateCardCompanyRequest
+    def __init__(self, card: _Optional[_Union[CreateCardCompanyRequest, _Mapping]] = ...) -> None: ...
+
 class DeleteSessionByUserIdRequest(_message.Message):
     __slots__ = ("userId",)
     USERID_FIELD_NUMBER: _ClassVar[int]

@@ -156,6 +156,11 @@ class DatabaseServiceStub(object):
                 request_serializer=DatabaseService_dot_DatabaseService__pb2.UpdateCompanyRequest.SerializeToString,
                 response_deserializer=DatabaseService_dot_DatabaseService__pb2.HTTPCodes.FromString,
                 _registered_method=True)
+        self.AddCardToCompany = channel.unary_unary(
+                '/service.DatabaseService/AddCardToCompany',
+                request_serializer=DatabaseService_dot_DatabaseService__pb2.AddCardToCompanyRequest.SerializeToString,
+                response_deserializer=DatabaseService_dot_DatabaseService__pb2.AddCardToCompanyResponse.FromString,
+                _registered_method=True)
         self.Cards = channel.unary_unary(
                 '/service.DatabaseService/Cards',
                 request_serializer=DatabaseService_dot_DatabaseService__pb2.Empty.SerializeToString,
@@ -520,6 +525,14 @@ class DatabaseServiceServicer(object):
     def UpdateCompany(self, request, context):
         """*
         Обновление компании
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AddCardToCompany(self, request, context):
+        """*
+        Добавляет банковскую карту пользователю
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -919,6 +932,11 @@ def add_DatabaseServiceServicer_to_server(servicer, server):
                     servicer.UpdateCompany,
                     request_deserializer=DatabaseService_dot_DatabaseService__pb2.UpdateCompanyRequest.FromString,
                     response_serializer=DatabaseService_dot_DatabaseService__pb2.HTTPCodes.SerializeToString,
+            ),
+            'AddCardToCompany': grpc.unary_unary_rpc_method_handler(
+                    servicer.AddCardToCompany,
+                    request_deserializer=DatabaseService_dot_DatabaseService__pb2.AddCardToCompanyRequest.FromString,
+                    response_serializer=DatabaseService_dot_DatabaseService__pb2.AddCardToCompanyResponse.SerializeToString,
             ),
             'Cards': grpc.unary_unary_rpc_method_handler(
                     servicer.Cards,
@@ -1741,6 +1759,33 @@ class DatabaseService(object):
             '/service.DatabaseService/UpdateCompany',
             DatabaseService_dot_DatabaseService__pb2.UpdateCompanyRequest.SerializeToString,
             DatabaseService_dot_DatabaseService__pb2.HTTPCodes.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def AddCardToCompany(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/service.DatabaseService/AddCardToCompany',
+            DatabaseService_dot_DatabaseService__pb2.AddCardToCompanyRequest.SerializeToString,
+            DatabaseService_dot_DatabaseService__pb2.AddCardToCompanyResponse.FromString,
             options,
             channel_credentials,
             insecure,

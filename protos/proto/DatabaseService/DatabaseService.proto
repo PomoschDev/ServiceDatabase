@@ -106,6 +106,10 @@ service DatabaseService {
 * Обновление компании
  */
   rpc UpdateCompany(UpdateCompanyRequest) returns (HTTPCodes);
+  /**
+* Добавляет банковскую карту пользователю
+*/
+  rpc AddCardToCompany(AddCardToCompanyRequest) returns (AddCardToCompanyResponse);
 
   /**
 * Поиск всех банковских карт пользователей
@@ -263,6 +267,32 @@ service DatabaseService {
 * Пустая структура, необходимая для запросов без входящих аргументов
  */
 message Empty {}
+
+
+/**
+* Ответ на запрос добавления банковской карты компании
+ */
+message AddCardToCompanyResponse {
+  uint64 id = 1; /** ID компании в базе данных */
+  string title = 2; /** Название компании */
+  string phone = 3; /** Номер телефона компании */
+  string address = 4; /** Адрес офиса компании */
+  string site = 5; /** Сайт компании */
+  string inn = 6; /** ИНН юридического лица */
+  string kpp = 7; /** КПП юридического лица */
+  string okpo = 8; /** ОКПО предприятия/организации */
+  CardCompany card = 9; /** Банковская карта компании */
+  uint64 userId = 10; /** ID пользователя к которому относится данная компания */
+  string createdAt = 11; /** Дата создания сущности в базе данных */
+  string updatedAt = 12; /** Дата последнего обновления сущности в базе данных */
+}
+
+/**
+* Запрос на добавление банковской карты компании
+ */
+message AddCardToCompanyRequest {
+  CreateCardCompanyRequest card = 1; /** Банковская карта */
+}
 
 /**
 * Запрос на удаление сессии по ее ID

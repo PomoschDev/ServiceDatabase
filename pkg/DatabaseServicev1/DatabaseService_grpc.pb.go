@@ -43,6 +43,7 @@ const (
 	DatabaseService_DeleteCompanyByModel_FullMethodName       = "/service.DatabaseService/DeleteCompanyByModel"
 	DatabaseService_DeleteCompanyById_FullMethodName          = "/service.DatabaseService/DeleteCompanyById"
 	DatabaseService_UpdateCompany_FullMethodName              = "/service.DatabaseService/UpdateCompany"
+	DatabaseService_AddCardToCompany_FullMethodName           = "/service.DatabaseService/AddCardToCompany"
 	DatabaseService_Cards_FullMethodName                      = "/service.DatabaseService/Cards"
 	DatabaseService_CreateCard_FullMethodName                 = "/service.DatabaseService/CreateCard"
 	DatabaseService_FindCardById_FullMethodName               = "/service.DatabaseService/FindCardById"
@@ -158,6 +159,9 @@ type DatabaseServiceClient interface {
 	// *
 	// Обновление компании
 	UpdateCompany(ctx context.Context, in *UpdateCompanyRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
+	// *
+	// Добавляет банковскую карту пользователю
+	AddCardToCompany(ctx context.Context, in *AddCardToCompanyRequest, opts ...grpc.CallOption) (*AddCardToCompanyResponse, error)
 	// *
 	// Поиск всех банковских карт пользователей
 	Cards(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CardsResponse, error)
@@ -504,6 +508,16 @@ func (c *databaseServiceClient) UpdateCompany(ctx context.Context, in *UpdateCom
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(HTTPCodes)
 	err := c.cc.Invoke(ctx, DatabaseService_UpdateCompany_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *databaseServiceClient) AddCardToCompany(ctx context.Context, in *AddCardToCompanyRequest, opts ...grpc.CallOption) (*AddCardToCompanyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddCardToCompanyResponse)
+	err := c.cc.Invoke(ctx, DatabaseService_AddCardToCompany_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -930,6 +944,9 @@ type DatabaseServiceServer interface {
 	// Обновление компании
 	UpdateCompany(context.Context, *UpdateCompanyRequest) (*HTTPCodes, error)
 	// *
+	// Добавляет банковскую карту пользователю
+	AddCardToCompany(context.Context, *AddCardToCompanyRequest) (*AddCardToCompanyResponse, error)
+	// *
 	// Поиск всех банковских карт пользователей
 	Cards(context.Context, *Empty) (*CardsResponse, error)
 	// *
@@ -1112,6 +1129,9 @@ func (UnimplementedDatabaseServiceServer) DeleteCompanyById(context.Context, *De
 }
 func (UnimplementedDatabaseServiceServer) UpdateCompany(context.Context, *UpdateCompanyRequest) (*HTTPCodes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateCompany not implemented")
+}
+func (UnimplementedDatabaseServiceServer) AddCardToCompany(context.Context, *AddCardToCompanyRequest) (*AddCardToCompanyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddCardToCompany not implemented")
 }
 func (UnimplementedDatabaseServiceServer) Cards(context.Context, *Empty) (*CardsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Cards not implemented")
@@ -1664,6 +1684,24 @@ func _DatabaseService_UpdateCompany_Handler(srv interface{}, ctx context.Context
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DatabaseServiceServer).UpdateCompany(ctx, req.(*UpdateCompanyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DatabaseService_AddCardToCompany_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddCardToCompanyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DatabaseServiceServer).AddCardToCompany(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DatabaseService_AddCardToCompany_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DatabaseServiceServer).AddCardToCompany(ctx, req.(*AddCardToCompanyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2382,6 +2420,10 @@ var DatabaseService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateCompany",
 			Handler:    _DatabaseService_UpdateCompany_Handler,
+		},
+		{
+			MethodName: "AddCardToCompany",
+			Handler:    _DatabaseService_AddCardToCompany_Handler,
 		},
 		{
 			MethodName: "Cards",

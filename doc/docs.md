@@ -4,6 +4,8 @@
 ## Table of Contents
 
 - [DatabaseService.proto](#DatabaseService-proto)
+    - [AddCardToCompanyRequest](#service-AddCardToCompanyRequest)
+    - [AddCardToCompanyResponse](#service-AddCardToCompanyResponse)
     - [AddCardToUserRequest](#service-AddCardToUserRequest)
     - [AddCardToUserResponse](#service-AddCardToUserResponse)
     - [Card](#service-Card)
@@ -89,6 +91,49 @@
 <p align="right"><a href="#top">Top</a></p>
 
 ## DatabaseService.proto
+
+
+
+<a name="service-AddCardToCompanyRequest"></a>
+
+### AddCardToCompanyRequest
+
+Запрос на добавление банковской карты компании
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| card | [CreateCardCompanyRequest](#service-CreateCardCompanyRequest) |  | Банковская карта |
+
+
+
+
+
+
+<a name="service-AddCardToCompanyResponse"></a>
+
+### AddCardToCompanyResponse
+
+Ответ на запрос добавления банковской карты компании
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  | ID компании в базе данных |
+| title | [string](#string) |  | Название компании |
+| phone | [string](#string) |  | Номер телефона компании |
+| address | [string](#string) |  | Адрес офиса компании |
+| site | [string](#string) |  | Сайт компании |
+| inn | [string](#string) |  | ИНН юридического лица |
+| kpp | [string](#string) |  | КПП юридического лица |
+| okpo | [string](#string) |  | ОКПО предприятия/организации |
+| card | [CardCompany](#service-CardCompany) |  | Банковская карта компании |
+| userId | [uint64](#uint64) |  | ID пользователя к которому относится данная компания |
+| createdAt | [string](#string) |  | Дата создания сущности в базе данных |
+| updatedAt | [string](#string) |  | Дата последнего обновления сущности в базе данных |
+
+
+
 
 
 
@@ -1455,6 +1500,7 @@
 | DeleteCompanyByModel | [DeleteCompanyByModelRequest](#service-DeleteCompanyByModelRequest) | [HTTPCodes](#service-HTTPCodes) |  Удаление компании по модели (например полученной с помощью FindCompanyById) |
 | DeleteCompanyById | [DeleteCompanyByIdRequest](#service-DeleteCompanyByIdRequest) | [HTTPCodes](#service-HTTPCodes) |  Удаление компании по ее ID |
 | UpdateCompany | [UpdateCompanyRequest](#service-UpdateCompanyRequest) | [HTTPCodes](#service-HTTPCodes) |  Обновление компании |
+| AddCardToCompany | [AddCardToCompanyRequest](#service-AddCardToCompanyRequest) | [AddCardToCompanyResponse](#service-AddCardToCompanyResponse) |  Добавляет банковскую карту пользователю |
 | Cards | [Empty](#service-Empty) | [CardsResponse](#service-CardsResponse) |  Поиск всех банковских карт пользователей |
 | CreateCard | [CreateCardRequest](#service-CreateCardRequest) | [Card](#service-Card) |  Создание банковской карты |
 | FindCardById | [FindCardByIdRequest](#service-FindCardByIdRequest) | [Card](#service-Card) |  Поиск банковской карты по ее ID |

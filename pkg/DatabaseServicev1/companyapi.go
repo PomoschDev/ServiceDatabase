@@ -199,3 +199,41 @@ func (s *serverAPI) UpdateCompany(ctx context.Context, req *UpdateCompanyRequest
 
 	return response, nil
 }
+
+func (s *serverAPI) AddCardToCompany(ctx context.Context, req *AddCardToCompanyRequest) (*AddCardToCompanyResponse, error) {
+	company := new(models.Company)
+	card := new(models.CardCompany)
+
+	if err := utilities.Transformation(req.GetCard(), card); err != nil {
+		logger.Log.Error("utilities.Transformation(req.GetCard(), card)", sl.Err(err))
+		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
+	}
+
+	db := database.GetDB()
+	result := db.Preload("Card").Where(&models.Company{ID: card.CompanyID}).
+		Find(&company)
+
+	if result.Error != nil {
+		logger.Log.Error("findCompany", sl.Err(result.Error))
+		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", result.Error))
+	}
+
+	if company.ID == 0 {
+		return nil, status.Error(codes.NotFound, fmt.Sprintf("Компания не найдена"))
+	}
+
+	company.Card = card
+
+	if err := company.Update(); err != nil {
+		logger.Log.Error("company.Update()", sl.Err(err))
+		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
+	}
+
+	response := &AddCardToCompanyResponse{}
+	if err := utilities.Transformation(company, response); err != nil {
+		logger.Log.Error("utilities.Transformation(req, user)", sl.Err(err))
+		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
+	}
+
+	return response, nil
+}
