@@ -127,7 +127,7 @@ func (s *serverAPI) DeleteCardById(ctx context.Context, req *DeleteCardByIdReque
 	return response, nil
 }
 
-func (s *serverAPI) UpdateCard(ctx context.Context, req *Card) (*Card, error) {
+func (s *serverAPI) UpdateCard(ctx context.Context, req *UpdateUserCardRequest) (*UpdateUserCardResponse, error) {
 	card := new(models.Card)
 
 	if err := utilities.Transformation(req, card); err != nil {
@@ -155,7 +155,7 @@ func (s *serverAPI) UpdateCard(ctx context.Context, req *Card) (*Card, error) {
 			result.Error))
 	}
 
-	response := new(Card)
+	response := new(UpdateUserCardResponse)
 	if err := utilities.Transformation(card, response); err != nil {
 		logger.Log.Error("utilities.Transformation(card, response)", sl.Err(err))
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
