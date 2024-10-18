@@ -134,7 +134,7 @@ service DatabaseService {
   /**
 * Обновление банковской карты пользователя
  */
-  rpc UpdateCard(Card) returns (Card);
+  rpc UpdateCard(UpdateUserCardRequest) returns (UpdateUserCardResponse);
 
   /**
 * Поиск всех банковских карт компаний

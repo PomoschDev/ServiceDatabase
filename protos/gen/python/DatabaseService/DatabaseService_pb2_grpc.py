@@ -188,8 +188,8 @@ class DatabaseServiceStub(object):
                 _registered_method=True)
         self.UpdateCard = channel.unary_unary(
                 '/service.DatabaseService/UpdateCard',
-                request_serializer=DatabaseService_dot_DatabaseService__pb2.Card.SerializeToString,
-                response_deserializer=DatabaseService_dot_DatabaseService__pb2.Card.FromString,
+                request_serializer=DatabaseService_dot_DatabaseService__pb2.UpdateUserCardRequest.SerializeToString,
+                response_deserializer=DatabaseService_dot_DatabaseService__pb2.UpdateUserCardResponse.FromString,
                 _registered_method=True)
         self.CardsCompanies = channel.unary_unary(
                 '/service.DatabaseService/CardsCompanies',
@@ -965,8 +965,8 @@ def add_DatabaseServiceServicer_to_server(servicer, server):
             ),
             'UpdateCard': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateCard,
-                    request_deserializer=DatabaseService_dot_DatabaseService__pb2.Card.FromString,
-                    response_serializer=DatabaseService_dot_DatabaseService__pb2.Card.SerializeToString,
+                    request_deserializer=DatabaseService_dot_DatabaseService__pb2.UpdateUserCardRequest.FromString,
+                    response_serializer=DatabaseService_dot_DatabaseService__pb2.UpdateUserCardResponse.SerializeToString,
             ),
             'CardsCompanies': grpc.unary_unary_rpc_method_handler(
                     servicer.CardsCompanies,
@@ -1946,8 +1946,8 @@ class DatabaseService(object):
             request,
             target,
             '/service.DatabaseService/UpdateCard',
-            DatabaseService_dot_DatabaseService__pb2.Card.SerializeToString,
-            DatabaseService_dot_DatabaseService__pb2.Card.FromString,
+            DatabaseService_dot_DatabaseService__pb2.UpdateUserCardRequest.SerializeToString,
+            DatabaseService_dot_DatabaseService__pb2.UpdateUserCardResponse.FromString,
             options,
             channel_credentials,
             insecure,

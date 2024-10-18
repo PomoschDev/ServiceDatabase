@@ -179,7 +179,7 @@ type DatabaseServiceClient interface {
 	DeleteCardById(ctx context.Context, in *DeleteCardByIdRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
 	// *
 	// Обновление банковской карты пользователя
-	UpdateCard(ctx context.Context, in *Card, opts ...grpc.CallOption) (*Card, error)
+	UpdateCard(ctx context.Context, in *UpdateUserCardRequest, opts ...grpc.CallOption) (*UpdateUserCardResponse, error)
 	// *
 	// Поиск всех банковских карт компаний
 	CardsCompanies(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CardsCompaniesResponse, error)
@@ -574,9 +574,9 @@ func (c *databaseServiceClient) DeleteCardById(ctx context.Context, in *DeleteCa
 	return out, nil
 }
 
-func (c *databaseServiceClient) UpdateCard(ctx context.Context, in *Card, opts ...grpc.CallOption) (*Card, error) {
+func (c *databaseServiceClient) UpdateCard(ctx context.Context, in *UpdateUserCardRequest, opts ...grpc.CallOption) (*UpdateUserCardResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Card)
+	out := new(UpdateUserCardResponse)
 	err := c.cc.Invoke(ctx, DatabaseService_UpdateCard_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -963,7 +963,7 @@ type DatabaseServiceServer interface {
 	DeleteCardById(context.Context, *DeleteCardByIdRequest) (*HTTPCodes, error)
 	// *
 	// Обновление банковской карты пользователя
-	UpdateCard(context.Context, *Card) (*Card, error)
+	UpdateCard(context.Context, *UpdateUserCardRequest) (*UpdateUserCardResponse, error)
 	// *
 	// Поиск всех банковских карт компаний
 	CardsCompanies(context.Context, *Empty) (*CardsCompaniesResponse, error)
@@ -1148,7 +1148,7 @@ func (UnimplementedDatabaseServiceServer) DeleteCardByModel(context.Context, *Ca
 func (UnimplementedDatabaseServiceServer) DeleteCardById(context.Context, *DeleteCardByIdRequest) (*HTTPCodes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCardById not implemented")
 }
-func (UnimplementedDatabaseServiceServer) UpdateCard(context.Context, *Card) (*Card, error) {
+func (UnimplementedDatabaseServiceServer) UpdateCard(context.Context, *UpdateUserCardRequest) (*UpdateUserCardResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateCard not implemented")
 }
 func (UnimplementedDatabaseServiceServer) CardsCompanies(context.Context, *Empty) (*CardsCompaniesResponse, error) {
@@ -1797,7 +1797,7 @@ func _DatabaseService_DeleteCardById_Handler(srv interface{}, ctx context.Contex
 }
 
 func _DatabaseService_UpdateCard_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Card)
+	in := new(UpdateUserCardRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1809,7 +1809,7 @@ func _DatabaseService_UpdateCard_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: DatabaseService_UpdateCard_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DatabaseServiceServer).UpdateCard(ctx, req.(*Card))
+		return srv.(DatabaseServiceServer).UpdateCard(ctx, req.(*UpdateUserCardRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

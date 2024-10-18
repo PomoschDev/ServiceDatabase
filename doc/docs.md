@@ -1551,7 +1551,7 @@
 | FindCardById | [FindCardByIdRequest](#service-FindCardByIdRequest) | [Card](#service-Card) |  Поиск банковской карты по ее ID |
 | DeleteCardByModel | [Card](#service-Card) | [HTTPCodes](#service-HTTPCodes) |  Удаление банковской карты по модели (например полученной с помощью FindCardById) |
 | DeleteCardById | [DeleteCardByIdRequest](#service-DeleteCardByIdRequest) | [HTTPCodes](#service-HTTPCodes) |  Удаление банковской карты по ID |
-| UpdateCard | [Card](#service-Card) | [Card](#service-Card) |  Обновление банковской карты пользователя |
+| UpdateCard | [UpdateUserCardRequest](#service-UpdateUserCardRequest) | [UpdateUserCardResponse](#service-UpdateUserCardResponse) |  Обновление банковской карты пользователя |
 | CardsCompanies | [Empty](#service-Empty) | [CardsCompaniesResponse](#service-CardsCompaniesResponse) |  Поиск всех банковских карт компаний |
 | CreateCardCompany | [CreateCardCompanyRequest](#service-CreateCardCompanyRequest) | [CardCompany](#service-CardCompany) |  Создание банковской карты компании |
 | FindCardCompanyByID | [FindCardCompanyByIDRequest](#service-FindCardCompanyByIDRequest) | [CardCompany](#service-CardCompany) |  Поиск банковской карты компании по ID |
