@@ -84,8 +84,8 @@ func (s *serverAPI) FindCardById(ctx context.Context, req *FindCardByIdRequest) 
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
 	}
 
-	if card.Number == "" || len(card.Number) == 0 {
-		return nil, status.Error(codes.NotFound, fmt.Sprintf("Карта пользователя с id %d не найден", req.GetId()))
+	if card.Number == "" || len(card.Number) == 0 || card.UserID == 0 {
+		return nil, status.Error(codes.NotFound, fmt.Sprintf("Банковская карта не найден"))
 	}
 
 	response := new(Card)
