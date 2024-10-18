@@ -272,11 +272,10 @@ message Empty {}
 * Запрос на обновление банковской карты пользователя
  */
 message UpdateUserCardRequest {
-  uint64 id = 1; /** ID банковской карты в базе данных */
-  string fullName = 2; /** ФИО с банковской карты */
-  string number = 3; /** Номер карты */
-  string date = 4; /** Дата до которой активна карта */
-  uint64 cvv = 5; /** CVV код карты */
+  string fullName = 1; /** ФИО с банковской карты */
+  string number = 2; /** Номер карты */
+  string date = 3; /** Дата до которой активна карта */
+  uint64 cvv = 4; /** CVV код карты */
 }
 
 /**

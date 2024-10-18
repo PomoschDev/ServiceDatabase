@@ -1357,7 +1357,6 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| id | [uint64](#uint64) |  | ID банковской карты в базе данных |
 | fullName | [string](#string) |  | ФИО с банковской карты |
 | number | [string](#string) |  | Номер карты |
 | date | [string](#string) |  | Дата до которой активна карта |
