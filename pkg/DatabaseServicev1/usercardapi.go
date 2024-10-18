@@ -142,7 +142,7 @@ func (s *serverAPI) UpdateCard(ctx context.Context, req *UpdateUserCardRequest) 
 
 	db := database.GetDB()
 	card = nil
-	result := db.Where(&models.Card{ID: req.Id}).
+	result := db.Where(&models.Card{ID: req.GetId()}).
 		Find(&card)
 
 	if result.Error != nil {

@@ -269,9 +269,20 @@ service DatabaseService {
 message Empty {}
 
 /**
-* Запрос на обновление банковской карты пользователя
+* Запрос на обновление банковской карты пользователя (для передачи gRPC)
  */
 message UpdateUserCardRequest {
+  uint64 id = 1; /** ID банковской карты в базе данных */
+  string fullName = 2; /** ФИО с банковской карты */
+  string number = 3; /** Номер карты */
+  string date = 4; /** Дата до которой активна карта */
+  uint64 cvv = 5; /** CVV код карты */
+}
+
+/**
+* Запрос на обновление банковской карты пользователя (для передачи swagger)
+ */
+message UpdateUserCardRequest1 {
   string fullName = 1; /** ФИО с банковской карты */
   string number = 2; /** Номер карты */
   string date = 3; /** Дата до которой активна карта */

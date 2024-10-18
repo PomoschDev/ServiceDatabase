@@ -75,6 +75,7 @@
     - [UpdateCompanyRequest](#service-UpdateCompanyRequest)
     - [UpdateDonationsRequest](#service-UpdateDonationsRequest)
     - [UpdateUserCardRequest](#service-UpdateUserCardRequest)
+    - [UpdateUserCardRequest1](#service-UpdateUserCardRequest1)
     - [UpdateUserCardResponse](#service-UpdateUserCardResponse)
     - [UpdateUserRequest](#service-UpdateUserRequest)
     - [UserIsExistsRequest](#service-UserIsExistsRequest)
@@ -1352,7 +1353,27 @@
 
 ### UpdateUserCardRequest
 
-Запрос на обновление банковской карты пользователя
+Запрос на обновление банковской карты пользователя (для передачи gRPC)
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  | ID банковской карты в базе данных |
+| fullName | [string](#string) |  | ФИО с банковской карты |
+| number | [string](#string) |  | Номер карты |
+| date | [string](#string) |  | Дата до которой активна карта |
+| cvv | [uint64](#uint64) |  | CVV код карты |
+
+
+
+
+
+
+<a name="service-UpdateUserCardRequest1"></a>
+
+### UpdateUserCardRequest1
+
+Запрос на обновление банковской карты пользователя (для передачи swagger)
 
 
 | Field | Type | Label | Description |

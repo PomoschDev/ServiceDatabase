@@ -10,6 +10,20 @@ class Empty(_message.Message):
     def __init__(self) -> None: ...
 
 class UpdateUserCardRequest(_message.Message):
+    __slots__ = ("id", "fullName", "number", "date", "cvv")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    FULLNAME_FIELD_NUMBER: _ClassVar[int]
+    NUMBER_FIELD_NUMBER: _ClassVar[int]
+    DATE_FIELD_NUMBER: _ClassVar[int]
+    CVV_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    fullName: str
+    number: str
+    date: str
+    cvv: int
+    def __init__(self, id: _Optional[int] = ..., fullName: _Optional[str] = ..., number: _Optional[str] = ..., date: _Optional[str] = ..., cvv: _Optional[int] = ...) -> None: ...
+
+class UpdateUserCardRequest1(_message.Message):
     __slots__ = ("fullName", "number", "date", "cvv")
     FULLNAME_FIELD_NUMBER: _ClassVar[int]
     NUMBER_FIELD_NUMBER: _ClassVar[int]
