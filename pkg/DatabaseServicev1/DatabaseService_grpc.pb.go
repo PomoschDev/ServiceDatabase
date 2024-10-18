@@ -178,7 +178,7 @@ type DatabaseServiceClient interface {
 	// Удаление банковской карты по ID
 	DeleteCardById(ctx context.Context, in *DeleteCardByIdRequest, opts ...grpc.CallOption) (*HTTPCodes, error)
 	// *
-	// Обновление банковской карты
+	// Обновление банковской карты пользователя
 	UpdateCard(ctx context.Context, in *Card, opts ...grpc.CallOption) (*Card, error)
 	// *
 	// Поиск всех банковских карт компаний
@@ -962,7 +962,7 @@ type DatabaseServiceServer interface {
 	// Удаление банковской карты по ID
 	DeleteCardById(context.Context, *DeleteCardByIdRequest) (*HTTPCodes, error)
 	// *
-	// Обновление банковской карты
+	// Обновление банковской карты пользователя
 	UpdateCard(context.Context, *Card) (*Card, error)
 	// *
 	// Поиск всех банковских карт компаний

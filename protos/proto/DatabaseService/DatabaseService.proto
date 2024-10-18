@@ -132,7 +132,7 @@ service DatabaseService {
  */
   rpc DeleteCardById(DeleteCardByIdRequest) returns (HTTPCodes);
   /**
-* Обновление банковской карты
+* Обновление банковской карты пользователя
  */
   rpc UpdateCard(Card) returns (Card);
 
@@ -267,6 +267,31 @@ service DatabaseService {
 * Пустая структура, необходимая для запросов без входящих аргументов
  */
 message Empty {}
+
+/**
+* Запрос на обновление банковской карты пользователя
+ */
+message UpdateUserCardRequest {
+  uint64 id = 1; /** ID банковской карты в базе данных */
+  string fullName = 2; /** ФИО с банковской карты */
+  string number = 3; /** Номер карты */
+  string date = 4; /** Дата до которой активна карта */
+  uint64 cvv = 5; /** CVV код карты */
+}
+
+/**
+* Ответ на запрос обновления банковской карты пользователя
+ */
+message UpdateUserCardResponse {
+  uint64 id = 1; /** ID банковской карты в базе данных */
+  string fullName = 2; /** ФИО с банковской карты */
+  string number = 3; /** Номер карты */
+  string date = 4; /** Дата до которой активна карта */
+  uint64 cvv = 5; /** CVV код карты */
+  uint64 userId = 6; /** ID пользователя которому принадлежит данная карта */
+  string createdAt = 7; /** Дата создания сущности в базе данных */
+  string updatedAt = 8; /** Дата последнего обновления сущности в базе данных */
+}
 
 
 /**

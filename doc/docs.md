@@ -74,6 +74,8 @@
     - [SessionsResponse](#service-SessionsResponse)
     - [UpdateCompanyRequest](#service-UpdateCompanyRequest)
     - [UpdateDonationsRequest](#service-UpdateDonationsRequest)
+    - [UpdateUserCardRequest](#service-UpdateUserCardRequest)
+    - [UpdateUserCardResponse](#service-UpdateUserCardResponse)
     - [UpdateUserRequest](#service-UpdateUserRequest)
     - [UserIsExistsRequest](#service-UserIsExistsRequest)
     - [UserIsExistsResponse](#service-UserIsExistsResponse)
@@ -1346,6 +1348,49 @@
 
 
 
+<a name="service-UpdateUserCardRequest"></a>
+
+### UpdateUserCardRequest
+
+Запрос на обновление банковской карты пользователя
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  | ID банковской карты в базе данных |
+| fullName | [string](#string) |  | ФИО с банковской карты |
+| number | [string](#string) |  | Номер карты |
+| date | [string](#string) |  | Дата до которой активна карта |
+| cvv | [uint64](#uint64) |  | CVV код карты |
+
+
+
+
+
+
+<a name="service-UpdateUserCardResponse"></a>
+
+### UpdateUserCardResponse
+
+Ответ на запрос обновления банковской карты пользователя
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  | ID банковской карты в базе данных |
+| fullName | [string](#string) |  | ФИО с банковской карты |
+| number | [string](#string) |  | Номер карты |
+| date | [string](#string) |  | Дата до которой активна карта |
+| cvv | [uint64](#uint64) |  | CVV код карты |
+| userId | [uint64](#uint64) |  | ID пользователя которому принадлежит данная карта |
+| createdAt | [string](#string) |  | Дата создания сущности в базе данных |
+| updatedAt | [string](#string) |  | Дата последнего обновления сущности в базе данных |
+
+
+
+
+
+
 <a name="service-UpdateUserRequest"></a>
 
 ### UpdateUserRequest
@@ -1506,7 +1551,7 @@
 | FindCardById | [FindCardByIdRequest](#service-FindCardByIdRequest) | [Card](#service-Card) |  Поиск банковской карты по ее ID |
 | DeleteCardByModel | [Card](#service-Card) | [HTTPCodes](#service-HTTPCodes) |  Удаление банковской карты по модели (например полученной с помощью FindCardById) |
 | DeleteCardById | [DeleteCardByIdRequest](#service-DeleteCardByIdRequest) | [HTTPCodes](#service-HTTPCodes) |  Удаление банковской карты по ID |
-| UpdateCard | [Card](#service-Card) | [Card](#service-Card) |  Обновление банковской карты |
+| UpdateCard | [Card](#service-Card) | [Card](#service-Card) |  Обновление банковской карты пользователя |
 | CardsCompanies | [Empty](#service-Empty) | [CardsCompaniesResponse](#service-CardsCompaniesResponse) |  Поиск всех банковских карт компаний |
 | CreateCardCompany | [CreateCardCompanyRequest](#service-CreateCardCompanyRequest) | [CardCompany](#service-CardCompany) |  Создание банковской карты компании |
 | FindCardCompanyByID | [FindCardCompanyByIDRequest](#service-FindCardCompanyByIDRequest) | [CardCompany](#service-CardCompany) |  Поиск банковской карты компании по ID |

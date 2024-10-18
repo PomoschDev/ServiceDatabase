@@ -580,7 +580,7 @@ class DatabaseServiceServicer(object):
 
     def UpdateCard(self, request, context):
         """*
-        Обновление банковской карты
+        Обновление банковской карты пользователя
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
