@@ -23,7 +23,7 @@ func (s *serverAPI) Cards(ctx context.Context, req *Empty) (*CardsResponse, erro
 
 	response := new(CardsResponse)
 
-	err = utilities.Transformation(cards, response.Cards)
+	err = utilities.Transformation(cards, &response.Cards)
 	if err != nil {
 		logger.Log.Error("utilities.Transformation(cards, response.Cards)", sl.Err(err))
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
