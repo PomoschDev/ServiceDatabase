@@ -23,7 +23,7 @@ func (s *serverAPI) CardsCompanies(ctx context.Context, req *Empty) (*CardsCompa
 
 	response := new(CardsCompaniesResponse)
 
-	err = utilities.Transformation(companies, response)
+	err = utilities.Transformation(companies, &response.Cards)
 	if err != nil {
 		logger.Log.Error("utilities.Transformation(obj, response)", sl.Err(err))
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
@@ -83,7 +83,7 @@ func (s *serverAPI) FindCardCompanyByID(ctx context.Context, req *FindCardCompan
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
 	}
 
-	if cardCompany.ID == 0 || (cardCompany.Number == "" || len(cardCompany.Number) == 0) {
+	if cardCompany.CompanyID == 0 {
 		return nil, status.Error(codes.NotFound, fmt.Sprintf("Компания не найдена"))
 	}
 

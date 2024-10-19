@@ -409,9 +409,9 @@ class CreateCardCompanyRequest(_message.Message):
     fullName: str
     number: str
     date: str
-    cvv: str
+    cvv: int
     companyId: int
-    def __init__(self, fullName: _Optional[str] = ..., number: _Optional[str] = ..., date: _Optional[str] = ..., cvv: _Optional[str] = ..., companyId: _Optional[int] = ...) -> None: ...
+    def __init__(self, fullName: _Optional[str] = ..., number: _Optional[str] = ..., date: _Optional[str] = ..., cvv: _Optional[int] = ..., companyId: _Optional[int] = ...) -> None: ...
 
 class CardsCompaniesResponse(_message.Message):
     __slots__ = ("cards",)

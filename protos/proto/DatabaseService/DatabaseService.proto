@@ -624,7 +624,7 @@ message CreateCardCompanyRequest {
   string fullName = 2; /** ФИО с банковской карты */
   string number = 3; /** Номер банковской карты */
   string date = 4; /** Дата до которой активна карта */
-  string cvv = 5; /** CVV код банковской карты */
+  uint64 cvv = 5; /** CVV код банковской карты */
   uint64 companyId = 6; /** ID компании которой принадлежит данная карта */
 }
 
