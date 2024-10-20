@@ -16,14 +16,14 @@ import (
 )
 
 func (s *serverAPI) CardsCompanies(ctx context.Context, req *Empty) (*CardsCompaniesResponse, error) {
-	companies, err := models.AllCompanies()
+	cardCompanies, err := models.AllCardsCompanies()
 	if err != nil {
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
 	}
 
 	response := new(CardsCompaniesResponse)
 
-	err = utilities.Transformation(companies, &response.Cards)
+	err = utilities.Transformation(cardCompanies, &response.Cards)
 	if err != nil {
 		logger.Log.Error("utilities.Transformation(obj, response)", sl.Err(err))
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
@@ -116,6 +116,7 @@ func (s *serverAPI) DeleteCardCompanyByModel(ctx context.Context, req *CardCompa
 
 func (s *serverAPI) DeleteCardCompanyById(ctx context.Context, req *DeleteCardCompanyByIdRequest) (*HTTPCodes, error) {
 	cardCompany := &models.CardCompany{ID: req.GetId()}
+	logger.Log.Info("DeleteCardCompanyById", slog.Any("cardCompany", cardCompany))
 	if err := cardCompany.DeleteByID(); err != nil {
 		logger.Log.Error("cardCompany.DeleteByID()", sl.Err(err))
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))

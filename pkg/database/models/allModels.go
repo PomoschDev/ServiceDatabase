@@ -62,7 +62,7 @@ type Company struct {
 	OKPO      string       `gorm:"not null" json:"okpo,omitempty"`
 	Card      *CardCompany `gorm:"foreignKey:company_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"card,omitempty"`
 	UserID    uint64       `json:"userId,omitempty"`
-	User      *User        `json:"omitempty"`
+	User      *User        `json:"user,omitempty"`
 	CreatedAt time.Time    `json:"createdAt,omitempty"`
 	UpdatedAt time.Time    `json:"updatedAt,omitempty"`
 }

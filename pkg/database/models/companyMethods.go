@@ -2,8 +2,10 @@ package models
 
 import (
 	"DababaseService/pkg/database"
+	"DababaseService/pkg/logger"
 	"errors"
 	"gorm.io/gorm"
+	"log/slog"
 )
 
 func AllCompanies() ([]*Company, error) {
@@ -12,11 +14,13 @@ func AllCompanies() ([]*Company, error) {
 
 	err := db.Find(&companies).Error
 
+	logger.Log.Info("AllCompanies", slog.Any("companies", companies))
+
 	if err != nil {
 		return nil, err
 	}
 
-	if companies == nil {
+	if companies == nil || len(companies) == 0 {
 		return []*Company{}, nil
 	}
 
