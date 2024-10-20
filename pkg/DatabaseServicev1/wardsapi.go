@@ -22,7 +22,7 @@ func (s *serverAPI) Wards(ctx context.Context, req *Empty) (*WardsResponse, erro
 
 	response := new(WardsResponse)
 
-	err = utilities.Transformation(wards, response.Wards)
+	err = utilities.Transformation(wards, &response.Wards)
 	if err != nil {
 		logger.Log.Error("utilities.Transformation(wards, response.Wards)", sl.Err(err))
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))

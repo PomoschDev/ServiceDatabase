@@ -29,7 +29,7 @@ RUN apk add tzdata && echo "Europe/Moscow" > /etc/timezone && ln -s /usr/share/z
 #
 
 # Копируем файл конфигурации и сертификаты/ключи в контейнер
-COPY ./config/prod.yaml .
+COPY ./config/prod.yaml ./local.yaml
 
 # Открываем порты
 EXPOSE ${PORT}

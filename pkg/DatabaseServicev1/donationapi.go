@@ -16,14 +16,14 @@ import (
 )
 
 func (s *serverAPI) Donations(ctx context.Context, req *Empty) (*DonationsResponse, error) {
-	donations, err := models.AllUsers()
+	donations, err := models.AllDonations()
 	if err != nil {
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
 	}
 
 	response := new(DonationsResponse)
 
-	err = utilities.Transformation(donations, response)
+	err = utilities.Transformation(donations, &response.Donations)
 	if err != nil {
 		logger.Log.Error("utilities.Transformation(donations, response)", sl.Err(err))
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
@@ -85,7 +85,7 @@ func (s *serverAPI) FindDonationWards(ctx context.Context, req *FindDonationWard
 
 	response := new(FindDonationWardsResponse)
 
-	if err := utilities.Transformation(wards, response.Wards); err != nil {
+	if err := utilities.Transformation(wards, &response.Wards); err != nil {
 		logger.Log.Error("utilities.Transformation(wards, response.Wards)", sl.Err(err))
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
 	}

@@ -65,15 +65,9 @@ func (s *serverAPI) Sessions(ctx context.Context, req *Empty) (*SessionsResponse
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
 	}
 
-	obj := struct {
-		Sessions []*models.Session `json:"sessions,omitempty"`
-	}{}
+	response := new(SessionsResponse)
 
-	obj.Sessions = sessions
-
-	response := &SessionsResponse{}
-
-	err = utilities.Transformation(obj, response)
+	err = utilities.Transformation(sessions, &response.Sessions)
 	if err != nil {
 		logger.Log.Error("utilities.Transformation(obj, response)", sl.Err(err))
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
