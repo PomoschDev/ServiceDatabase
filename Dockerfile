@@ -9,7 +9,7 @@ ENV GOARCH=arm64
 WORKDIR /go/service
 COPY . /go/service
 
-# Компилируем ltcd
+# Компилируем проект
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=${GOARCH} go build ./cmd/entrypoint
 
 # Создаем финальный образ
