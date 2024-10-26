@@ -41,6 +41,7 @@
     - [DeleteSessionByIdRequest](#service-DeleteSessionByIdRequest)
     - [DeleteSessionByModelRequest](#service-DeleteSessionByModelRequest)
     - [DeleteSessionByUserIdRequest](#service-DeleteSessionByUserIdRequest)
+    - [DeleteUserAvatarRequest](#service-DeleteUserAvatarRequest)
     - [DeleteUserByIdRequest](#service-DeleteUserByIdRequest)
     - [DeleteUserByModelRequest](#service-DeleteUserByModelRequest)
     - [DeleteWardByIdRequest](#service-DeleteWardByIdRequest)
@@ -68,10 +69,14 @@
     - [FindUserDonationsRequest](#service-FindUserDonationsRequest)
     - [FindUserDonationsResponse](#service-FindUserDonationsResponse)
     - [FindWardByIdRequest](#service-FindWardByIdRequest)
+    - [GetUserAvatarRequest](#service-GetUserAvatarRequest)
+    - [GetUserAvatarResponse](#service-GetUserAvatarResponse)
     - [HTTPCodes](#service-HTTPCodes)
+    - [ImageInfo](#service-ImageInfo)
     - [IsRoleRequest](#service-IsRoleRequest)
     - [IsRoleResponse](#service-IsRoleResponse)
     - [SessionsResponse](#service-SessionsResponse)
+    - [SetUserAvatarRequest](#service-SetUserAvatarRequest)
     - [UpdateCompanyRequest](#service-UpdateCompanyRequest)
     - [UpdateDonationsRequest](#service-UpdateDonationsRequest)
     - [UpdateUserCardRequest](#service-UpdateUserCardRequest)
@@ -805,6 +810,22 @@
 
 
 
+<a name="service-DeleteUserAvatarRequest"></a>
+
+### DeleteUserAvatarRequest
+
+Запрос на удаление фото пользователя
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| userId | [uint64](#uint64) |  | ID пользователя |
+
+
+
+
+
+
 <a name="service-DeleteUserByIdRequest"></a>
 
 ### DeleteUserByIdRequest
@@ -1246,6 +1267,39 @@
 
 
 
+<a name="service-GetUserAvatarRequest"></a>
+
+### GetUserAvatarRequest
+
+Запрос на извлечение пользовательского фото
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| userId | [uint64](#uint64) |  | ID пользователя |
+
+
+
+
+
+
+<a name="service-GetUserAvatarResponse"></a>
+
+### GetUserAvatarResponse
+
+Ответ на запрос извлечения пользовательского фото
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| info | [ImageInfo](#service-ImageInfo) |  | Информация об изображении |
+| chunk_data | [bytes](#bytes) |  | Фрагмент байт (кол-во байт для отправления рассчитываются из размер файла / 1024) |
+
+
+
+
+
+
 <a name="service-HTTPCodes"></a>
 
 ### HTTPCodes
@@ -1256,6 +1310,24 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | code | [int64](#int64) |  | HTTP код ответа |
+
+
+
+
+
+
+<a name="service-ImageInfo"></a>
+
+### ImageInfo
+
+Информация об изображении
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| fileName | [string](#string) |  | Имя файла |
+| type | [string](#string) |  | Расширение файла |
+| size | [int64](#int64) |  | Размер файла |
 
 
 
@@ -1305,6 +1377,24 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | sessions | [CreateSessionResponse](#service-CreateSessionResponse) | repeated | Массив сессий |
+
+
+
+
+
+
+<a name="service-SetUserAvatarRequest"></a>
+
+### SetUserAvatarRequest
+
+Запрос на сохранение фото профиля пользователя
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| userId | [uint64](#uint64) |  | ID пользователя |
+| image_type | [string](#string) |  | Тип изображения (png, jpg, jpeg) |
+| chunk_data | [bytes](#bytes) |  | Фрагмент байт (кол-во байт для отправления рассчитываются из размер файла / 1024) |
 
 
 
@@ -1600,6 +1690,9 @@
 | DeleteSessionByModel | [DeleteSessionByModelRequest](#service-DeleteSessionByModelRequest) | [HTTPCodes](#service-HTTPCodes) |  Удаление сессии по полной модели (например полученной с помощью FindSessionById) |
 | DeleteSessionById | [DeleteSessionByIdRequest](#service-DeleteSessionByIdRequest) | [HTTPCodes](#service-HTTPCodes) |  Удаляет сессию по ее ID |
 | DeleteSessionByUserId | [DeleteSessionByUserIdRequest](#service-DeleteSessionByUserIdRequest) | [HTTPCodes](#service-HTTPCodes) |  Удаляет сессию по ее UserID |
+| SetUserAvatar | [SetUserAvatarRequest](#service-SetUserAvatarRequest) stream | [HTTPCodes](#service-HTTPCodes) |  Устанавливает фото для пользователя |
+| DeleteUserAvatar | [DeleteUserAvatarRequest](#service-DeleteUserAvatarRequest) | [HTTPCodes](#service-HTTPCodes) |  Удаление пользовательского фото |
+| GetUserAvatar | [GetUserAvatarRequest](#service-GetUserAvatarRequest) | [GetUserAvatarRequest](#service-GetUserAvatarRequest) stream |  Получение пользовательского фото |
 
  
 

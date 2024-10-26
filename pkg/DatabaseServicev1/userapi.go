@@ -5,13 +5,18 @@ import (
 	"DababaseService/pkg/database"
 	"DababaseService/pkg/database/models"
 	"DababaseService/pkg/logger"
+	"DababaseService/pkg/paths"
 	"DababaseService/pkg/utilities"
 	"context"
 	"fmt"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"io"
+	"io/fs"
 	"log/slog"
 	"net/http"
+	"os"
+	"path/filepath"
 	"strings"
 	"time"
 )
@@ -419,4 +424,207 @@ func (s *serverAPI) AddCardToUser(ctx context.Context, req *AddCardToUserRequest
 	}
 
 	return response, nil
+}
+
+func (s *serverAPI) SetUserAvatar(stream DatabaseService_SetUserAvatarServer) error {
+	ch := make(chan struct{})
+	chErr := make(chan error)
+	data := make([]byte, 0, 5_000_000)
+	userId := uint64(0)
+	imageType := ""
+
+	go func() {
+	loop:
+		for {
+			req := new(SetUserAvatarRequest)
+			err := stream.RecvMsg(req)
+			if err == io.EOF {
+				chErr <- nil
+				ch <- struct{}{}
+				break loop
+			}
+			if err != nil {
+				logger.Log.Error("SetUserAvatar", sl.Err(err))
+				ch <- struct{}{}
+				chErr <- status.Error(codes.DataLoss, "Не удалось прочитать изображение")
+			}
+
+			switch u := req.Data.(type) {
+			case *SetUserAvatarRequest_UserId:
+				userId = u.UserId
+			case *SetUserAvatarRequest_ImageType:
+				imageType = u.ImageType
+			case *SetUserAvatarRequest_ChunkData:
+				data = append(data, u.ChunkData...)
+			}
+		}
+	}()
+
+	err := <-chErr
+	<-ch
+	close(chErr)
+	close(ch)
+
+	if err != nil {
+		logger.Log.Error("Ошибка после цикла", sl.Err(err))
+		return err
+	}
+
+	//Сохраняем в файл
+	{
+		fileName := fmt.Sprintf("%s.%s", utilities.MD5(fmt.Sprintf("user_%d", userId)), imageType)
+		pathToFile := filepath.Join(paths.IMAGE_DIR, fileName)
+		f, err := os.OpenFile(pathToFile, os.O_CREATE|os.O_APPEND|os.O_TRUNC, os.ModePerm)
+		if err != nil {
+			logger.Log.Error("Ошибка при открытии файла", sl.Err(err))
+			return status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
+		}
+		defer f.Close()
+
+		_, err = f.Write(data)
+		if err != nil {
+			logger.Log.Error("Ошибка при записи файла: %v", err)
+			return status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
+		}
+
+	}
+
+	response := new(HTTPCodes)
+	response.Code = http.StatusOK
+
+	err = stream.SendAndClose(response)
+	if err != nil {
+		logger.Log.Error("Ошибка при закрытии стрима", sl.Err(err))
+		return status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
+	}
+
+	stream.Context().Done()
+
+	return nil
+}
+
+func (s *serverAPI) DeleteUserAvatar(ctx context.Context, req *DeleteUserAvatarRequest) (*HTTPCodes, error) {
+	fileName := utilities.MD5(fmt.Sprintf("user_%d", req.UserId))
+	images, err := fs.Glob(os.DirFS(paths.IMAGE_DIR), fmt.Sprintf("%s*", fileName))
+	if err != nil {
+		logger.Log.Error("DeleteUserAvatar", sl.Err(err))
+		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
+	}
+
+	for _, i := range images {
+		logger.Log.Info("i", slog.String("name", i))
+		fileName = i
+	}
+
+	pathToFile := filepath.Join(paths.IMAGE_DIR, fileName)
+
+	err = os.Remove(pathToFile)
+	if err != nil {
+		logger.Log.Error("os.Remove(pathToFile)", sl.Err(err))
+		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка при удалении файла: %v", err))
+	}
+
+	request := &HTTPCodes{Code: http.StatusOK}
+
+	return request, nil
+}
+
+func (s *serverAPI) GetUserAvatar(req *GetUserAvatarRequest, stream DatabaseService_GetUserAvatarServer) error {
+	user := &models.User{ID: req.GetUserId()}
+	const chunkSize = 1024 // Размер части в байтах
+	defer stream.Context().Done()
+
+	if err := user.FindUserID(); err != nil {
+		return status.Error(codes.Internal, fmt.Sprintf("Ошибка при удалении файла: %v", err))
+	}
+
+	if user.Password == "" || len(user.Password) == 0 {
+		return status.Error(codes.NotFound, "Пользователь не найден")
+	}
+
+	fileName := utilities.MD5(fmt.Sprintf("user_%d", user.ID))
+	images, err := fs.Glob(os.DirFS(paths.IMAGE_DIR), fmt.Sprintf("%s*", fileName))
+	if err != nil {
+		logger.Log.Error("GetUserAvatar", sl.Err(err))
+		return status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
+	}
+
+	for _, i := range images {
+		fileName = i
+	}
+
+	pathToFile := filepath.Join(paths.IMAGE_DIR, fileName)
+
+	f, err := os.Open(pathToFile)
+	if err != nil {
+		logger.Log.Error("os.Open", sl.Err(err))
+		return status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
+	}
+	defer f.Close()
+
+	fileInfo, err := f.Stat()
+	if err != nil {
+		logger.Log.Error("Ошибка при чтении Stat:", sl.Err(err))
+		return status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
+	}
+
+	data := make([]byte, fileInfo.Size()/chunkSize)
+
+	imageInfo := &GetUserAvatarResponse{Data: &GetUserAvatarResponse_Info{
+		Info: &ImageInfo{
+			FileName: fileName,
+			Type:     strings.Replace(filepath.Ext(fileName), ".", "", -1),
+			Size:     fileInfo.Size(),
+		},
+	}}
+
+	err = stream.SendMsg(imageInfo)
+	if err != nil {
+		logger.Log.Error("Ошибка при отправке imageInfo", sl.Err(err))
+		return status.Error(codes.Internal, fmt.Sprintf("Ошибка при отправке информации об изображении: %v", err))
+	}
+
+	done := make(chan struct{}, 1)
+	chErr := make(chan error, 1)
+
+	go func() {
+	loop:
+		for {
+			n, err := f.Read(data)
+			if err == io.EOF {
+				chErr <- nil
+				done <- struct{}{}
+				break loop
+			}
+
+			if err != nil {
+				done <- struct{}{}
+				chErr <- status.Error(codes.Internal, fmt.Sprintf("Ошибка при чтении файла: %v", err))
+			}
+
+			data = data[:n]
+			reqChunk := &GetUserAvatarResponse{
+				Data: &GetUserAvatarResponse_ChunkData{ChunkData: data},
+			}
+
+			err = stream.SendMsg(reqChunk)
+			if err != nil && err != io.EOF {
+				done <- struct{}{}
+				chErr <- status.Error(codes.Internal, fmt.Sprintf("Ошибка при отправке сообщения в поток: %v", err))
+			}
+		}
+	}()
+
+	err = <-chErr
+	<-done
+	close(chErr)
+	close(done)
+
+	if err != nil {
+		return err
+	}
+
+	stream.Context().Done()
+
+	return nil
 }

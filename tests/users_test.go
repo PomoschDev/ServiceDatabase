@@ -7,7 +7,11 @@ import (
 	"DababaseService/tests/suite"
 	"github.com/brianvoe/gofakeit/v7"
 	"google.golang.org/grpc/status"
+	"io"
+	"os"
+	"path/filepath"
 	"strconv"
+	"strings"
 	"testing"
 )
 
@@ -615,6 +619,171 @@ func Test_AddCardToUser_HappyPath(t *testing.T) {
 	}
 
 	t.Logf("Ответ от сервера: %s", utilities.ToJSON(response))
+}
+
+func Test_Float(t *testing.T) {
+	t.Logf("%+v", 7/2)
+	bts := make([]byte, 5_007_007)
+
+	a := make([]byte, 0, 1_000)
+
+	t.Logf("len: %d", len(bts))
+
+	for i := 2; i < len(bts); i++ {
+		//t.Logf("Мы тут: %d", i)
+		if i%2 == 0 {
+			//	t.Logf("Копируем от %d до %d", i-2, i)
+			a = append(a, bts[i-2], bts[i])
+		}
+
+	}
+
+	t.Logf("len a: %d", len(a))
+}
+
+func Test_SetUserAvatar(t *testing.T) {
+	ctx, st := suite.New(t)
+	const chunkSize = 1024 // Размер части в байтах
+	f, err := os.Open("./img/img.png")
+	if err != nil {
+		t.Errorf("Ошибка при открытии файла: %v", err)
+		return
+	}
+	defer f.Close()
+	//t.Logf("Байты: %b", data)
+
+	s, err := f.Stat()
+	if err != nil {
+		t.Errorf("Ошибка при чтении Stat: %v", err)
+		return
+	}
+
+	t.Logf("Расширение файла: %s", strings.Replace(filepath.Ext(s.Name()), ".", "", -1))
+	imageType := strings.Replace(filepath.Ext(s.Name()), ".", "", -1)
+
+	stream, err := st.ClientAPI.SetUserAvatar(ctx)
+	if err != nil {
+		statusRequest, ok := status.FromError(err)
+		t.Logf("Ошибка при выполнении запроса: \ncode = %s\nmessage = %s, ok = %t\nerr = %v", statusRequest.Code().String(),
+			statusRequest.Message(), ok, statusRequest.Err())
+		return
+	}
+
+	// Отправка UserId
+	reqUserId := &DatabaseServicev1.SetUserAvatarRequest{
+		Data: &DatabaseServicev1.SetUserAvatarRequest_UserId{UserId: 3},
+	}
+	if err := stream.SendMsg(reqUserId); err != nil {
+		t.Errorf("Ошибка при отправке сообщения в поток: %v", err)
+		return
+	}
+
+	// Отправка UserId
+	reqImageType := &DatabaseServicev1.SetUserAvatarRequest{
+		Data: &DatabaseServicev1.SetUserAvatarRequest_ImageType{ImageType: imageType},
+	}
+	if err := stream.SendMsg(reqImageType); err != nil {
+		t.Errorf("Ошибка при отправке сообщения в поток: %v", err)
+		return
+	}
+
+	data := make([]byte, s.Size()/chunkSize)
+
+loop:
+	for {
+		n, err := f.Read(data)
+		if err == io.EOF {
+			break loop
+		}
+
+		if err != nil {
+			t.Errorf("Ошибка при чтении байт: %v", err)
+			return
+		}
+
+		data = data[:n]
+		reqChunk := &DatabaseServicev1.SetUserAvatarRequest{
+			Data: &DatabaseServicev1.SetUserAvatarRequest_ChunkData{ChunkData: data},
+		}
+
+		err = stream.SendMsg(reqChunk)
+		if err != nil && err != io.EOF {
+			t.Errorf("Ошибка при отправке в стрим: %v", err)
+			return
+		}
+	}
+
+	response, err := stream.CloseAndRecv()
+	if err != nil {
+		t.Logf("Ошибка при закрытии стрима: %v", err)
+		return
+	}
+
+	stream.Context().Done()
+
+	t.Logf("Получили ответ: %+v", response)
+}
+
+func Test_DeleteUserAvatar(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	request := &DatabaseServicev1.DeleteUserAvatarRequest{UserId: 3}
+
+	response, err := st.ClientAPI.DeleteUserAvatar(ctx, request)
+	if err != nil {
+		t.Errorf("Ошибка: %v", err)
+		return
+	}
+
+	t.Logf("response: %+v", response)
+}
+
+func Test_GetUserAvatar(t *testing.T) {
+	ctx, st := suite.New(t)
+
+	request := &DatabaseServicev1.GetUserAvatarRequest{UserId: 3}
+
+	stream, err := st.ClientAPI.GetUserAvatar(ctx, request)
+	if err != nil {
+		t.Errorf("Ошибка при отправлении запроса: %v", err)
+		return
+	}
+
+	var data []byte
+	imageInfo := new(DatabaseServicev1.ImageInfo)
+
+	done := make(chan struct{}, 1)
+
+	go func() {
+	loop:
+		for {
+			req := new(DatabaseServicev1.GetUserAvatarResponse)
+			err := stream.RecvMsg(req)
+			if err == io.EOF {
+				done <- struct{}{}
+				break loop
+			}
+
+			switch u := req.GetData().(type) {
+			case *DatabaseServicev1.GetUserAvatarResponse_Info:
+				{
+					imageInfo = u.Info
+					data = make([]byte, 0, imageInfo.Size)
+					t.Logf("Получили imageInfo: %+v", imageInfo)
+				}
+			case *DatabaseServicev1.GetUserAvatarResponse_ChunkData:
+				{
+					data = append(data, u.ChunkData...)
+				}
+			}
+		}
+	}()
+
+	<-done
+	close(done)
+	stream.Context().Done()
+
+	t.Logf("Получили: %b", data[:32])
 }
 
 //--------------------

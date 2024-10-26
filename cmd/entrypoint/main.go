@@ -60,7 +60,7 @@ func setupLogger(env string) *slog.Logger {
 }
 
 func main() {
-	rand.Seed(time.Now().UnixNano())
+	rand.New(rand.NewSource(time.Now().UnixNano()))
 	//Инициализация конфигурации
 	cfg := config.MustLoad()
 

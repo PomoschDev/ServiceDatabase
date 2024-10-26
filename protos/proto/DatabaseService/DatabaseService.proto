@@ -261,12 +261,72 @@ service DatabaseService {
 * Удаляет сессию по ее UserID
 */
   rpc DeleteSessionByUserId(DeleteSessionByUserIdRequest) returns (HTTPCodes);
+
+/**
+* Устанавливает фото для пользователя
+*/
+  rpc SetUserAvatar(stream SetUserAvatarRequest) returns (HTTPCodes) {};
+
+/**
+* Удаление пользовательского фото
+*/
+  rpc DeleteUserAvatar(DeleteUserAvatarRequest) returns (HTTPCodes);
+
+/**
+* Получение пользовательского фото
+*/
+  rpc GetUserAvatar(GetUserAvatarRequest) returns (stream GetUserAvatarRequest);
 }
 
 /**
 * Пустая структура, необходимая для запросов без входящих аргументов
  */
 message Empty {}
+
+
+/**
+* Информация об изображении
+*/
+message ImageInfo {
+  string fileName = 1; /** Имя файла */
+  string type = 2; /** Расширение файла */
+  int64 size = 3; /** Размер файла */
+}
+
+/**
+* Ответ на запрос извлечения пользовательского фото
+*/
+message GetUserAvatarResponse {
+  oneof data {
+    ImageInfo info = 1; /** Информация об изображении */
+    bytes chunk_data = 3; /** Фрагмент байт (кол-во байт для отправления рассчитываются из размер файла / 1024) */
+  }
+}
+
+/**
+* Запрос на извлечение пользовательского фото
+ */
+message GetUserAvatarRequest {
+  uint64 userId = 1; /** ID пользователя */
+}
+
+/**
+* Запрос на удаление фото пользователя
+ */
+message DeleteUserAvatarRequest {
+  uint64 userId = 1; /** ID пользователя */
+}
+
+/**
+* Запрос на сохранение фото профиля пользователя
+ */
+message SetUserAvatarRequest {
+  oneof data {
+    uint64 userId = 1;  /** ID пользователя */
+    string image_type = 2; /** Тип изображения (png, jpg, jpeg) */
+    bytes chunk_data = 3; /** Фрагмент байт (кол-во байт для отправления рассчитываются из размер файла / 1024) */
+  };
+}
 
 /**
 * Запрос на обновление банковской карты пользователя (для передачи gRPC)

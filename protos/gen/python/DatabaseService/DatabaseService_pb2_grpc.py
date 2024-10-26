@@ -331,6 +331,21 @@ class DatabaseServiceStub(object):
                 request_serializer=DatabaseService_dot_DatabaseService__pb2.DeleteSessionByUserIdRequest.SerializeToString,
                 response_deserializer=DatabaseService_dot_DatabaseService__pb2.HTTPCodes.FromString,
                 _registered_method=True)
+        self.SetUserAvatar = channel.stream_unary(
+                '/service.DatabaseService/SetUserAvatar',
+                request_serializer=DatabaseService_dot_DatabaseService__pb2.SetUserAvatarRequest.SerializeToString,
+                response_deserializer=DatabaseService_dot_DatabaseService__pb2.HTTPCodes.FromString,
+                _registered_method=True)
+        self.DeleteUserAvatar = channel.unary_unary(
+                '/service.DatabaseService/DeleteUserAvatar',
+                request_serializer=DatabaseService_dot_DatabaseService__pb2.DeleteUserAvatarRequest.SerializeToString,
+                response_deserializer=DatabaseService_dot_DatabaseService__pb2.HTTPCodes.FromString,
+                _registered_method=True)
+        self.GetUserAvatar = channel.unary_stream(
+                '/service.DatabaseService/GetUserAvatar',
+                request_serializer=DatabaseService_dot_DatabaseService__pb2.GetUserAvatarRequest.SerializeToString,
+                response_deserializer=DatabaseService_dot_DatabaseService__pb2.GetUserAvatarRequest.FromString,
+                _registered_method=True)
 
 
 class DatabaseServiceServicer(object):
@@ -810,6 +825,30 @@ class DatabaseServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SetUserAvatar(self, request_iterator, context):
+        """*
+        Устанавливает фото для пользователя
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteUserAvatar(self, request, context):
+        """*
+        Удаление пользовательского фото
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetUserAvatar(self, request, context):
+        """*
+        Получение пользовательского фото
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_DatabaseServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -1107,6 +1146,21 @@ def add_DatabaseServiceServicer_to_server(servicer, server):
                     servicer.DeleteSessionByUserId,
                     request_deserializer=DatabaseService_dot_DatabaseService__pb2.DeleteSessionByUserIdRequest.FromString,
                     response_serializer=DatabaseService_dot_DatabaseService__pb2.HTTPCodes.SerializeToString,
+            ),
+            'SetUserAvatar': grpc.stream_unary_rpc_method_handler(
+                    servicer.SetUserAvatar,
+                    request_deserializer=DatabaseService_dot_DatabaseService__pb2.SetUserAvatarRequest.FromString,
+                    response_serializer=DatabaseService_dot_DatabaseService__pb2.HTTPCodes.SerializeToString,
+            ),
+            'DeleteUserAvatar': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteUserAvatar,
+                    request_deserializer=DatabaseService_dot_DatabaseService__pb2.DeleteUserAvatarRequest.FromString,
+                    response_serializer=DatabaseService_dot_DatabaseService__pb2.HTTPCodes.SerializeToString,
+            ),
+            'GetUserAvatar': grpc.unary_stream_rpc_method_handler(
+                    servicer.GetUserAvatar,
+                    request_deserializer=DatabaseService_dot_DatabaseService__pb2.GetUserAvatarRequest.FromString,
+                    response_serializer=DatabaseService_dot_DatabaseService__pb2.GetUserAvatarRequest.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -2704,6 +2758,87 @@ class DatabaseService(object):
             '/service.DatabaseService/DeleteSessionByUserId',
             DatabaseService_dot_DatabaseService__pb2.DeleteSessionByUserIdRequest.SerializeToString,
             DatabaseService_dot_DatabaseService__pb2.HTTPCodes.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SetUserAvatar(request_iterator,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.stream_unary(
+            request_iterator,
+            target,
+            '/service.DatabaseService/SetUserAvatar',
+            DatabaseService_dot_DatabaseService__pb2.SetUserAvatarRequest.SerializeToString,
+            DatabaseService_dot_DatabaseService__pb2.HTTPCodes.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteUserAvatar(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/service.DatabaseService/DeleteUserAvatar',
+            DatabaseService_dot_DatabaseService__pb2.DeleteUserAvatarRequest.SerializeToString,
+            DatabaseService_dot_DatabaseService__pb2.HTTPCodes.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetUserAvatar(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(
+            request,
+            target,
+            '/service.DatabaseService/GetUserAvatar',
+            DatabaseService_dot_DatabaseService__pb2.GetUserAvatarRequest.SerializeToString,
+            DatabaseService_dot_DatabaseService__pb2.GetUserAvatarRequest.FromString,
             options,
             channel_credentials,
             insecure,

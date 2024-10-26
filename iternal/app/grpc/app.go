@@ -57,4 +57,6 @@ func (a *App) Stop() {
 	a.log.With(slog.String("op", op)).Info("stopping gRPC server")
 
 	a.gRPCServer.GracefulStop()
+	//TODO: убрать после фикса
+	a.gRPCServer.Stop()
 }

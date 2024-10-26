@@ -9,6 +9,46 @@ class Empty(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...
 
+class ImageInfo(_message.Message):
+    __slots__ = ("fileName", "type", "size")
+    FILENAME_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
+    SIZE_FIELD_NUMBER: _ClassVar[int]
+    fileName: str
+    type: str
+    size: int
+    def __init__(self, fileName: _Optional[str] = ..., type: _Optional[str] = ..., size: _Optional[int] = ...) -> None: ...
+
+class GetUserAvatarResponse(_message.Message):
+    __slots__ = ("info", "chunk_data")
+    INFO_FIELD_NUMBER: _ClassVar[int]
+    CHUNK_DATA_FIELD_NUMBER: _ClassVar[int]
+    info: ImageInfo
+    chunk_data: bytes
+    def __init__(self, info: _Optional[_Union[ImageInfo, _Mapping]] = ..., chunk_data: _Optional[bytes] = ...) -> None: ...
+
+class GetUserAvatarRequest(_message.Message):
+    __slots__ = ("userId",)
+    USERID_FIELD_NUMBER: _ClassVar[int]
+    userId: int
+    def __init__(self, userId: _Optional[int] = ...) -> None: ...
+
+class DeleteUserAvatarRequest(_message.Message):
+    __slots__ = ("userId",)
+    USERID_FIELD_NUMBER: _ClassVar[int]
+    userId: int
+    def __init__(self, userId: _Optional[int] = ...) -> None: ...
+
+class SetUserAvatarRequest(_message.Message):
+    __slots__ = ("userId", "image_type", "chunk_data")
+    USERID_FIELD_NUMBER: _ClassVar[int]
+    IMAGE_TYPE_FIELD_NUMBER: _ClassVar[int]
+    CHUNK_DATA_FIELD_NUMBER: _ClassVar[int]
+    userId: int
+    image_type: str
+    chunk_data: bytes
+    def __init__(self, userId: _Optional[int] = ..., image_type: _Optional[str] = ..., chunk_data: _Optional[bytes] = ...) -> None: ...
+
 class UpdateUserCardRequest(_message.Message):
     __slots__ = ("id", "fullName", "number", "date", "cvv")
     ID_FIELD_NUMBER: _ClassVar[int]
