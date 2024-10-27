@@ -19,24 +19,24 @@ type Donations struct {
 	ID        uint64    `json:"id,omitempty"`
 	Title     string    `gorm:"not null" json:"title,omitempty"`
 	Amount    float64   `gorm:"not null" json:"amount,omitempty"`
-	Ward      *Ward     `gorm:"foreignKey:donations_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"wards,omitempty"`
+	Ward      *Ward     `gorm:"foreignKey:ward_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"ward,omitempty"`
+	WardID    uint64    `json:"wardId,omitempty"`
+	User      *User     `json:"user,omitempty"`
 	UserID    uint64    `json:"userId,omitempty"`
-	User      *User     `json:"omitempty"`
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type Ward struct {
-	ID          uint64     `json:"id,omitempty"`
-	Title       string     `gorm:"not null" json:"title,omitempty"`
-	FullName    string     `gorm:"not null" json:"fullName,omitempty"`
-	Want        string     `gorm:"not null" json:"want,omitempty"`
-	Necessary   float64    `gorm:"not null" json:"necessary,omitempty"`
-	DonationsID uint64     `json:"donationId,omitempty"`
-	Donations   *Donations `json:"omitempty"`
-	AvatarPath  string     `gorm:"default:NULL" json:"avatarPath,omitempty"`
-	CreatedAt   time.Time  `json:"createdAt,omitempty"`
-	UpdatedAt   time.Time  `json:"updatedAt,omitempty"`
+	ID        uint64       `json:"id,omitempty"`
+	Title     string       `gorm:"not null" json:"title,omitempty"`
+	FullName  string       `gorm:"not null" json:"fullName,omitempty"`
+	Want      string       `gorm:"not null" json:"want,omitempty"`
+	Collected float64      `gorm:"default:0" json:"collected"`
+	Necessary float64      `gorm:"not null" json:"necessary,omitempty"`
+	Donations []*Donations `gorm:"foreignKey:ward_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"donations,omitempty"`
+	CreatedAt time.Time    `json:"createdAt,omitempty"`
+	UpdatedAt time.Time    `json:"updatedAt,omitempty"`
 }
 
 type CardCompany struct {
@@ -81,19 +81,18 @@ type Card struct {
 
 // User - модель пользователей
 type User struct {
-	ID         uint64       `json:"id,omitempty"`
-	Email      string       `gorm:"index:,unique" json:"email,omitempty"`
-	Username   string       `gorm:"not null" json:"username,omitempty"`
-	Password   string       `gorm:"not null" json:"password,omitempty"`
-	Phone      string       `gorm:"index:,unique,not null" json:"phone,omitempty"`
-	Card       []*Card      `gorm:"foreignKey:user_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"card,omitempty"`
-	Role       string       `gorm:"not null" json:"role,omitempty"`
-	Company    *Company     `gorm:"foreignKey:user_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"company,omitempty"`
-	Type       uint64       `gorm:"default:0" json:"type,omitempty"`
-	Donations  []*Donations `gorm:"foreignKey:user_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"donations,omitempty"`
-	AvatarPath string       `gorm:"default:NULL" json:"avatarPath,omitempty"`
-	CreatedAt  time.Time    `json:"createdAt,omitempty"`
-	UpdatedAt  time.Time    `json:"updatedAt,omitempty"`
+	ID        uint64       `json:"id,omitempty"`
+	Email     string       `gorm:"index:,unique" json:"email,omitempty"`
+	Username  string       `gorm:"not null" json:"username,omitempty"`
+	Password  string       `gorm:"not null" json:"password,omitempty"`
+	Phone     string       `gorm:"index:,unique,not null" json:"phone,omitempty"`
+	Card      []*Card      `gorm:"foreignKey:user_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"card,omitempty"`
+	Role      string       `gorm:"not null" json:"role,omitempty"`
+	Company   *Company     `gorm:"foreignKey:user_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"company,omitempty"`
+	Type      uint64       `gorm:"default:0" json:"type,omitempty"`
+	Donations []*Donations `gorm:"foreignKey:user_id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"donations,omitempty"`
+	CreatedAt time.Time    `json:"createdAt,omitempty"`
+	UpdatedAt time.Time    `json:"updatedAt,omitempty"`
 }
 
 // Session - сессия пользователей

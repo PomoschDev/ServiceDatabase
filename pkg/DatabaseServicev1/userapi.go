@@ -427,25 +427,24 @@ func (s *serverAPI) AddCardToUser(ctx context.Context, req *AddCardToUserRequest
 }
 
 func (s *serverAPI) SetUserAvatar(stream DatabaseService_SetUserAvatarServer) error {
-	ch := make(chan struct{})
-	chErr := make(chan error)
+	chErr := make(chan error, 1)
 	data := make([]byte, 0, 5_000_000)
 	userId := uint64(0)
 	imageType := ""
+	defer stream.Context().Done()
 
 	go func() {
+		defer close(chErr)
 	loop:
 		for {
 			req := new(SetUserAvatarRequest)
 			err := stream.RecvMsg(req)
 			if err == io.EOF {
 				chErr <- nil
-				ch <- struct{}{}
 				break loop
 			}
 			if err != nil {
 				logger.Log.Error("SetUserAvatar", sl.Err(err))
-				ch <- struct{}{}
 				chErr <- status.Error(codes.DataLoss, "Не удалось прочитать изображение")
 			}
 
@@ -461,10 +460,6 @@ func (s *serverAPI) SetUserAvatar(stream DatabaseService_SetUserAvatarServer) er
 	}()
 
 	err := <-chErr
-	<-ch
-	close(chErr)
-	close(ch)
-
 	if err != nil {
 		logger.Log.Error("Ошибка после цикла", sl.Err(err))
 		return err
@@ -472,6 +467,21 @@ func (s *serverAPI) SetUserAvatar(stream DatabaseService_SetUserAvatarServer) er
 
 	//Сохраняем в файл
 	{
+		//Ищем старые файлы
+		{
+			pathFiles, err := findFilePath(utilities.MD5(fmt.Sprintf("user_%d", userId)))
+			if err != nil {
+				logger.Log.Error("Ошибка при поиске файлов: ", sl.Err(err))
+				return status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
+			}
+
+			logger.Log.Info("Нашли файлы", slog.Any("paths", pathFiles))
+
+			for _, i := range pathFiles {
+				os.Remove(filepath.Join(paths.IMAGE_DIR, i))
+			}
+		}
+
 		fileName := fmt.Sprintf("%s.%s", utilities.MD5(fmt.Sprintf("user_%d", userId)), imageType)
 		pathToFile := filepath.Join(paths.IMAGE_DIR, fileName)
 		f, err := os.OpenFile(pathToFile, os.O_CREATE|os.O_APPEND|os.O_TRUNC, os.ModePerm)
@@ -492,15 +502,23 @@ func (s *serverAPI) SetUserAvatar(stream DatabaseService_SetUserAvatarServer) er
 	response := new(HTTPCodes)
 	response.Code = http.StatusOK
 
-	err = stream.SendAndClose(response)
+	err = stream.SendMsg(response)
 	if err != nil {
 		logger.Log.Error("Ошибка при закрытии стрима", sl.Err(err))
 		return status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
 	}
 
-	stream.Context().Done()
-
 	return nil
+}
+
+func findFilePath(fileName string) ([]string, error) {
+	images, err := fs.Glob(os.DirFS(paths.IMAGE_DIR), fmt.Sprintf("%s*", fileName))
+	if err != nil {
+		logger.Log.Error("DeleteUserAvatar", sl.Err(err))
+		return nil, err
+	}
+
+	return images, nil
 }
 
 func (s *serverAPI) DeleteUserAvatar(ctx context.Context, req *DeleteUserAvatarRequest) (*HTTPCodes, error) {
@@ -535,10 +553,12 @@ func (s *serverAPI) GetUserAvatar(req *GetUserAvatarRequest, stream DatabaseServ
 	defer stream.Context().Done()
 
 	if err := user.FindUserID(); err != nil {
-		return status.Error(codes.Internal, fmt.Sprintf("Ошибка при удалении файла: %v", err))
+		logger.Log.Error("FindUserID", sl.Err(err))
+		return status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервера: %v", err))
 	}
 
 	if user.Password == "" || len(user.Password) == 0 {
+		logger.Log.Error("Пользователь не найден", slog.String("password", user.Password))
 		return status.Error(codes.NotFound, "Пользователь не найден")
 	}
 
@@ -558,7 +578,7 @@ func (s *serverAPI) GetUserAvatar(req *GetUserAvatarRequest, stream DatabaseServ
 	f, err := os.Open(pathToFile)
 	if err != nil {
 		logger.Log.Error("os.Open", sl.Err(err))
-		return status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
+		return status.Error(codes.NotFound, fmt.Sprintf("Изображение отсутствует"))
 	}
 	defer f.Close()
 
@@ -588,6 +608,8 @@ func (s *serverAPI) GetUserAvatar(req *GetUserAvatarRequest, stream DatabaseServ
 	chErr := make(chan error, 1)
 
 	go func() {
+		defer close(done)
+		defer close(chErr)
 	loop:
 		for {
 			n, err := f.Read(data)
@@ -617,14 +639,10 @@ func (s *serverAPI) GetUserAvatar(req *GetUserAvatarRequest, stream DatabaseServ
 
 	err = <-chErr
 	<-done
-	close(chErr)
-	close(done)
 
 	if err != nil {
 		return err
 	}
-
-	stream.Context().Done()
 
 	return nil
 }

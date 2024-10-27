@@ -688,34 +688,49 @@ func Test_SetUserAvatar(t *testing.T) {
 	}
 
 	data := make([]byte, s.Size()/chunkSize)
+	chErr := make(chan error, 1)
 
-loop:
-	for {
-		n, err := f.Read(data)
-		if err == io.EOF {
-			break loop
-		}
+	go func() {
+		defer func() {
+			close(chErr)
+			stream.CloseSend()
+		}()
+	loop:
+		for {
+			n, err := f.Read(data)
+			if err == io.EOF {
+				chErr <- nil
+				break loop
+			}
 
-		if err != nil {
-			t.Errorf("Ошибка при чтении байт: %v", err)
-			return
-		}
+			if err != nil {
+				chErr <- err
+				break loop
+			}
 
-		data = data[:n]
-		reqChunk := &DatabaseServicev1.SetUserAvatarRequest{
-			Data: &DatabaseServicev1.SetUserAvatarRequest_ChunkData{ChunkData: data},
-		}
+			data = data[:n]
+			reqChunk := &DatabaseServicev1.SetUserAvatarRequest{
+				Data: &DatabaseServicev1.SetUserAvatarRequest_ChunkData{ChunkData: data},
+			}
 
-		err = stream.SendMsg(reqChunk)
-		if err != nil && err != io.EOF {
-			t.Errorf("Ошибка при отправке в стрим: %v", err)
-			return
+			err = stream.SendMsg(reqChunk)
+			if err != nil && err != io.EOF {
+				chErr <- err
+				break loop
+			}
 		}
+	}()
+
+	err = <-chErr
+	if err != nil {
+		t.Errorf("Ошибка при работе с потоком: %v", err)
+		return
 	}
 
-	response, err := stream.CloseAndRecv()
+	response := new(DatabaseServicev1.HTTPCodes)
+	err = stream.RecvMsg(response)
 	if err != nil {
-		t.Logf("Ошибка при закрытии стрима: %v", err)
+		t.Logf("Ошибка при попытке получить ответ в потоке: %v", err)
 		return
 	}
 
@@ -741,26 +756,38 @@ func Test_DeleteUserAvatar(t *testing.T) {
 func Test_GetUserAvatar(t *testing.T) {
 	ctx, st := suite.New(t)
 
-	request := &DatabaseServicev1.GetUserAvatarRequest{UserId: 3}
+	request := &DatabaseServicev1.GetUserAvatarRequest{UserId: 4}
 
 	stream, err := st.ClientAPI.GetUserAvatar(ctx, request)
 	if err != nil {
 		t.Errorf("Ошибка при отправлении запроса: %v", err)
 		return
 	}
+	defer stream.Context().Done()
 
 	var data []byte
 	imageInfo := new(DatabaseServicev1.ImageInfo)
 
 	done := make(chan struct{}, 1)
+	chErr := make(chan error, 1)
 
 	go func() {
+		defer func() {
+			close(done)
+			close(chErr)
+		}()
 	loop:
 		for {
 			req := new(DatabaseServicev1.GetUserAvatarResponse)
 			err := stream.RecvMsg(req)
 			if err == io.EOF {
 				done <- struct{}{}
+				break loop
+			}
+
+			if err != nil {
+				done <- struct{}{}
+				chErr <- err
 				break loop
 			}
 
@@ -779,9 +806,12 @@ func Test_GetUserAvatar(t *testing.T) {
 		}
 	}()
 
+	err = <-chErr
 	<-done
-	close(done)
-	stream.Context().Done()
+	if err != nil {
+		t.Errorf("Ошибка: %v", err)
+		return
+	}
 
 	t.Logf("Получили: %b", data[:32])
 }
