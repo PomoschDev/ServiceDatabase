@@ -41,6 +41,18 @@ func FindDonationWards(id uint64) (*Ward, error) {
 	return d.Ward, err
 }
 
+func FindDonationUser(id uint64) (*User, error) {
+	db := database.GetDB()
+	user := new(User)
+	err := db.Where(&User{ID: id}).Find(&user).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return user, err
+}
+
 func (d *Donations) FindDonationID() error {
 	db := database.GetDB()
 

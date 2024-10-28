@@ -31,6 +31,7 @@ type Ward struct {
 	ID        uint64       `json:"id,omitempty"`
 	Title     string       `gorm:"not null" json:"title,omitempty"`
 	FullName  string       `gorm:"not null" json:"fullName,omitempty"`
+	Address   string       `gorm:"not null" json:"address,omitempty"`
 	Want      string       `gorm:"not null" json:"want,omitempty"`
 	Collected float64      `gorm:"default:0" json:"collected"`
 	Necessary float64      `gorm:"not null" json:"necessary,omitempty"`

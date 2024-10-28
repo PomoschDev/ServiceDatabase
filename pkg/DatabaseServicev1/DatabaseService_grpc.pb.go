@@ -59,6 +59,7 @@ const (
 	DatabaseService_Donations_FullMethodName                  = "/service.DatabaseService/Donations"
 	DatabaseService_CreateDonations_FullMethodName            = "/service.DatabaseService/CreateDonations"
 	DatabaseService_FindDonationWards_FullMethodName          = "/service.DatabaseService/FindDonationWards"
+	DatabaseService_FindDonationUser_FullMethodName           = "/service.DatabaseService/FindDonationUser"
 	DatabaseService_FindDonationById_FullMethodName           = "/service.DatabaseService/FindDonationById"
 	DatabaseService_DeleteDonationByModel_FullMethodName      = "/service.DatabaseService/DeleteDonationByModel"
 	DatabaseService_DeleteDonationById_FullMethodName         = "/service.DatabaseService/DeleteDonationById"
@@ -69,6 +70,7 @@ const (
 	DatabaseService_DeleteWardByModel_FullMethodName          = "/service.DatabaseService/DeleteWardByModel"
 	DatabaseService_DeleteWardById_FullMethodName             = "/service.DatabaseService/DeleteWardById"
 	DatabaseService_UpdateWard_FullMethodName                 = "/service.DatabaseService/UpdateWard"
+	DatabaseService_FindWardDonationById_FullMethodName       = "/service.DatabaseService/FindWardDonationById"
 	DatabaseService_CreateSessions_FullMethodName             = "/service.DatabaseService/CreateSessions"
 	DatabaseService_Sessions_FullMethodName                   = "/service.DatabaseService/Sessions"
 	DatabaseService_FindSessionsById_FullMethodName           = "/service.DatabaseService/FindSessionsById"
@@ -211,6 +213,9 @@ type DatabaseServiceClient interface {
 	// Поиск подопечных по ID пожертвования
 	FindDonationWards(ctx context.Context, in *FindDonationWardsRequest, opts ...grpc.CallOption) (*FindDonationWardsResponse, error)
 	// *
+	// Поиск пользователей по ID пожертвования
+	FindDonationUser(ctx context.Context, in *FindDonationUserRequest, opts ...grpc.CallOption) (*FindDonationUserResponse, error)
+	// *
 	// Поиск пожертвования по ID
 	FindDonationById(ctx context.Context, in *FindDonationByIdRequest, opts ...grpc.CallOption) (*CreateDonationsResponse, error)
 	// *
@@ -240,6 +245,8 @@ type DatabaseServiceClient interface {
 	// *
 	// Обновление подопечного
 	UpdateWard(ctx context.Context, in *Ward, opts ...grpc.CallOption) (*Ward, error)
+	// *
+	FindWardDonationById(ctx context.Context, in *FindWardDonationByIdRequest, opts ...grpc.CallOption) (*DonationsResponse, error)
 	// *
 	// Создание новой сессии
 	CreateSessions(ctx context.Context, in *CreateSessionRequest, opts ...grpc.CallOption) (*CreateSessionResponse, error)
@@ -686,6 +693,16 @@ func (c *databaseServiceClient) FindDonationWards(ctx context.Context, in *FindD
 	return out, nil
 }
 
+func (c *databaseServiceClient) FindDonationUser(ctx context.Context, in *FindDonationUserRequest, opts ...grpc.CallOption) (*FindDonationUserResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FindDonationUserResponse)
+	err := c.cc.Invoke(ctx, DatabaseService_FindDonationUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *databaseServiceClient) FindDonationById(ctx context.Context, in *FindDonationByIdRequest, opts ...grpc.CallOption) (*CreateDonationsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateDonationsResponse)
@@ -780,6 +797,16 @@ func (c *databaseServiceClient) UpdateWard(ctx context.Context, in *Ward, opts .
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Ward)
 	err := c.cc.Invoke(ctx, DatabaseService_UpdateWard_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *databaseServiceClient) FindWardDonationById(ctx context.Context, in *FindWardDonationByIdRequest, opts ...grpc.CallOption) (*DonationsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DonationsResponse)
+	err := c.cc.Invoke(ctx, DatabaseService_FindWardDonationById_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1046,6 +1073,9 @@ type DatabaseServiceServer interface {
 	// Поиск подопечных по ID пожертвования
 	FindDonationWards(context.Context, *FindDonationWardsRequest) (*FindDonationWardsResponse, error)
 	// *
+	// Поиск пользователей по ID пожертвования
+	FindDonationUser(context.Context, *FindDonationUserRequest) (*FindDonationUserResponse, error)
+	// *
 	// Поиск пожертвования по ID
 	FindDonationById(context.Context, *FindDonationByIdRequest) (*CreateDonationsResponse, error)
 	// *
@@ -1075,6 +1105,8 @@ type DatabaseServiceServer interface {
 	// *
 	// Обновление подопечного
 	UpdateWard(context.Context, *Ward) (*Ward, error)
+	// *
+	FindWardDonationById(context.Context, *FindWardDonationByIdRequest) (*DonationsResponse, error)
 	// *
 	// Создание новой сессии
 	CreateSessions(context.Context, *CreateSessionRequest) (*CreateSessionResponse, error)
@@ -1241,6 +1273,9 @@ func (UnimplementedDatabaseServiceServer) CreateDonations(context.Context, *Crea
 func (UnimplementedDatabaseServiceServer) FindDonationWards(context.Context, *FindDonationWardsRequest) (*FindDonationWardsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindDonationWards not implemented")
 }
+func (UnimplementedDatabaseServiceServer) FindDonationUser(context.Context, *FindDonationUserRequest) (*FindDonationUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindDonationUser not implemented")
+}
 func (UnimplementedDatabaseServiceServer) FindDonationById(context.Context, *FindDonationByIdRequest) (*CreateDonationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindDonationById not implemented")
 }
@@ -1270,6 +1305,9 @@ func (UnimplementedDatabaseServiceServer) DeleteWardById(context.Context, *Delet
 }
 func (UnimplementedDatabaseServiceServer) UpdateWard(context.Context, *Ward) (*Ward, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateWard not implemented")
+}
+func (UnimplementedDatabaseServiceServer) FindWardDonationById(context.Context, *FindWardDonationByIdRequest) (*DonationsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindWardDonationById not implemented")
 }
 func (UnimplementedDatabaseServiceServer) CreateSessions(context.Context, *CreateSessionRequest) (*CreateSessionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateSessions not implemented")
@@ -2048,6 +2086,24 @@ func _DatabaseService_FindDonationWards_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DatabaseService_FindDonationUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FindDonationUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DatabaseServiceServer).FindDonationUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DatabaseService_FindDonationUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DatabaseServiceServer).FindDonationUser(ctx, req.(*FindDonationUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _DatabaseService_FindDonationById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(FindDonationByIdRequest)
 	if err := dec(in); err != nil {
@@ -2224,6 +2280,24 @@ func _DatabaseService_UpdateWard_Handler(srv interface{}, ctx context.Context, d
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DatabaseServiceServer).UpdateWard(ctx, req.(*Ward))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DatabaseService_FindWardDonationById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FindWardDonationByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DatabaseServiceServer).FindWardDonationById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DatabaseService_FindWardDonationById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DatabaseServiceServer).FindWardDonationById(ctx, req.(*FindWardDonationByIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2594,6 +2668,10 @@ var DatabaseService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _DatabaseService_FindDonationWards_Handler,
 		},
 		{
+			MethodName: "FindDonationUser",
+			Handler:    _DatabaseService_FindDonationUser_Handler,
+		},
+		{
 			MethodName: "FindDonationById",
 			Handler:    _DatabaseService_FindDonationById_Handler,
 		},
@@ -2632,6 +2710,10 @@ var DatabaseService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateWard",
 			Handler:    _DatabaseService_UpdateWard_Handler,
+		},
+		{
+			MethodName: "FindWardDonationById",
+			Handler:    _DatabaseService_FindWardDonationById_Handler,
 		},
 		{
 			MethodName: "CreateSessions",

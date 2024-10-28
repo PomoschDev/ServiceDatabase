@@ -9,6 +9,24 @@ class Empty(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...
 
+class FindDonationUserResponse(_message.Message):
+    __slots__ = ("user",)
+    USER_FIELD_NUMBER: _ClassVar[int]
+    user: CreateUserResponse
+    def __init__(self, user: _Optional[_Union[CreateUserResponse, _Mapping]] = ...) -> None: ...
+
+class FindDonationUserRequest(_message.Message):
+    __slots__ = ("id",)
+    ID_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    def __init__(self, id: _Optional[int] = ...) -> None: ...
+
+class FindWardDonationByIdRequest(_message.Message):
+    __slots__ = ("id",)
+    ID_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    def __init__(self, id: _Optional[int] = ...) -> None: ...
+
 class ImageInfo(_message.Message):
     __slots__ = ("fileName", "type", "size")
     FILENAME_FIELD_NUMBER: _ClassVar[int]
@@ -364,16 +382,18 @@ class FindWardByIdRequest(_message.Message):
     def __init__(self, id: _Optional[int] = ...) -> None: ...
 
 class CreateWardRequest(_message.Message):
-    __slots__ = ("title", "fullName", "want", "necessary")
+    __slots__ = ("address", "title", "fullName", "want", "necessary")
+    ADDRESS_FIELD_NUMBER: _ClassVar[int]
     TITLE_FIELD_NUMBER: _ClassVar[int]
     FULLNAME_FIELD_NUMBER: _ClassVar[int]
     WANT_FIELD_NUMBER: _ClassVar[int]
     NECESSARY_FIELD_NUMBER: _ClassVar[int]
+    address: str
     title: str
     fullName: str
     want: str
     necessary: float
-    def __init__(self, title: _Optional[str] = ..., fullName: _Optional[str] = ..., want: _Optional[str] = ..., necessary: _Optional[float] = ...) -> None: ...
+    def __init__(self, address: _Optional[str] = ..., title: _Optional[str] = ..., fullName: _Optional[str] = ..., want: _Optional[str] = ..., necessary: _Optional[float] = ...) -> None: ...
 
 class WardsResponse(_message.Message):
     __slots__ = ("wards",)
@@ -748,11 +768,13 @@ class Card(_message.Message):
     def __init__(self, id: _Optional[int] = ..., fullName: _Optional[str] = ..., number: _Optional[str] = ..., date: _Optional[str] = ..., cvv: _Optional[int] = ..., userId: _Optional[int] = ..., createdAt: _Optional[str] = ..., updatedAt: _Optional[str] = ...) -> None: ...
 
 class Ward(_message.Message):
-    __slots__ = ("id", "title", "fullName", "want", "necessary", "donations", "createdAt", "updatedAt")
+    __slots__ = ("id", "title", "fullName", "address", "want", "collected", "necessary", "donations", "createdAt", "updatedAt")
     ID_FIELD_NUMBER: _ClassVar[int]
     TITLE_FIELD_NUMBER: _ClassVar[int]
     FULLNAME_FIELD_NUMBER: _ClassVar[int]
+    ADDRESS_FIELD_NUMBER: _ClassVar[int]
     WANT_FIELD_NUMBER: _ClassVar[int]
+    COLLECTED_FIELD_NUMBER: _ClassVar[int]
     NECESSARY_FIELD_NUMBER: _ClassVar[int]
     DONATIONS_FIELD_NUMBER: _ClassVar[int]
     CREATEDAT_FIELD_NUMBER: _ClassVar[int]
@@ -760,12 +782,14 @@ class Ward(_message.Message):
     id: int
     title: str
     fullName: str
+    address: str
     want: str
+    collected: float
     necessary: float
     donations: _containers.RepeatedCompositeFieldContainer[Donations]
     createdAt: str
     updatedAt: str
-    def __init__(self, id: _Optional[int] = ..., title: _Optional[str] = ..., fullName: _Optional[str] = ..., want: _Optional[str] = ..., necessary: _Optional[float] = ..., donations: _Optional[_Iterable[_Union[Donations, _Mapping]]] = ..., createdAt: _Optional[str] = ..., updatedAt: _Optional[str] = ...) -> None: ...
+    def __init__(self, id: _Optional[int] = ..., title: _Optional[str] = ..., fullName: _Optional[str] = ..., address: _Optional[str] = ..., want: _Optional[str] = ..., collected: _Optional[float] = ..., necessary: _Optional[float] = ..., donations: _Optional[_Iterable[_Union[Donations, _Mapping]]] = ..., createdAt: _Optional[str] = ..., updatedAt: _Optional[str] = ...) -> None: ...
 
 class Donations(_message.Message):
     __slots__ = ("id", "title", "amount", "wardId", "userId", "createdAt", "updatedAt")

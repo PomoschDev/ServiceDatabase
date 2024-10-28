@@ -173,6 +173,12 @@ service DatabaseService {
 * Поиск подопечных по ID пожертвования
  */
   rpc FindDonationWards(FindDonationWardsRequest) returns (FindDonationWardsResponse);
+
+  /**
+* Поиск пользователей по ID пожертвования
+*/
+  rpc FindDonationUser(FindDonationUserRequest) returns (FindDonationUserResponse);
+
   /**
 * Поиск пожертвования по ID
  */
@@ -215,6 +221,10 @@ service DatabaseService {
  */
   rpc UpdateWard(Ward) returns (Ward);
 
+  /**
+  *
+   */
+ rpc FindWardDonationById(FindWardDonationByIdRequest) returns (DonationsResponse);
 
   /**
 * Создание новой сессии
@@ -283,6 +293,26 @@ service DatabaseService {
  */
 message Empty {}
 
+/**
+* Ответ на запрос извлечения пользователя из пожертвования
+ */
+message FindDonationUserResponse {
+  CreateUserResponse user = 1; /** Автор пожертвования */
+}
+
+/**
+* Запрос на извлечение пользователей из определенного пожертвования
+ */
+message FindDonationUserRequest {
+  uint64 id = 1;
+}
+
+/**
+* Запрос на извлечение пожертвований подопечного
+*/
+message FindWardDonationByIdRequest {
+  uint64 id = 1; /** ID подопечного, чьи пожертвования будем извлекать */
+}
 
 /**
 * Информация об изображении
@@ -603,6 +633,7 @@ message FindWardByIdRequest {
 * Запрос на создание подопечного
  */
 message CreateWardRequest {
+  string address = 1; /** Адрес подопечного */
   string title = 2; /** Дополнительный текст к подопечному */
   string fullName = 3; /** Полное имя подопечного */
   string want = 4; /** Необходимость подопечного (то в чем он нуждается, например "Лекарства") */
@@ -974,11 +1005,13 @@ message Ward {
   uint64 id = 1; /** ID подопечного в базе данных */
   string title = 2; /** Дополнительный текст к подопечному */
   string fullName = 3; /** Полное имя подопечного */
-  string want = 4; /** Необходимость подопечного (то в чем он нуждается, например "Лекарства") */
-  float necessary = 5; /** Необходимая сумма денег на необходимость */
-  repeated Donations donations = 6; /** пожертвования для подопечного */
-  string createdAt = 8; /** Дата создания сущности в базе данных */
-  string updatedAt = 9; /** Дата последнего обновления сущности в базе данных */
+  string address = 4; /** Адрес подопечного */
+  string want = 5; /** Потребность подопечного (то в чем он нуждается, например "Лекарства") */
+  float collected = 6; /** Количество собранных средств */
+  float necessary = 7; /** Необходимая сумма денег на потребность */
+  repeated Donations donations = 8; /** пожертвования для подопечного */
+  string createdAt = 9; /** Дата создания сущности в базе данных */
+  string updatedAt = 10; /** Дата последнего обновления сущности в базе данных */
 }
 
 /**

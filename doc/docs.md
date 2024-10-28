@@ -54,6 +54,8 @@
     - [FindCompanyByIdRequest](#service-FindCompanyByIdRequest)
     - [FindCompanyCardRequest](#service-FindCompanyCardRequest)
     - [FindDonationByIdRequest](#service-FindDonationByIdRequest)
+    - [FindDonationUserRequest](#service-FindDonationUserRequest)
+    - [FindDonationUserResponse](#service-FindDonationUserResponse)
     - [FindDonationWardsRequest](#service-FindDonationWardsRequest)
     - [FindDonationWardsResponse](#service-FindDonationWardsResponse)
     - [FindSessionsByIdRequest](#service-FindSessionsByIdRequest)
@@ -69,6 +71,7 @@
     - [FindUserDonationsRequest](#service-FindUserDonationsRequest)
     - [FindUserDonationsResponse](#service-FindUserDonationsResponse)
     - [FindWardByIdRequest](#service-FindWardByIdRequest)
+    - [FindWardDonationByIdRequest](#service-FindWardDonationByIdRequest)
     - [GetUserAvatarRequest](#service-GetUserAvatarRequest)
     - [GetUserAvatarResponse](#service-GetUserAvatarResponse)
     - [HTTPCodes](#service-HTTPCodes)
@@ -643,6 +646,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
+| address | [string](#string) |  | Адрес подопечного |
 | title | [string](#string) |  | Дополнительный текст к подопечному |
 | fullName | [string](#string) |  | Полное имя подопечного |
 | want | [string](#string) |  | Необходимость подопечного (то в чем он нуждается, например &#34;Лекарства&#34;) |
@@ -1016,6 +1020,38 @@
 
 
 
+<a name="service-FindDonationUserRequest"></a>
+
+### FindDonationUserRequest
+
+Запрос на извлечение пользователей из определенного пожертвования
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="service-FindDonationUserResponse"></a>
+
+### FindDonationUserResponse
+
+Ответ на запрос извлечения пользователя из пожертвования
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user | [CreateUserResponse](#service-CreateUserResponse) |  | Автор пожертвования |
+
+
+
+
+
+
 <a name="service-FindDonationWardsRequest"></a>
 
 ### FindDonationWardsRequest
@@ -1258,6 +1294,22 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [uint64](#uint64) |  | ID подопечного которого будем искать |
+
+
+
+
+
+
+<a name="service-FindWardDonationByIdRequest"></a>
+
+### FindWardDonationByIdRequest
+
+Запрос на извлечение пожертвований подопечного
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  | ID подопечного, чьи пожертвования будем извлекать |
 
 
 
@@ -1585,8 +1637,10 @@
 | id | [uint64](#uint64) |  | ID подопечного в базе данных |
 | title | [string](#string) |  | Дополнительный текст к подопечному |
 | fullName | [string](#string) |  | Полное имя подопечного |
-| want | [string](#string) |  | Необходимость подопечного (то в чем он нуждается, например &#34;Лекарства&#34;) |
-| necessary | [float](#float) |  | Необходимая сумма денег на необходимость |
+| address | [string](#string) |  | Адрес подопечного |
+| want | [string](#string) |  | Потребность подопечного (то в чем он нуждается, например &#34;Лекарства&#34;) |
+| collected | [float](#float) |  | Количество собранных средств |
+| necessary | [float](#float) |  | Необходимая сумма денег на потребность |
 | donations | [Donations](#service-Donations) | repeated | пожертвования для подопечного |
 | createdAt | [string](#string) |  | Дата создания сущности в базе данных |
 | updatedAt | [string](#string) |  | Дата последнего обновления сущности в базе данных |
@@ -1666,6 +1720,7 @@
 | Donations | [Empty](#service-Empty) | [DonationsResponse](#service-DonationsResponse) |  Список всех пожертвований |
 | CreateDonations | [CreateDonationsRequest](#service-CreateDonationsRequest) | [CreateDonationsResponse](#service-CreateDonationsResponse) |  Создание пожертвования |
 | FindDonationWards | [FindDonationWardsRequest](#service-FindDonationWardsRequest) | [FindDonationWardsResponse](#service-FindDonationWardsResponse) |  Поиск подопечных по ID пожертвования |
+| FindDonationUser | [FindDonationUserRequest](#service-FindDonationUserRequest) | [FindDonationUserResponse](#service-FindDonationUserResponse) |  Поиск пользователей по ID пожертвования |
 | FindDonationById | [FindDonationByIdRequest](#service-FindDonationByIdRequest) | [CreateDonationsResponse](#service-CreateDonationsResponse) |  Поиск пожертвования по ID |
 | DeleteDonationByModel | [DeleteDonationByModelRequest](#service-DeleteDonationByModelRequest) | [HTTPCodes](#service-HTTPCodes) |  Удаление пожертвования по модели (например полученного с помощью FindDonationById) |
 | DeleteDonationById | [DeleteDonationByIdRequest](#service-DeleteDonationByIdRequest) | [HTTPCodes](#service-HTTPCodes) |  Удаление пожертвование по ID |
@@ -1676,6 +1731,7 @@
 | DeleteWardByModel | [Ward](#service-Ward) | [HTTPCodes](#service-HTTPCodes) |  Удаление подопечного по модели (например полученной с помощью FindWardById) |
 | DeleteWardById | [DeleteWardByIdRequest](#service-DeleteWardByIdRequest) | [HTTPCodes](#service-HTTPCodes) |  Удаление подопечного по его ID |
 | UpdateWard | [Ward](#service-Ward) | [Ward](#service-Ward) |  Обновление подопечного |
+| FindWardDonationById | [FindWardDonationByIdRequest](#service-FindWardDonationByIdRequest) | [DonationsResponse](#service-DonationsResponse) |  |
 | CreateSessions | [CreateSessionRequest](#service-CreateSessionRequest) | [CreateSessionResponse](#service-CreateSessionResponse) |  Создание новой сессии |
 | Sessions | [Empty](#service-Empty) | [SessionsResponse](#service-SessionsResponse) |  Список всех сессии |
 | FindSessionsById | [FindSessionsByIdRequest](#service-FindSessionsByIdRequest) | [FindSessionsByIdResponse](#service-FindSessionsByIdResponse) |  Поиск сессии по его ID |

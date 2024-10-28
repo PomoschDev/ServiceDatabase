@@ -51,7 +51,7 @@ func (s *serverAPI) CreateDonations(ctx context.Context, req *CreateDonationsReq
 
 	db := database.GetDB()
 	findDonation := new(models.Donations)
-	result := db.Preload("Wards").Where(&models.Donations{ID: newDonation.ID}).
+	result := db.Preload("Ward").Where(&models.Donations{ID: newDonation.ID}).
 		Find(&findDonation)
 
 	if result.Error != nil {
@@ -87,6 +87,24 @@ func (s *serverAPI) FindDonationWards(ctx context.Context, req *FindDonationWard
 
 	if err := utilities.Transformation(wards, &response.Wards); err != nil {
 		logger.Log.Error("utilities.Transformation(wards, response.Wards)", sl.Err(err))
+		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
+	}
+
+	return response, nil
+}
+
+func (s *serverAPI) FindDonationUser(ctx context.Context, req *FindDonationUserRequest) (*FindDonationUserResponse,
+	error) {
+	user, err := models.FindDonationUser(req.GetId())
+	if err != nil {
+		logger.Log.Error("models.FindDonationUser", sl.Err(err))
+		return nil, status.Error(codes.NotFound, fmt.Sprintf("%v", err))
+	}
+
+	response := new(FindDonationUserResponse)
+
+	if err := utilities.Transformation(user, &response.User); err != nil {
+		logger.Log.Error("utilities.Transformation(user, &response.User)", sl.Err(err))
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
 	}
 

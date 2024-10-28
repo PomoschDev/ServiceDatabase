@@ -30,6 +30,14 @@ func (w *Ward) FindWardID() error {
 	return db.Where(&Ward{ID: w.ID}).Find(&w).Error
 }
 
+func FindWardDonations(id uint64) ([]*Donations, error) {
+	db := database.GetDB()
+	var donations []*Donations
+	err := db.Model(&Ward{ID: id}).Association("Donations").Find(&donations)
+
+	return donations, err
+}
+
 func (w *Ward) Delete() error {
 	db := database.GetDB()
 

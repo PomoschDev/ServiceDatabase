@@ -158,3 +158,26 @@ func (s *serverAPI) UpdateWard(ctx context.Context, req *Ward) (*Ward, error) {
 
 	return response, nil
 }
+
+func (s *serverAPI) FindWardDonationById(ctx context.Context, req *FindWardDonationByIdRequest) (*DonationsResponse,
+	error) {
+	donations, err := models.FindWardDonations(req.GetId())
+	if err != nil {
+		logger.Log.Error("models.FindWardDonations(req.GetId())", sl.Err(err))
+		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
+	}
+
+	if len(donations) == 0 {
+		logger.Log.Error("Ничего не нашли")
+		return nil, status.Error(codes.NotFound, fmt.Sprintf("Пожертвования отсутствуют"))
+	}
+
+	response := new(DonationsResponse)
+
+	if err := utilities.Transformation(donations, &response.Donations); err != nil {
+		logger.Log.Error("utilities.Transformation(ward.Donations, &response.Donations)", sl.Err(err))
+		return nil, status.Error(codes.Internal, fmt.Sprintf("Ошибка на стороне сервиса: %v", err))
+	}
+
+	return response, nil
+}

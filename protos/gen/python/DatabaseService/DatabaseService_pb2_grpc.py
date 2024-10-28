@@ -236,6 +236,11 @@ class DatabaseServiceStub(object):
                 request_serializer=DatabaseService_dot_DatabaseService__pb2.FindDonationWardsRequest.SerializeToString,
                 response_deserializer=DatabaseService_dot_DatabaseService__pb2.FindDonationWardsResponse.FromString,
                 _registered_method=True)
+        self.FindDonationUser = channel.unary_unary(
+                '/service.DatabaseService/FindDonationUser',
+                request_serializer=DatabaseService_dot_DatabaseService__pb2.FindDonationUserRequest.SerializeToString,
+                response_deserializer=DatabaseService_dot_DatabaseService__pb2.FindDonationUserResponse.FromString,
+                _registered_method=True)
         self.FindDonationById = channel.unary_unary(
                 '/service.DatabaseService/FindDonationById',
                 request_serializer=DatabaseService_dot_DatabaseService__pb2.FindDonationByIdRequest.SerializeToString,
@@ -285,6 +290,11 @@ class DatabaseServiceStub(object):
                 '/service.DatabaseService/UpdateWard',
                 request_serializer=DatabaseService_dot_DatabaseService__pb2.Ward.SerializeToString,
                 response_deserializer=DatabaseService_dot_DatabaseService__pb2.Ward.FromString,
+                _registered_method=True)
+        self.FindWardDonationById = channel.unary_unary(
+                '/service.DatabaseService/FindWardDonationById',
+                request_serializer=DatabaseService_dot_DatabaseService__pb2.FindWardDonationByIdRequest.SerializeToString,
+                response_deserializer=DatabaseService_dot_DatabaseService__pb2.DonationsResponse.FromString,
                 _registered_method=True)
         self.CreateSessions = channel.unary_unary(
                 '/service.DatabaseService/CreateSessions',
@@ -673,6 +683,14 @@ class DatabaseServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def FindDonationUser(self, request, context):
+        """*
+        Поиск пользователей по ID пожертвования
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def FindDonationById(self, request, context):
         """*
         Поиск пожертвования по ID
@@ -748,6 +766,14 @@ class DatabaseServiceServicer(object):
     def UpdateWard(self, request, context):
         """*
         Обновление подопечного
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def FindWardDonationById(self, request, context):
+        """*
+
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -1052,6 +1078,11 @@ def add_DatabaseServiceServicer_to_server(servicer, server):
                     request_deserializer=DatabaseService_dot_DatabaseService__pb2.FindDonationWardsRequest.FromString,
                     response_serializer=DatabaseService_dot_DatabaseService__pb2.FindDonationWardsResponse.SerializeToString,
             ),
+            'FindDonationUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.FindDonationUser,
+                    request_deserializer=DatabaseService_dot_DatabaseService__pb2.FindDonationUserRequest.FromString,
+                    response_serializer=DatabaseService_dot_DatabaseService__pb2.FindDonationUserResponse.SerializeToString,
+            ),
             'FindDonationById': grpc.unary_unary_rpc_method_handler(
                     servicer.FindDonationById,
                     request_deserializer=DatabaseService_dot_DatabaseService__pb2.FindDonationByIdRequest.FromString,
@@ -1101,6 +1132,11 @@ def add_DatabaseServiceServicer_to_server(servicer, server):
                     servicer.UpdateWard,
                     request_deserializer=DatabaseService_dot_DatabaseService__pb2.Ward.FromString,
                     response_serializer=DatabaseService_dot_DatabaseService__pb2.Ward.SerializeToString,
+            ),
+            'FindWardDonationById': grpc.unary_unary_rpc_method_handler(
+                    servicer.FindWardDonationById,
+                    request_deserializer=DatabaseService_dot_DatabaseService__pb2.FindWardDonationByIdRequest.FromString,
+                    response_serializer=DatabaseService_dot_DatabaseService__pb2.DonationsResponse.SerializeToString,
             ),
             'CreateSessions': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateSessions,
@@ -2256,6 +2292,33 @@ class DatabaseService(object):
             _registered_method=True)
 
     @staticmethod
+    def FindDonationUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/service.DatabaseService/FindDonationUser',
+            DatabaseService_dot_DatabaseService__pb2.FindDonationUserRequest.SerializeToString,
+            DatabaseService_dot_DatabaseService__pb2.FindDonationUserResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def FindDonationById(request,
             target,
             options=(),
@@ -2515,6 +2578,33 @@ class DatabaseService(object):
             '/service.DatabaseService/UpdateWard',
             DatabaseService_dot_DatabaseService__pb2.Ward.SerializeToString,
             DatabaseService_dot_DatabaseService__pb2.Ward.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def FindWardDonationById(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/service.DatabaseService/FindWardDonationById',
+            DatabaseService_dot_DatabaseService__pb2.FindWardDonationByIdRequest.SerializeToString,
+            DatabaseService_dot_DatabaseService__pb2.DonationsResponse.FromString,
             options,
             channel_credentials,
             insecure,
